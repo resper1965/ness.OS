@@ -45,6 +45,12 @@ O ness.OS é composto por **6 módulos** e **10 agentes de IA** que operam sobre
 - [Especificação dos Agentes](docs/agents/agents-specification.md)
 - [Modelo de Dados Conceitual](docs/data-model/conceptual-model.md)
 
+## 🔌 Integrações
+
+| Sistema | Módulo | Documentação |
+|---------|--------|--------------|
+| Omie ERP | ness.FIN | [docs/integrations/omie-erp.md](docs/integrations/omie-erp.md) |
+
 ## 🔄 Fluxo Principal de Dados
 
 ```
