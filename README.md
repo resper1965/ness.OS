@@ -1,76 +1,195 @@
 # ness.OS
 
-> Sistema Operacional de Gestão Empresarial Inteligente
+**Sistema de gestão empresarial inteligente para empresas de serviços**
 
-**ness.OS** é uma plataforma de gestão empresarial baseada em agentes de IA interconectados, desenvolvida pela [ness.](https://ness.com.br) para transformar dados operacionais em decisões estratégicas.
+[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
+[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E)](https://supabase.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
 
 ---
 
-## 🎯 Visão
+## 🎯 Visão Geral
 
-Quebrar os silos organizacionais através de agentes inteligentes que compartilham bases de conhecimento, transformando a empresa de uma estrutura reativa para uma organização guiada por dados e IA.
+O ness.OS é uma plataforma modular que integra gestão financeira, operacional, comercial, jurídica, governança e pessoas em um único sistema, potencializado por agentes de IA especializados.
 
-## 🏗️ Arquitetura
+### Módulos
 
-O ness.OS é composto por **6 módulos** e **10 agentes de IA** que operam sobre **6 bases de conhecimento** interconectadas.
+| Módulo | Descrição | Status |
+|--------|-----------|--------|
+| **FIN** | Contratos, receitas, despesas, rentabilidade | ✅ MVP |
+| **OPS** | Horas, recursos, SLA, monitoramento | 🔨 Planejado |
+| **GROWTH** | Propostas, precificação, pipeline | 🔨 Planejado |
+| **JUR** | Contratos, compliance, análise jurídica | 🔨 Planejado |
+| **GOV** | Políticas, auditorias, documentação | 🔨 Planejado |
+| **PEOPLE** | PDI, OKRs, performance, 1:1s | 🔨 Planejado |
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                          ness.OS                                │
-├─────────────┬─────────────┬─────────────┬─────────────┬─────────┤
-│ ness.GROWTH │  ness.OPS   │  ness.FIN   │  ness.JUR   │ness.GOV │
-│  (Comercial)│ (Operações) │ (Financeiro)│  (Jurídico) │(Govern.)│
-├─────────────┴─────────────┴─────────────┴─────────────┴─────────┤
-│                        ness.PEOPLE                              │
-│                    (Gestão de Talentos)                         │
-└─────────────────────────────────────────────────────────────────┘
-```
+---
 
-## 📦 Módulos
+## 🚀 Quick Start
 
-| Módulo | Foco | Agentes |
-|--------|------|---------|
-| [ness.GROWTH](docs/modules/growth.md) | Inteligência Comercial e Marketing | 3 |
-| [ness.OPS](docs/modules/ops.md) | Gestão do Conhecimento e Operação | 2 |
-| [ness.FIN](docs/modules/fin.md) | CFO Digital e Gestão de Contratos | 2 |
-| [ness.JUR](docs/modules/jur.md) | Blindagem e Conformidade Legal | 1 |
-| [ness.GOV](docs/modules/gov.md) | Governança Corporativa Interna | 1 |
-| [ness.PEOPLE](docs/modules/people.md) | Gestão de Talentos | 1 |
+### Pré-requisitos
 
-## 📚 Documentação
+- Node.js 18+
+- Conta no [Supabase](https://supabase.com)
+- Credenciais do [Omie ERP](https://developer.omie.com.br/)
 
-- [Visão Geral da Arquitetura](docs/architecture/overview.md)
-- [Diagramas](docs/architecture/diagrams.md)
-- [Fluxo de Dados](docs/architecture/data-flow.md)
-- [Especificação dos Agentes](docs/agents/agents-specification.md)
-- [Modelo de Dados Conceitual](docs/data-model/conceptual-model.md)
+### Instalação
 
-## 🔌 Integrações
+```bash
+# Clone o repositório
+git clone https://github.com/resper1965/ness.OS.git
+cd ness.OS
 
-| Sistema | Módulo | Documentação |
-|---------|--------|--------------|
-| Omie ERP | ness.FIN | [docs/integrations/omie-erp.md](docs/integrations/omie-erp.md) |
+# Instale as dependências
+npm install
 
-## 🔄 Fluxo Principal de Dados
-
-```
-ness.OPS (recursos/horas) ──► ness.FIN (custo real) ──► ness.GROWTH (precificação)
-       │
-       ▼
-ness.PEOPLE (gaps de treinamento)
+# Configure as variáveis de ambiente
+cp .env.example .env.local
 ```
 
-## 🛠️ Stack Tecnológica
+Edite `.env.local`:
 
-- **Hospedagem:** VPS própria
-- **Desenvolvimento:** IA Coder
-- **Agentes:** Arquitetura multi-agente com bases de conhecimento RAG
-- **Integrações:** APIs REST (ERP, Redes Sociais, etc.)
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://seu-projeto.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=sua-anon-key
+```
+
+### Setup do Banco de Dados
+
+1. Acesse o Supabase Dashboard → SQL Editor
+2. Execute o arquivo `src/database/001_schema_fin.sql`
+3. Configure os secrets (Settings → Edge Functions):
+   - `OMIE_APP_KEY`
+   - `OMIE_APP_SECRET`
+
+### Deploy da Edge Function
+
+```bash
+# Instale o Supabase CLI
+npm install -g supabase
+
+# Login
+supabase login
+
+# Deploy
+supabase functions deploy sync-omie --project-ref SEU_PROJECT_REF
+```
+
+### Rodar localmente
+
+```bash
+npm run dev
+```
+
+Acesse: http://localhost:3000
+
+---
+
+## 📁 Estrutura do Projeto
+
+```
+ness.OS/
+├── src/
+│   ├── app/                    # Páginas (Next.js App Router)
+│   │   ├── dashboard/          # Dashboard principal
+│   │   ├── fin/                # Módulo Financeiro
+│   │   │   ├── contratos/
+│   │   │   ├── rentabilidade/
+│   │   │   └── alertas/
+│   │   ├── ops/                # Módulo Operações
+│   │   ├── growth/             # Módulo Comercial
+│   │   ├── jur/                # Módulo Jurídico
+│   │   ├── gov/                # Módulo Governança
+│   │   └── people/             # Módulo Pessoas
+│   ├── components/
+│   │   ├── layout/             # Sidebar, Header
+│   │   ├── ui/                 # Card, Badge, etc
+│   │   └── modules/            # KPI Card, etc
+│   ├── hooks/                  # React hooks (useContratos, etc)
+│   ├── lib/                    # Supabase client, utils
+│   └── types/                  # TypeScript types
+├── docs/                       # Documentação
+│   ├── architecture/
+│   ├── modules/
+│   ├── agents/
+│   └── integrations/
+└── src/
+    ├── database/               # SQL schemas
+    └── supabase/
+        └── functions/          # Edge Functions
+```
+
+---
+
+## 🔗 Integrações
+
+### Implementadas
+- **Omie ERP** - Sync de clientes, contratos, receitas, despesas
+
+### Planejadas
+- Clockify/Toggl (timesheet)
+- GLPI (chamados)
+- AWS/Azure/GCP (billing)
+- Wazuh/Zabbix (monitoramento)
+- LinkedIn API, Google Analytics
+
+---
+
+## 🤖 Agentes IA (Roadmap)
+
+| Agente | Função |
+|--------|--------|
+| ness.Advisor | Assistente conversacional com RAG |
+| ness.Analyst | Dashboard e insights financeiros |
+| ness.Pricing | Cálculo de preço/hora |
+| ness.Proposal | Geração de propostas |
+| ness.Legal | Análise de contratos |
+| ness.Mentor | PDI e treinamentos |
+
+---
+
+## 📊 Stack Tecnológica
+
+- **Frontend**: Next.js 14, TypeScript, Tailwind CSS, shadcn/ui
+- **Backend**: Supabase (PostgreSQL + Auth + Storage)
+- **IA/RAG**: pgvector, Claude API
+- **Deploy**: Vercel
+- **Integrações**: Edge Functions (Deno)
+
+---
+
+## 🔒 Segurança
+
+- Autenticação via Supabase Auth
+- Row Level Security (RLS) em todas as tabelas
+- Secrets em variáveis de ambiente
+- Audit log de operações críticas
+
+---
+
+## 📈 Roadmap
+
+- [x] Documentação de arquitetura
+- [x] Schema do módulo FIN
+- [x] Edge Function sync Omie
+- [x] Frontend MVP (Dashboard, Contratos, Rentabilidade, Alertas)
+- [ ] Integração real com Supabase
+- [ ] Deploy no Vercel
+- [ ] Módulo OPS
+- [ ] Agentes IA
+
+---
+
+## 🤝 Contribuição
+
+Este é um projeto interno da [ness.](https://ness.com.br).
+
+---
 
 ## 📄 Licença
 
-Proprietário - © 2025 ness. Cybersecurity
+Proprietário - ness. Cybersecurity
 
 ---
 
-*"Invisíveis quando tudo funciona. Presentes quando mais importa."*
+**ness.** - *Invisíveis quando tudo funciona. Presentes quando mais importa.*
