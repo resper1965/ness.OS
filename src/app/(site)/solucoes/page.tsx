@@ -11,7 +11,11 @@ export default async function SolucoesPage() {
 
   return (
     <section className="container mx-auto px-4 py-16">
-      <h1 className="text-3xl font-bold mb-8 text-white">Nossas Soluções</h1>
+      <h1 className="text-3xl font-bold mb-4 text-white">Nossas Soluções</h1>
+      <p className="text-slate-400 mb-8 max-w-2xl">
+        Serviços de tecnologia, segurança e operação. Cada solução é documentada em playbooks
+        internos e entregue com padronização e qualidade.
+      </p>
       {services && services.length > 0 ? (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {services.map((s) => (
@@ -28,7 +32,12 @@ export default async function SolucoesPage() {
           ))}
         </div>
       ) : (
-        <p className="text-slate-400">Nenhuma solução publicada.</p>
+        <div className="rounded-lg border border-slate-700/50 bg-slate-800/30 p-8 text-center">
+          <p className="text-slate-400">Nenhuma solução publicada no momento.</p>
+          <p className="text-slate-500 text-sm mt-2">
+            Novas soluções serão adicionadas em breve. Entre em contato para conhecer nosso portfólio.
+          </p>
+        </div>
       )}
     </section>
   );

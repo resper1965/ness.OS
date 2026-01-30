@@ -4,7 +4,7 @@ import { updateLeadStatus } from '@/app/actions/admin-leads';
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
 
-type Column = { key: string; label: string };
+type Column = { key: string; label: string; help?: string };
 
 type Lead = {
   id: string;
@@ -33,7 +33,7 @@ export function LeadKanban({ columns, leadsByStatus }: LeadKanbanProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
       {columns.map((col) => (
         <div
           key={col.key}
@@ -44,6 +44,7 @@ export function LeadKanban({ columns, leadsByStatus }: LeadKanbanProps) {
             <span className="text-xs text-slate-400">
               {(leadsByStatus[col.key] ?? []).length} leads
             </span>
+            {col.help && <p className="text-xs text-slate-500 mt-1">{col.help}</p>}
           </div>
           <div className="p-3 space-y-3 max-h-[60vh] overflow-y-auto">
             {(leadsByStatus[col.key] ?? []).map((lead) => (

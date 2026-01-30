@@ -6,7 +6,12 @@ export default async function RentabilidadePage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-white mb-8">Rentabilidade</h1>
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-white">Rentabilidade</h1>
+        <p className="text-slate-400 text-sm mt-1">
+          Receita (MRR) menos custos operacionais por contrato. Margem negativa em vermelho.
+        </p>
+      </div>
       <div className="rounded-lg border border-slate-700 overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-slate-800/50 text-slate-300">
@@ -31,8 +36,11 @@ export default async function RentabilidadePage() {
           </tbody>
         </table>
         {(!rows || rows.length === 0) && (
-          <div className="px-4 py-12 text-center text-slate-400">
-            Cadastre contratos e métricas para ver a rentabilidade.
+          <div className="px-4 py-12 text-center">
+            <p className="text-slate-400">Nenhum dado de rentabilidade.</p>
+            <p className="text-slate-500 text-sm mt-2">
+              Cadastre contratos e insira métricas (horas, custo cloud) em OPS → Métricas.
+            </p>
           </div>
         )}
       </div>

@@ -1,0 +1,24 @@
+---
+description: Diretrizes de desenvolvimento ness.OS — Segurança, Integridade, Design
+alwaysApply: true
+---
+
+# Diretrizes de Desenvolvimento ness.OS
+
+## 1. Segurança (SecOps First)
+
+- **Nunca exponha lógica de negócio no Client-Side.** Use Server Actions para tudo. Forms, mutações, consultas sensíveis → `"use server"`.
+- **RLS rigoroso:** O Financeiro é invisível para o Vendas. O Vendas é invisível para Visitantes. Cada tabela deve ter políticas explícitas por role.
+
+## 2. Integridade de Dados
+
+- **Use Foreign Keys para tudo.** Nenhuma entidade "órfã".
+- **Não permita Input de Métricas sem Contrato vinculado.** `performance_metrics.contract_id` NOT NULL + FK.
+- Novas tabelas: sempre FK para entidades relacionadas; CHECK constraints quando fizer sentido.
+
+## 3. Design System
+
+| Área | Diretriz |
+|------|----------|
+| **Site** `app/(site)` | Manter fidelidade visual ao legado. Não mudar identidade sem alinhamento. |
+| **App** `app/app` | shadcn/ui padrão. Foco em densidade de informação e usabilidade. |

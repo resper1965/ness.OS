@@ -14,6 +14,7 @@ type Props = {
 export function MetricasForm({ contracts, recentMetrics }: Props) {
   const [state, formAction] = useFormState(saveMetric, {});
   const inputClass = 'w-full rounded-md border border-slate-600 bg-slate-800 px-3 py-2 text-sm text-white';
+  const helpClass = 'text-xs text-slate-500 mt-1';
 
   return (
     <div className="space-y-8">
@@ -31,23 +32,28 @@ export function MetricasForm({ contracts, recentMetrics }: Props) {
               </option>
             ))}
           </select>
+          <p className={helpClass}>Contrato que receberá a métrica.</p>
         </div>
         <div>
           <label className="block text-sm text-slate-300 mb-2">Mês (YYYY-MM)</label>
           <input name="month" type="month" required className={inputClass} />
+          <p className={helpClass}>Mês ao qual se referem horas e custos.</p>
         </div>
         <div>
           <label className="block text-sm text-slate-300 mb-2">Horas trabalhadas</label>
-          <input name="hours_worked" type="number" step="0.5" defaultValue="0" className={inputClass} />
+          <input name="hours_worked" type="number" step="0.5" defaultValue="0" className={inputClass} placeholder="40" />
+          <p className={helpClass}>Pode ser decimal (ex.: 37,5).</p>
         </div>
         <div>
           <label className="block text-sm text-slate-300 mb-2">Custo (R$)</label>
-          <input name="cost_input" type="number" step="0.01" defaultValue="0" className={inputClass} />
+          <input name="cost_input" type="number" step="0.01" defaultValue="0" className={inputClass} placeholder="2500.00" />
+          <p className={helpClass}>Valores que reduzem a rentabilidade (cloud, horas, etc.).</p>
         </div>
         <div className="flex items-center gap-2">
           <input type="checkbox" name="sla_achieved" id="sla" defaultChecked className="rounded border-slate-600 bg-slate-800 text-ness" />
           <label htmlFor="sla" className="text-sm text-slate-300">SLA atingido</label>
         </div>
+        <p className={helpClass}>Marque se o SLA do contrato foi cumprido no mês.</p>
         <button type="submit" className="rounded-md bg-ness px-4 py-2 text-sm font-medium text-white hover:bg-ness-600">
           Salvar
         </button>

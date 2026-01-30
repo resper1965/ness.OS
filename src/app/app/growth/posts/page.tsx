@@ -10,8 +10,13 @@ export default async function GrowthPostsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold text-white">Posts do Blog</h1>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-white">Posts do Blog</h1>
+          <p className="text-slate-400 text-sm mt-1">
+            Artigos publicados em /blog. Ative &quot;Publicar no Site&quot; para exibir.
+          </p>
+        </div>
         <Link
           href="/app/growth/posts/novo"
           className="rounded-md bg-ness px-4 py-2 text-sm font-medium text-white hover:bg-ness-600"
@@ -64,8 +69,10 @@ export default async function GrowthPostsPage() {
           </tbody>
         </table>
         {(!posts || posts.length === 0) && (
-          <div className="px-4 py-12 text-center text-slate-400">
-            Nenhum post. Crie o primeiro.
+          <div className="px-4 py-12 text-center">
+            <p className="text-slate-400">Nenhum post cadastrado.</p>
+            <p className="text-slate-500 text-sm mt-2">Crie o primeiro para publicar no blog do site.</p>
+            <Link href="/app/growth/posts/novo" className="inline-block mt-4 rounded-md bg-ness px-4 py-2 text-sm font-medium text-white hover:bg-ness-600">Novo post</Link>
           </div>
         )}
       </div>

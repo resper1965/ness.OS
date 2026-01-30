@@ -12,7 +12,12 @@ export default async function ContratosPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-white mb-8">Contratos</h1>
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-white">Contratos</h1>
+        <p className="text-slate-400 text-sm mt-1">
+          MRR e vigência por cliente. Base para cálculo de rentabilidade e métricas.
+        </p>
+      </div>
       <ClientForm />
       <ContractForm clients={clients ?? []} />
       <div className="mt-8 rounded-lg border border-slate-700 overflow-hidden">
@@ -37,7 +42,10 @@ export default async function ContratosPage() {
           </tbody>
         </table>
         {(!contracts || contracts.length === 0) && (
-          <div className="px-4 py-12 text-center text-slate-400">Nenhum contrato. Adicione um cliente primeiro.</div>
+          <div className="px-4 py-12 text-center">
+            <p className="text-slate-400">Nenhum contrato cadastrado.</p>
+            <p className="text-slate-500 text-sm mt-2">Adicione um cliente e depois crie o contrato.</p>
+          </div>
         )}
       </div>
     </div>

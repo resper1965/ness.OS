@@ -27,6 +27,7 @@ export function PostEditorForm({ action, initialValues }: PostEditorFormProps) {
 
   const inputClass =
     'w-full rounded-md border border-slate-600 bg-slate-800 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ness';
+  const helpClass = 'text-xs text-slate-500 mt-1';
 
   return (
     <form action={formAction} className="max-w-2xl space-y-6">
@@ -41,8 +42,9 @@ export function PostEditorForm({ action, initialValues }: PostEditorFormProps) {
           required
           defaultValue={initialValues?.title}
           className={inputClass}
-          placeholder="Título do post"
+          placeholder="Como migrar para cloud com segurança"
         />
+        <p className={helpClass}>Título que aparecerá no blog.</p>
       </div>
       <div>
         <label className="block text-sm font-medium text-slate-300 mb-2">Slug (URL)</label>
@@ -52,8 +54,9 @@ export function PostEditorForm({ action, initialValues }: PostEditorFormProps) {
           required
           defaultValue={initialValues?.slug}
           className={inputClass}
-          placeholder="meu-post-url"
+          placeholder="como-migrar-cloud-seguranca"
         />
+        <p className={helpClass}>Minúsculo, hífens. Ex.: como-migrar-cloud-seguranca</p>
       </div>
       <div>
         <label className="block text-sm font-medium text-slate-300 mb-2">Meta description (SEO)</label>
@@ -62,8 +65,9 @@ export function PostEditorForm({ action, initialValues }: PostEditorFormProps) {
           rows={2}
           defaultValue={initialValues?.seo_description ?? undefined}
           className={inputClass}
-          placeholder="Descrição para buscadores"
+          placeholder="Guia prático de migração cloud com foco em segurança e compliance."
         />
+        <p className={helpClass}>Breve resumo (~155 caracteres). Aparece no Google.</p>
       </div>
       <div>
         <label className="block text-sm font-medium text-slate-300 mb-2">Conteúdo (Markdown ou HTML)</label>
@@ -72,8 +76,9 @@ export function PostEditorForm({ action, initialValues }: PostEditorFormProps) {
           rows={16}
           defaultValue={initialValues?.content_markdown ?? undefined}
           className={inputClass + ' font-mono text-xs'}
-          placeholder="# Título&#10;&#10;Conteúdo do post..."
+          placeholder="## Introdução&#10;&#10;Migrar para cloud exige planejamento..."
         />
+        <p className={helpClass}>Corpo do artigo. Suporta Markdown.</p>
       </div>
       <div className="flex items-center gap-2">
         <input
@@ -87,6 +92,7 @@ export function PostEditorForm({ action, initialValues }: PostEditorFormProps) {
           Publicar no site
         </label>
       </div>
+      <p className={helpClass}>Se marcado, aparece em /blog.</p>
       <div className="flex gap-4">
         <button
           type="submit"

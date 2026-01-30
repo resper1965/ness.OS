@@ -22,8 +22,9 @@ export function ContactForm() {
           name="name"
           required
           className={inputClass}
-          placeholder="Seu nome"
+          placeholder="João Silva"
         />
+        <p className="text-xs text-slate-500 mt-1">Seu nome ou da pessoa responsável.</p>
       </div>
       <div>
         <label htmlFor="email" className="block text-sm font-medium mb-2 text-slate-300">
@@ -35,14 +36,16 @@ export function ContactForm() {
           type="email"
           required
           className={inputClass}
-          placeholder="seu@email.com"
+          placeholder="joao@empresa.com.br"
         />
+        <p className="text-xs text-slate-500 mt-1">Usaremos para responder sua mensagem.</p>
       </div>
       <div>
         <label htmlFor="company" className="block text-sm font-medium mb-2 text-slate-300">
           Empresa
         </label>
-        <input id="company" name="company" className={inputClass} placeholder="Nome da empresa" />
+        <input id="company" name="company" className={inputClass} placeholder="NESS Tecnologia" />
+        <p className="text-xs text-slate-500 mt-1">Opcional — ajuda na triagem.</p>
       </div>
       <div>
         <label htmlFor="message" className="block text-sm font-medium mb-2 text-slate-300">
@@ -53,8 +56,9 @@ export function ContactForm() {
           name="message"
           rows={4}
           className={inputClass}
-          placeholder="Como podemos ajudar?"
+          placeholder="Gostaria de conhecer a solução de SecOps. Podemos agendar uma apresentação?"
         />
+        <p className="text-xs text-slate-500 mt-1">Descreva como podemos ajudar. Se for proposta, inclua porte da empresa e necessidade.</p>
       </div>
       <input type="hidden" name="origin_url" value="/contato" />
       {state?.error && <p className="text-sm text-red-400">{state.error}</p>}

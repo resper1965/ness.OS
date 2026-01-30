@@ -12,7 +12,12 @@ export default async function MetricasPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-white mb-8">Métricas de Performance</h1>
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-white">Métricas de Performance</h1>
+        <p className="text-slate-400 text-sm mt-1">
+          Horas trabalhadas, custo cloud e SLA por contrato/mês. Alimenta o cálculo de rentabilidade.
+        </p>
+      </div>
       <MetricasForm contracts={contracts ?? []} recentMetrics={metrics ?? []} />
     </div>
   );

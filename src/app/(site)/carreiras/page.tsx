@@ -21,7 +21,12 @@ export default async function CarreirasPage() {
           ))}
         </div>
       ) : (
-        <p className="text-slate-400">Nenhuma vaga aberta no momento.</p>
+        <div className="rounded-lg border border-slate-700/50 bg-slate-800/30 p-8 text-center">
+          <p className="text-slate-400">Nenhuma vaga aberta no momento.</p>
+          <p className="text-slate-500 text-sm mt-2">
+            Acompanhe nosso site ou entre em contato para enviar seu currículo em nosso banco de talentos.
+          </p>
+        </div>
       )}
     </section>
   );

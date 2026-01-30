@@ -7,7 +7,7 @@ export async function getServiceBySlug(slug: string) {
 
   const { data, error } = await supabase
     .from('services_catalog')
-    .select('id, name, slug, marketing_pitch, marketing_features, cover_image_url, content_json')
+    .select('id, name, slug, marketing_title, marketing_body, marketing_pitch, marketing_features, cover_image_url, content_json')
     .eq('slug', slug)
     .eq('is_active', true)
     .single();
@@ -19,6 +19,8 @@ export async function getServiceBySlug(slug: string) {
     id: data.id,
     name: data.name,
     slug: data.slug,
+    marketing_title: data.marketing_title ?? null,
+    marketing_body: data.marketing_body ?? null,
     marketing_pitch: data.marketing_pitch,
     marketing_features: data.marketing_features,
     cover_image_url: data.cover_image_url,

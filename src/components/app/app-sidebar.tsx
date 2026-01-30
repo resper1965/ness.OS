@@ -7,6 +7,7 @@ const navItems = [
   { href: '/app/growth/leads', label: 'Leads' },
   { href: '/app/growth/services', label: 'Serviços' },
   { href: '/app/ops/playbooks', label: 'Playbooks' },
+  { href: '/app/ops/playbooks/chat', label: 'Knowledge Bot' },
   { href: '/app/ops/metricas', label: 'Métricas' },
   { href: '/app/ops/assets', label: 'Assets' },
   { href: '/app/people/vagas', label: 'Vagas' },

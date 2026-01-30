@@ -12,7 +12,12 @@ export default async function GrowthServicesPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-white mb-8">Catálogo de Serviços</h1>
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-white">Catálogo de Serviços</h1>
+        <p className="text-slate-400 text-sm mt-1">
+          Serviços vendáveis. Só podem ficar ativos se tiverem playbook vinculado (Trava Growth×OPS).
+        </p>
+      </div>
       <ServiceForm playbooks={playbooks ?? []} />
       <div className="mt-8 rounded-lg border border-slate-700 overflow-hidden">
         <table className="w-full text-sm">

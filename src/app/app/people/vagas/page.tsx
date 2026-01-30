@@ -8,7 +8,12 @@ export default async function VagasPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-white mb-8">Vagas</h1>
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-white">Vagas</h1>
+        <p className="text-slate-400 text-sm mt-1">
+          Vagas abertas aparecem em /carreiras. Candidaturas vão para Candidatos.
+        </p>
+      </div>
       <JobForm />
       <div className="rounded-lg border border-slate-700 overflow-hidden mt-8">
         <table className="w-full text-sm">

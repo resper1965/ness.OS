@@ -43,6 +43,10 @@ Na ordem, no SQL Editor do Supabase:
 4. **004_people_tables.sql** — public_jobs, job_applications, training_gaps
 5. **005_rentabilidade_view.sql** — view contract_rentability
 6. **006_storage_os_assets.sql** — políticas Storage (criar bucket `os-assets` no Dashboard antes)
+7. **007_superadmin_role.sql** — role superadmin + RLS
+8. **008_trava_catalogo.sql** — FK playbook + CHECK is_active (Trava Growth×OPS)
+9. **009_pgvector_embeddings.sql** — pgvector + document_embeddings (RAG/IA)
+10. **010_match_embeddings_rpc.sql** — função RPC match_document_embeddings para busca semântica
 
 **Storage:** Dashboard > Storage > New bucket > `os-assets` (privado)
 

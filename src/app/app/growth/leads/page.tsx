@@ -2,10 +2,11 @@ import { createClient } from '@/lib/supabase/server';
 import { LeadKanban } from '@/components/growth/lead-kanban';
 
 const COLUMNS = [
-  { key: 'new', label: 'Novo' },
-  { key: 'contacted', label: 'Em Análise' },
-  { key: 'qualified', label: 'Qualificado' },
-  { key: 'discarded', label: 'Descartado' },
+  { key: 'new', label: 'Novo', help: 'Lead recém-chegado. Aguardando primeiro contato.' },
+  { key: 'qualified', label: 'Qualificado', help: 'Lead com potencial. Avaliado e qualificado.' },
+  { key: 'proposal', label: 'Proposta', help: 'Proposta enviada. Aguardando resposta.' },
+  { key: 'won', label: 'Ganho', help: 'Negócio fechado.' },
+  { key: 'lost', label: 'Perdido', help: 'Fora do perfil, sem resposta ou não avançou.' },
 ] as const;
 
 export default async function GrowthLeadsPage() {
@@ -25,7 +26,12 @@ export default async function GrowthLeadsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-white mb-8">Leads (CRM)</h1>
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-white">Leads (CRM)</h1>
+        <p className="text-slate-400 text-sm mt-1">
+          Leads capturados no formulário de contato. Arraste os cards para alterar o status.
+        </p>
+      </div>
       <LeadKanban columns={COLUMNS} leadsByStatus={byStatus} />
     </div>
   );

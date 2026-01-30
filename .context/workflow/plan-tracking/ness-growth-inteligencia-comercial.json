@@ -1,0 +1,24 @@
+{
+  "planSlug": "ness-growth-inteligencia-comercial",
+  "progress": 100,
+  "phases": {
+    "phase-1": {
+      "phaseId": "phase-1",
+      "status": "completed",
+      "startedAt": "2026-01-30T22:11:13.653Z",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "description": "Step 1",
+          "status": "completed",
+          "completedAt": "2026-01-30T22:11:13.653Z",
+          "output": "RF.GRO.01 marketing_title/body + RF.GRO.02 Kanban Leads",
+          "notes": "Migrations 011, 012. Forms e actions atualizados."
+        }
+      ],
+      "completedAt": "2026-01-30T22:11:13.653Z"
+    }
+  },
+  "decisions": [],
+  "lastUpdated": "2026-01-30T22:11:13.653Z"
+}

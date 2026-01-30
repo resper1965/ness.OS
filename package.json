@@ -9,10 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^3.0.23",
+    "@ai-sdk/react": "^3.0.64",
     "@radix-ui/react-slot": "^1.1.0",
     "@react-pdf/renderer": "^4.3.2",
     "@supabase/ssr": "^0.5.0",
     "@supabase/supabase-js": "^2.45.0",
+    "ai": "^6.0.62",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.454.0",

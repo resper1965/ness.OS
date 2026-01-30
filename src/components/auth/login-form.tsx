@@ -1,10 +1,17 @@
 'use client';
 
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useFormState } from 'react-dom';
 import { signIn } from '@/app/actions/auth';
 
 export function LoginForm() {
+  const router = useRouter();
   const [state, formAction] = useFormState(signIn, {});
+
+  useEffect(() => {
+    if (state?.redirect) router.replace(state.redirect);
+  }, [state?.redirect, router]);
 
   return (
     <form action={formAction} className="space-y-4">

@@ -10,8 +10,13 @@ export default async function PlaybooksPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold text-white">Playbooks</h1>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-white">Playbooks</h1>
+          <p className="text-slate-400 text-sm mt-1">
+            Manuais técnicos que definem &quot;como fazemos&quot;. Todo serviço vendido deve ter um playbook vinculado.
+          </p>
+        </div>
         <Link href="/app/ops/playbooks/novo" className="rounded-md bg-ness px-4 py-2 text-sm font-medium text-white hover:bg-ness-600">
           Novo playbook
         </Link>
@@ -40,7 +45,11 @@ export default async function PlaybooksPage() {
           </tbody>
         </table>
         {(!playbooks || playbooks.length === 0) && (
-          <div className="px-4 py-12 text-center text-slate-400">Nenhum playbook. Crie o primeiro.</div>
+          <div className="px-4 py-12 text-center">
+            <p className="text-slate-400">Nenhum playbook cadastrado.</p>
+            <p className="text-slate-500 text-sm mt-2">Crie o primeiro para documentar procedimentos e habilitar o Knowledge Bot.</p>
+            <Link href="/app/ops/playbooks/novo" className="inline-block mt-4 rounded-md bg-ness px-4 py-2 text-sm font-medium text-white hover:bg-ness-600">Novo playbook</Link>
+          </div>
         )}
       </div>
     </div>

@@ -3,7 +3,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 
-const VALID_STATUSES = ['new', 'contacted', 'qualified', 'discarded'] as const;
+const VALID_STATUSES = ['new', 'qualified', 'proposal', 'won', 'lost'] as const;
 
 export async function updateLeadStatus(id: string, status: string) {
   if (!VALID_STATUSES.includes(status as (typeof VALID_STATUSES)[number])) {
