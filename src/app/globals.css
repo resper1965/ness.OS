@@ -1,0 +1,145 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 500;
+  }
+
+  :focus {
+    outline: 2px solid #00ade8;
+    outline-offset: 2px;
+  }
+
+  /* NESS site theme (dark) */
+  :root {
+    /* Backgrounds */
+    --background: 222 47% 11%; /* #0f172a slate-900 */
+    --foreground: 210 40% 98%; /* #f8fafc slate-50 */
+    /* Primary NESS cyan */
+    --primary: 199 100% 45%; /* #00ade8 */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 199 100% 36%; /* #008bb8 */
+    --secondary-foreground: 0 0% 100%;
+    --muted: 217 33% 17%; /* slate-800 */
+    --muted-foreground: 215 20% 65%; /* slate-400 */
+    --accent: 217 33% 24%; /* slate-700 */
+    --accent-foreground: 210 40% 98%;
+    --border: 215 28% 17%;
+    --input: 215 28% 17%;
+    --ring: 199 100% 45%;
+    --destructive: 0 84% 60%;
+  }
+}
+
+@layer components {
+  .text-ness {
+    color: #00ade8;
+  }
+
+  .bg-ness {
+    background-color: #00ade8;
+  }
+
+  .border-ness {
+    border-color: #00ade8;
+  }
+
+  .brand-dot {
+    color: #00ade8;
+    font-weight: 700;
+  }
+
+  .glass {
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(248, 250, 252, 0.1);
+  }
+
+  .gradient-text-ness {
+    background: linear-gradient(135deg, #00ade8 0%, #008bb8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in-up {
+    animation: fadeIn 0.6s ease-out;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out;
+  }
+
+  .hover-lift {
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .focus\:not-sr-only:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+}
+
+/* Custom scrollbar - NESS dark */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #00ade8;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #008bb8;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

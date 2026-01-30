@@ -5,3 +5,7 @@ node_modules/
 .vercel
 *.log
 .DS_Store
+
+# Referência do site legado (não subir código morto)
+_reference/
+.env*.local

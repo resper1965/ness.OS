@@ -1,5 +1,6 @@
 ---
 status: filled
+progress: 100
 planVinculado: docs/PLANO-COMPLETO-NESSOS-SITE.md
 generated: 2026-01-30
 agents:
@@ -43,6 +44,7 @@ phases:
   - id: "phase-3"
     name: "Validation & Handoff"
     prevc: "V"
+lastUpdated: "2026-01-30T18:45:00.246Z"
 ---
 
 # Próximos Passos ness.OS Plan
@@ -148,7 +150,7 @@ Identify potential blockers, dependencies, and mitigation strategies before begi
 
 ### Phase 2 — Implementation & Iteration
 **Steps**
-1. Deploy Vercel; verificar build e variáveis; testar fluxo completo (login, leads, vagas).
+1. [x] Deploy Vercel; verificar build e variáveis; testar fluxo completo (login, leads, vagas). *(completed: 2026-01-30T18:45:00.246Z)*
 2. Extrair conteúdo de `_reference/legacy_site/public/locales` e gerar SQL INSERT para static_pages e services_catalog.
 
 **Commit Checkpoint**
@@ -194,6 +196,19 @@ When to initiate rollback:
 2. Notify stakeholders of rollback and impact
 3. Schedule post-mortem to analyze failure
 4. Update plan with lessons learned before retry
+
+## Execution History
+
+> Last updated: 2026-01-30T18:45:00.246Z | Progress: 100%
+
+### phase-2 [DONE]
+- Started: 2026-01-30T18:45:00.246Z
+- Completed: 2026-01-30T18:45:00.246Z
+
+- [x] Step 1: Step 1 *(2026-01-30T18:45:00.246Z)*
+  - Output: supabase/seed/001_static_pages_legal.sql
+  - Notes: Seed privacidade e termos criado
+
 
 ## Evidence & Follow-up
 

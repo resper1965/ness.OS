@@ -28,12 +28,17 @@ phases:
 
 execution:
   history:
-    - timestamp: "2026-01-30T18:43:03.422Z"
+    - timestamp: "2026-01-30T18:45:00.371Z"
       phase: C
-      action: plan_linked
+      action: step_completed
       plan: "ness-os-proximos-passos"
-  last_activity: "2026-01-30T18:43:03.422Z"
-  resume_context: "Plano vinculado - aguardando revisão"
+      planPhase: "phase-2"
+      stepIndex: 1
+      stepDescription: "Step 1"
+      output: "supabase/seed/001_static_pages_legal.sql"
+      notes: "Seed privacidade e termos criado"
+  last_activity: "2026-01-30T18:45:00.371Z"
+  resume_context: "Concluído: Step 1"
 
 approval:
   plan_created: true
