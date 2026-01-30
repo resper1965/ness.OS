@@ -1,0 +1,48 @@
+project:
+  name: "ness-os-sistema-nervoso"
+  scale: LARGE
+  started: "2026-01-30T19:47:18.772Z"
+  current_phase: C
+
+phases:
+  P:
+    status: filled
+    started_at: "2026-01-30T19:47:18.772Z"
+    completed_at: "2026-01-30T19:47:35.286Z"
+  R:
+    status: filled
+    started_at: "2026-01-30T19:47:35.287Z"
+    completed_at: "2026-01-30T19:47:48.765Z"
+  E:
+    status: filled
+    started_at: "2026-01-30T19:47:48.766Z"
+    completed_at: "2026-01-30T19:48:12.870Z"
+  V:
+    status: filled
+    started_at: "2026-01-30T19:48:12.873Z"
+    completed_at: "2026-01-30T19:48:27.276Z"
+  C:
+    status: completed
+    started_at: "2026-01-30T19:48:27.277Z"
+    completed_at: "2026-01-30T20:21:17.107Z"
+    outputs:
+      - path: ".context/plans/fluxo-explicativo-inputs.md"
+        status: filled
+      - path: "docs/FLUXO-INPUTS-EXPLICATIVOS.md"
+        status: filled
+
+execution:
+  history:
+    - timestamp: "2026-01-30T20:21:17.107Z"
+      phase: C
+      action: completed
+  last_activity: "2026-01-30T20:21:17.107Z"
+  resume_context: "Fase C (Confirmação) concluída"
+
+approval:
+  plan_created: true
+  plan_approved: true
+  approved_by: "architect"
+  approved_at: "2026-01-30T19:47:44.180Z"
+  approval_notes: "Plano validado. Migrations 008 (Trava) e 009 (pgvector) alinhadas com especificação Sistema Nervoso. Schema pronto para agentes IA."
+

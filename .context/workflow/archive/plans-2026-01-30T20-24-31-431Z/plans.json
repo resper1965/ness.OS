@@ -1,0 +1,14 @@
+{
+  "active": [
+    {
+      "slug": "ness-os-sistema-nervoso",
+      "path": "plans/ness-os-sistema-nervoso.md",
+      "title": "ness.OS — Sistema Nervoso Digital",
+      "summary": "Plataforma de Gestão e Inteligência Corporativa. Orquestrador de negócios: OPS → GROWTH → FIN → PEOPLE → WEB.",
+      "linkedAt": "2026-01-30T19:47:30.286Z",
+      "status": "active"
+    }
+  ],
+  "completed": [],
+  "primary": "ness-os-sistema-nervoso"
+}

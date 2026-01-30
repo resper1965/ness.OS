@@ -3,10 +3,17 @@
 This directory contains plans for coordinating work across documentation and playbooks.
 
 ## Plan Queue
-1. [Migracao Site Legacy](./migracao-site-legacy.md)
-2. [Ness Os Completo Site](./ness-os-completo-site.md) — concluído
-3. [Próximos Passos ness.OS](./ness-os-proximos-passos.md) — deploy, migrations, migração conteúdo
-3. [Ness Os Proximos Passos](./ness-os-proximos-passos.md)
+1. [Fluxo Explicativo Inputs](./fluxo-explicativo-inputs.md)
+2. [Migracao Site Legacy](./migracao-site-legacy.md)
+3. [Ness Fin Cfo Digital](./ness-fin-cfo-digital.md)
+4. [Ness Gov Governanca Interna](./ness-gov-governanca-interna.md)
+5. [Ness Growth Inteligencia Comercial](./ness-growth-inteligencia-comercial.md)
+6. [Ness Jur Juridico Compliance](./ness-jur-juridico-compliance.md)
+7. [Ness Ops Engenharia Processos](./ness-ops-engenharia-processos.md)
+8. [Ness Os Completo Site](./ness-os-completo-site.md)
+9. [Ness Os Proximos Passos](./ness-os-proximos-passos.md)
+10. [Ness Os Sistema Nervoso](./ness-os-sistema-nervoso.md)
+11. [Ness People Talentos Cultura](./ness-people-talentos-cultura.md)
 
 ## How To Create Or Update Plans
 - Run "ai-context plan <name>" to scaffold a new plan template.
