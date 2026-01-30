@@ -1,0 +1,14 @@
+{
+  "active": [
+    {
+      "slug": "ness-os-desenvolvimento",
+      "path": "plans/ness-os-desenvolvimento.md",
+      "title": "Planejamento de desenvolvimento ness.OS",
+      "summary": "Consolida todos os planos existentes (artefatos, schema, GitHub, épicos, branding) no planejamento do projeto.",
+      "linkedAt": "2026-01-30T11:55:59.394Z",
+      "status": "active"
+    }
+  ],
+  "completed": [],
+  "primary": "ness-os-desenvolvimento"
+}

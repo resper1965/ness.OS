@@ -1,0 +1,59 @@
+{
+  "version": "1.0.0",
+  "generated": "2026-01-29T20:47:41.896Z",
+  "stack": {
+    "primaryLanguage": null,
+    "languages": [],
+    "frameworks": [],
+    "buildTools": [],
+    "testFrameworks": [],
+    "packageManager": null,
+    "isMonorepo": false,
+    "hasDocker": false,
+    "hasCI": false
+  },
+  "structure": {
+    "totalFiles": 16,
+    "topDirectories": [
+      {
+        "name": "ARCHITECTURE.md",
+        "fileCount": 1
+      },
+      {
+        "name": "docs",
+        "fileCount": 14
+      },
+      {
+        "name": "README.md",
+        "fileCount": 1
+      }
+    ],
+    "languageDistribution": [
+      {
+        "extension": ".md",
+        "count": 16
+      }
+    ]
+  },
+  "architecture": {
+    "layers": [],
+    "patterns": [],
+    "entryPoints": []
+  },
+  "symbols": {
+    "classes": [],
+    "interfaces": [],
+    "functions": [],
+    "types": [],
+    "enums": []
+  },
+  "publicAPI": [],
+  "dependencies": {
+    "mostImported": []
+  },
+  "stats": {
+    "totalSymbols": 0,
+    "exportedSymbols": 0,
+    "analysisTimeMs": 10
+  }
+}
