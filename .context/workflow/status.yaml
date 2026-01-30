@@ -1,42 +1,45 @@
 project:
-  name: "fluxo-explicativo-inputs"
+  name: "ness-growth-fase1"
   scale: MEDIUM
-  started: "2026-01-30T20:24:31.432Z"
+  started: "2026-01-30T22:06:56.827Z"
   current_phase: V
 
 phases:
   P:
-    status: completed
-    started_at: "2026-01-30T20:24:31.432Z"
-    completed_at: "2026-01-30T20:52:33.668Z"
+    status: filled
+    started_at: "2026-01-30T22:06:56.827Z"
+    completed_at: "2026-01-30T22:07:11.072Z"
   R:
-    status: completed
-    started_at: "2026-01-30T20:52:33.669Z"
-    completed_at: "2026-01-30T21:03:11.732Z"
+    status: filled
+    started_at: "2026-01-30T22:07:11.073Z"
+    completed_at: "2026-01-30T22:07:17.440Z"
   E:
     status: filled
-    started_at: "2026-01-30T21:03:11.733Z"
-    completed_at: "2026-01-30T21:10:12.157Z"
+    started_at: "2026-01-30T22:07:17.441Z"
+    completed_at: "2026-01-30T22:11:01.326Z"
   V:
-    status: completed
-    started_at: "2026-01-30T21:10:12.160Z"
-    completed_at: "2026-01-30T21:22:22.347Z"
+    status: in_progress
+    started_at: "2026-01-30T22:11:01.329Z"
   C:
     status: skipped
     reason: "Not required for scale MEDIUM"
 
 execution:
   history:
-    - timestamp: "2026-01-30T21:22:22.347Z"
+    - timestamp: "2026-01-30T22:11:01.329Z"
       phase: V
-      action: completed
-  last_activity: "2026-01-30T21:22:22.347Z"
-  resume_context: "Fase V (Validação) concluída"
+      action: started
+  last_activity: "2026-01-30T22:11:01.329Z"
+  resume_context: "Fase V (Validação) em progresso"
+
+settings:
+  autonomous_mode: true
+  require_plan: true
+  require_approval: true
 
 approval:
   plan_created: true
   plan_approved: true
-  approved_by: "reviewer"
-  approved_at: "2026-01-30T21:03:06.894Z"
-  approval_notes: "Plano aprovado. Executar implementação dos help texts e placeholders."
+  approved_by: "system-migration"
+  approved_at: "2026-01-30T22:07:19.464Z"
 

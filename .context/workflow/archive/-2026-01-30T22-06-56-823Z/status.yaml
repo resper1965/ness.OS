@@ -1,0 +1,31 @@
+project:
+  name: ""
+  scale: MEDIUM
+  started: "2026-01-30T22:01:47.739Z"
+  current_phase: P
+
+phases:
+  P:
+    status: pending
+  R:
+    status: pending
+  E:
+    status: pending
+  V:
+    status: pending
+  C:
+    status: pending
+
+execution:
+  history:
+    - timestamp: "2026-01-30T22:02:00.586Z"
+      phase: P
+      action: plan_linked
+      plan: "ness-ops-engenharia-processos"
+  last_activity: "2026-01-30T22:02:00.586Z"
+  resume_context: "Plano vinculado - aguardando revisão"
+
+approval:
+  plan_created: true
+  plan_approved: false
+

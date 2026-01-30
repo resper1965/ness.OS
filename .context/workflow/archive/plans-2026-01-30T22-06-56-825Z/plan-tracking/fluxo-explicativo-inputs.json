@@ -1,0 +1,24 @@
+{
+  "planSlug": "fluxo-explicativo-inputs",
+  "progress": 100,
+  "phases": {
+    "phase-4": {
+      "phaseId": "phase-4",
+      "status": "completed",
+      "startedAt": "2026-01-30T21:58:19.682Z",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "description": "Step 1",
+          "status": "completed",
+          "completedAt": "2026-01-30T21:58:19.682Z",
+          "output": "Help texts e placeholders aplicados em todos os formulários",
+          "notes": "Fase V (Validação) concluída conforme workflow status"
+        }
+      ],
+      "completedAt": "2026-01-30T21:58:19.682Z"
+    }
+  },
+  "decisions": [],
+  "lastUpdated": "2026-01-30T21:58:19.682Z"
+}

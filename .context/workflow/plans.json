@@ -1,14 +1,14 @@
 {
   "active": [
     {
-      "slug": "fluxo-explicativo-inputs",
-      "path": "plans/fluxo-explicativo-inputs.md",
-      "title": "Fluxo explicativo de etapas e inputs — labels, placeholders e exemplos",
-      "summary": "Adicionar explicação em cada etapa dos fluxos e em cada input: o que é esperado, formato e exemplos. Melhora UX e reduz erros de preenchimento.",
-      "linkedAt": "2026-01-30T20:24:37.011Z",
+      "slug": "ness-growth-inteligencia-comercial",
+      "path": "plans/ness-growth-inteligencia-comercial.md",
+      "title": "ness.GROWTH — Comercial & Conteúdo",
+      "summary": "Motor de Vendas e alimentação do Site Público. Trava do Catálogo (playbook_id). Integração Site (Case, Vaga → site). Agentes: Propostas (cliente+playbook→minuta) e Conteúdo (case→post).",
+      "linkedAt": "2026-01-30T22:07:19.463Z",
       "status": "active"
     }
   ],
   "completed": [],
-  "primary": "fluxo-explicativo-inputs"
+  "primary": "ness-growth-inteligencia-comercial"
 }

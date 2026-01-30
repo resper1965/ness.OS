@@ -1,0 +1,46 @@
+{
+  "active": [
+    {
+      "slug": "ness-growth-inteligencia-comercial",
+      "path": "plans/ness-growth-inteligencia-comercial.md",
+      "title": "ness.GROWTH — Comercial & Conteúdo",
+      "summary": "Motor de Vendas e alimentação do Site Público. Trava do Catálogo (playbook_id). Integração Site (Case, Vaga → site). Agentes: Propostas (cliente+playbook→minuta) e Conteúdo (case→post).",
+      "linkedAt": "2026-01-30T22:01:47.733Z",
+      "status": "active"
+    },
+    {
+      "slug": "fluxo-explicativo-inputs",
+      "path": "plans/fluxo-explicativo-inputs.md",
+      "title": "Fluxo explicativo de etapas e inputs — labels, placeholders e exemplos",
+      "summary": "Adicionar explicação em cada etapa dos fluxos e em cada input: o que é esperado, formato e exemplos. Melhora UX e reduz erros de preenchimento.",
+      "linkedAt": "2026-01-30T22:01:49.710Z",
+      "status": "active"
+    },
+    {
+      "slug": "ness-os-completo-site",
+      "path": "plans/ness-os-completo-site.md",
+      "title": "Plano Completo: Criação do ness.OS com Site Institucional",
+      "summary": "Plano mestre para criar o ecossistema ness.OS (sistema interno) + ness.WEB (site institucional) em uma única base Next.js App Router, integrando Supabase, migração do site legacy, módulos Growth/OPS/People/FIN e deploy na Vercel.",
+      "linkedAt": "2026-01-30T22:01:58.410Z",
+      "status": "active"
+    },
+    {
+      "slug": "ness-people-talentos-cultura",
+      "path": "plans/ness-people-talentos-cultura.md",
+      "title": "ness.PEOPLE — Talentos & Cultura",
+      "summary": "O elo entre performance e pessoas. Recrutamento, Avaliação e Treinamento Baseado em Dados.",
+      "linkedAt": "2026-01-30T22:01:58.531Z",
+      "status": "active"
+    },
+    {
+      "slug": "ness-ops-engenharia-processos",
+      "path": "plans/ness-ops-engenharia-processos.md",
+      "title": "ness.OPS — A Verdade Técnica",
+      "summary": "Biblioteca de conhecimento e hub de métricas. OPS não executa a técnica, governa a técnica.",
+      "linkedAt": "2026-01-30T22:02:00.585Z",
+      "status": "active"
+    }
+  ],
+  "completed": [],
+  "primary": "ness-growth-inteligencia-comercial"
+}
