@@ -80,10 +80,17 @@ function UsersAdminContent() {
       if (permsError) throw permsError;
 
       // Combinar dados
-      const usersWithPerms = (profiles || []).map(profile => ({
-        ...profile,
-        permissions: (permissions || []).filter(p => p.user_id === profile.id),
-      })) as UserWithPermissions[];
+      const usersWithPerms: UserWithPermissions[] = (profiles ?? [])
+        .filter((p): p is NonNullable<typeof p> => p != null)
+        .map(profile => {
+          const { id } = profile;
+          return {
+            ...(profile as unknown as UserProfile),
+            permissions: (permissions ?? []).filter(
+              (p: { user_id: string }) => p.user_id === id
+            ) as UserPermission[],
+          };
+        });
 
       setUsers(usersWithPerms);
     } catch (err) {
@@ -102,7 +109,8 @@ function UsersAdminContent() {
   // Alternar status ativo
   const toggleActive = async (user: UserWithPermissions) => {
     try {
-      const { error } = await supabase
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error } = await (supabase as any)
         .from('profiles')
         .update({ ativo: !user.ativo })
         .eq('id', user.id);
@@ -120,7 +128,8 @@ function UsersAdminContent() {
   // Alterar role
   const changeRole = async (user: UserWithPermissions, newRole: UserRole) => {
     try {
-      const { error } = await supabase
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error } = await (supabase as any)
         .from('profiles')
         .update({ role: newRole })
         .eq('id', user.id);
@@ -355,10 +364,11 @@ function UserModal({ user, onClose, onSave }: UserModalProps) {
     role: user?.role || 'user-area' as UserRole,
   });
   const [permissions, setPermissions] = useState<Record<SystemModule, PermissionAction[]>>(
-    user?.permissions.reduce((acc, perm) => ({
-      ...acc,
-      [perm.modulo]: perm.acoes,
-    }), {} as Record<SystemModule, PermissionAction[]>) || {}
+    () =>
+      user?.permissions?.reduce(
+        (acc, perm) => ({ ...acc, [perm.modulo]: perm.acoes }),
+        {} as Record<SystemModule, PermissionAction[]>
+      ) ?? ({} as Record<SystemModule, PermissionAction[]>)
   );
   const [saving, setSaving] = useState(false);
 
@@ -368,7 +378,7 @@ function UserModal({ user, onClose, onSave }: UserModalProps) {
   const toggleModule = (module: SystemModule) => {
     if (permissions[module]) {
       const { [module]: _, ...rest } = permissions;
-      setPermissions(rest);
+      setPermissions(rest as Record<SystemModule, PermissionAction[]>);
     } else {
       setPermissions({ ...permissions, [module]: ['read'] });
     }
@@ -396,7 +406,8 @@ function UserModal({ user, onClose, onSave }: UserModalProps) {
     try {
       if (user) {
         // Atualizar perfil
-        const { error: profileError } = await supabase
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { error: profileError } = await (supabase as any)
           .from('profiles')
           .update({
             nome: formData.nome,
@@ -423,7 +434,8 @@ function UserModal({ user, onClose, onSave }: UserModalProps) {
           }));
 
         if (newPermissions.length > 0) {
-          const { error: permsError } = await supabase
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const { error: permsError } = await (supabase as any)
             .from('user_permissions')
             .insert(newPermissions);
 

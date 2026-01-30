@@ -4,13 +4,15 @@ import { AppLayout } from '@/components/layout/app-layout'
 import { KPICard } from '@/components/modules/kpi-card'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { formatCurrency, formatPercent, daysUntil } from '@/lib/utils'
+import { formatCurrency, formatPercent } from '@/lib/utils'
 import {
   DollarSign,
   TrendingUp,
   FileText,
   AlertTriangle,
-  ArrowRight
+  ArrowRight,
+  Loader2,
+  RefreshCw
 } from 'lucide-react'
 import Link from 'next/link'
 import {
@@ -20,51 +22,76 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
-  LineChart,
-  Line
+  ResponsiveContainer
 } from 'recharts'
+import { useDashboardKPIs, useFluxoCaixa, useRentabilidade, useAlertas, useSyncOmie } from '@/hooks/use-fin'
 
-// Dados mockados (serão substituídos por dados do Supabase)
-const kpis = {
-  receitaMensal: 285000,
-  margemMedia: 23.5,
-  contratosAtivos: 18,
-  alertasPendentes: 4,
+function getSeveridadeBadge(tipo: string): 'danger' | 'warning' {
+  return tipo.includes('90') || tipo.includes('30') || tipo.includes('RENTABILIDADE') ? 'danger' : 'warning'
 }
 
-const receitaMensal = [
-  { mes: 'Ago', receita: 245000, despesa: 180000 },
-  { mes: 'Set', receita: 258000, despesa: 185000 },
-  { mes: 'Out', receita: 272000, despesa: 190000 },
-  { mes: 'Nov', receita: 268000, despesa: 195000 },
-  { mes: 'Dez', receita: 295000, despesa: 210000 },
-  { mes: 'Jan', receita: 285000, despesa: 205000 },
-]
-
-const rentabilidadeClientes = [
-  { cliente: 'Alupar', rentabilidade: 28 },
-  { cliente: 'SPFC', rentabilidade: 24 },
-  { cliente: 'Perfin', rentabilidade: 22 },
-  { cliente: 'IONIC', rentabilidade: 19 },
-  { cliente: 'Cliente E', rentabilidade: 15 },
-]
-
-const alertasRecentes = [
-  { id: 1, tipo: 'VENCIMENTO', cliente: 'Alupar', mensagem: 'Contrato vence em 45 dias', severidade: 'warning' },
-  { id: 2, tipo: 'RENTABILIDADE', cliente: 'Cliente X', mensagem: 'Margem abaixo de 10%', severidade: 'danger' },
-  { id: 3, tipo: 'REAJUSTE', cliente: 'SPFC', mensagem: 'Reajuste IGPM pendente', severidade: 'warning' },
-  { id: 4, tipo: 'VENCIMENTO', cliente: 'Perfin', mensagem: 'Contrato vence em 30 dias', severidade: 'danger' },
-]
-
 export default function DashboardPage() {
+  const { kpis, loading: kpisLoading } = useDashboardKPIs()
+  const { triggerSync, syncing, lastSync, error: syncError } = useSyncOmie()
+  const { fluxoCaixa, loading: fluxoLoading } = useFluxoCaixa(6)
+  const { rentabilidade, loading: rentLoading } = useRentabilidade()
+  const { alertas, loading: alertasLoading } = useAlertas(true)
+
+  const rentabilidadeClientes = rentabilidade
+    .slice(0, 5)
+    .map((r) => ({
+      cliente: (r as any).contrato?.cliente?.razao_social ?? '—',
+      rentabilidade: Number(r.rentabilidade_percent ?? 0),
+    }))
+
+  const receitaMensal = fluxoCaixa.map((f) => ({
+    mes: f.mes,
+    receita: f.receita,
+    despesa: f.despesa,
+  }))
+
+  const loading = kpisLoading || fluxoLoading || rentLoading || alertasLoading
+
+  if (loading) {
+    return (
+      <AppLayout>
+        <div className="flex items-center justify-center min-h-[400px]">
+          <Loader2 className="h-8 w-8 animate-spin text-ness-cyan" />
+        </div>
+      </AppLayout>
+    )
+  }
   return (
     <AppLayout>
       <div className="space-y-6">
         {/* Header */}
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-500">Visão geral do ness.OS</p>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
+            <p className="text-gray-500">Visão geral do ness.OS</p>
+          </div>
+          <div className="flex items-center gap-3">
+            {lastSync && (
+              <span className="text-xs text-gray-500">
+                Último sync: {lastSync.toLocaleString('pt-BR')}
+              </span>
+            )}
+            <button
+              onClick={() => triggerSync().then(() => window.location.reload())}
+              disabled={syncing}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-ness-cyan text-white hover:bg-ness-cyan/90 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium transition-colors"
+            >
+              {syncing ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <RefreshCw className="h-4 w-4" />
+              )}
+              {syncing ? 'Sincronizando…' : 'Sincronizar Omie'}
+            </button>
+            {syncError && (
+              <p className="text-xs text-red-600">{syncError}</p>
+            )}
+          </div>
         </div>
 
         {/* KPIs */}
@@ -72,17 +99,17 @@ export default function DashboardPage() {
           <KPICard
             title="Receita Mensal"
             value={formatCurrency(kpis.receitaMensal)}
-            change={5.2}
-            changeLabel="vs mês anterior"
-            trend="up"
+            change={0}
+            changeLabel="dados do Supabase"
+            trend="neutral"
             icon={<DollarSign size={24} />}
           />
           <KPICard
             title="Margem Média"
             value={formatPercent(kpis.margemMedia)}
-            change={1.8}
-            changeLabel="vs mês anterior"
-            trend="up"
+            change={0}
+            changeLabel="dados do Supabase"
+            trend="neutral"
             icon={<TrendingUp size={24} />}
           />
           <KPICard
@@ -95,7 +122,7 @@ export default function DashboardPage() {
           <KPICard
             title="Alertas Pendentes"
             value={kpis.alertasPendentes.toString()}
-            trend="down"
+            trend="neutral"
             icon={<AlertTriangle size={24} />}
           />
         </div>
@@ -157,28 +184,31 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {alertasRecentes.map((alerta) => (
-                <div 
-                  key={alerta.id}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-                >
-                  <div className="flex items-center gap-3">
-                    <Badge variant={alerta.severidade === 'danger' ? 'danger' : 'warning'}>
-                      {alerta.tipo}
-                    </Badge>
-                    <div>
-                      <p className="font-medium text-sm">{alerta.cliente}</p>
-                      <p className="text-sm text-gray-500">{alerta.mensagem}</p>
-                    </div>
-                  </div>
-                  <Link 
-                    href={`/fin/contratos`}
-                    className="text-ness-cyan hover:underline text-sm"
+              {alertas.length === 0 ? (
+                <p className="text-sm text-gray-500 py-4">Nenhum alerta pendente.</p>
+              ) : (
+                alertas.slice(0, 4).map((alerta) => (
+                  <div
+                    key={alerta.id}
+                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
                   >
-                    Ver
-                  </Link>
-                </div>
-              ))}
+                    <div className="flex items-center gap-3">
+                      <Badge variant={getSeveridadeBadge(alerta.tipo)}>
+                        {alerta.tipo}
+                      </Badge>
+                      <div>
+                        <p className="font-medium text-sm">{alerta.mensagem}</p>
+                      </div>
+                    </div>
+                    <Link
+                      href={`/fin/contratos`}
+                      className="text-ness-cyan hover:underline text-sm"
+                    >
+                      Ver
+                    </Link>
+                  </div>
+                ))
+              )}
             </div>
           </CardContent>
         </Card>

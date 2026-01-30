@@ -23,7 +23,7 @@ export function useContratos() {
           .order('created_at', { ascending: false })
 
         if (error) throw error
-        setContratos(data || [])
+        setContratos((data || []) as unknown as Contrato[])
       } catch (err: any) {
         setError(err.message)
       } finally {
@@ -63,7 +63,7 @@ export function useRentabilidade(periodo?: string) {
         const { data, error } = await query.order('rentabilidade_percent', { ascending: false })
 
         if (error) throw error
-        setData(data || [])
+        setData((data || []) as unknown as Rentabilidade[])
       } catch (err: any) {
         setError(err.message)
       } finally {
@@ -110,7 +110,8 @@ export function useAlertas(apenasNaoLidos = true) {
   }, [apenasNaoLidos])
 
   const marcarComoLido = async (id: string) => {
-    const { error } = await supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error } = await (supabase as any)
       .from('fin.alertas')
       .update({ lido: true })
       .eq('id', id)
@@ -254,14 +255,15 @@ export function useSyncOmie() {
     async function fetchLastSync() {
       const { data } = await supabase
         .from('fin.sync_log')
-        .select('finished_at')
-        .eq('status', 'completed')
-        .order('finished_at', { ascending: false })
+        .select('finalizado_em')
+        .eq('status', 'SUCESSO')
+        .not('finalizado_em', 'is', null)
+        .order('finalizado_em', { ascending: false })
         .limit(1)
-        .single()
+        .maybeSingle()
 
-      if (data?.finished_at) {
-        setLastSync(new Date(data.finished_at))
+      if (data?.finalizado_em) {
+        setLastSync(new Date(data.finalizado_em))
       }
     }
     fetchLastSync()

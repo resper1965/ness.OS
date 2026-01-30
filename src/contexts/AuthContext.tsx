@@ -44,11 +44,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(profile as UserProfile);
       setPermissions(perms as unknown as UserPermissions);
 
-      // Atualizar último acesso
-      await supabase
-        .from('profiles')
-        .update({ ultimo_acesso: new Date().toISOString() })
-        .eq('id', authUser.id);
+      // Atualizar último acesso (cast: tipos Supabase genéricos)
+      await (supabase as any).from('profiles').update({ ultimo_acesso: new Date().toISOString() }).eq('id', authUser.id);
 
     } catch (err) {
       console.error('Erro ao carregar dados do usuário:', err);
@@ -173,10 +170,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const updateProfile = async (data: Partial<UserProfile>) => {
     if (!user) throw new Error('Usuário não autenticado');
 
-    const { error } = await supabase
-      .from('profiles')
-      .update(data)
-      .eq('id', user.id);
+    const { error } = await (supabase as any).from('profiles').update(data as object).eq('id', user.id);
 
     if (error) throw error;
 
