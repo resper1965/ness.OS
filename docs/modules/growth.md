@@ -79,7 +79,19 @@ Identificação de oportunidades na base de clientes.
 - Crescimento do ambiente monitorado
 - Solicitações fora do escopo
 
-### 4. Marketing de Conteúdo
+### 4. Branding
+
+Gestão centralizada da identidade visual da ness. integrada ao ness.GROWTH.
+
+**Escopo:**
+- Manual de marca (cores, tipografia, uso do logotipo)
+- Brand assets (logos, ícones, arquivos para download)
+- Configurações de identidade (theme/theme.json)
+- Integração com apps/site para garantir consistência visual
+
+**Tabelas:** brand_assets, brand_downloads, brand_manual (ou equivalente no schema growth).
+
+### 5. Marketing de Conteúdo
 
 Geração automatizada de conteúdo para redes sociais e site.
 
@@ -97,6 +109,21 @@ Geração automatizada de conteúdo para redes sociais e site.
 - Análise de comentários
 - Sugestão de respostas
 - Identificação de temas trending
+
+### 6. IA e Geração de Conteúdo (centralizado no ness.OS)
+
+Todo uso de IA e geração de conteúdo é feito pelo ness.OS (ness.GROWTH).
+
+| Função | Descrição |
+|--------|-----------|
+| ai-gateway | Configuração, logs, stats de chamadas LLM |
+| generate-post | Geração de artigos para blog via IA |
+| generate-job | Geração de descrição de vaga via IA |
+| generate-image | Geração de imagens (ex.: DALL-E) |
+| improve-content | Melhoria de texto via IA |
+| chatbot | RAG em knowledge_base + blog; Edge Function ou API |
+
+O site (apps/site) consome o chatbot via API; a gestão e configuração de IA vive no ness.OS.
 
 ## Integrações
 
@@ -125,6 +152,24 @@ Geração automatizada de conteúdo para redes sociais e site.
 | Tempo médio de geração de proposta | < 2h | Por proposta |
 | Engajamento em redes sociais | +10% MoM | Mensal |
 | Upsell identificado | > 5/mês | Mensal |
+
+## Integração com Site Institucional
+
+O ness.GROWTH absorve a **área administrativa** do site institucional (corp-site-ness). Ver [plan-integracao-nessos-site-institucional](../plan-integracao-nessos-site-institucional.md).
+
+**Princípio:** Todo uso de IA e geração de conteúdo é feito pelo ness.OS. O site apenas consome e exibe. Vagas pertencem ao **ness.PEOPLE** (ver people.md).
+
+**Capacidades adicionadas:**
+- **IA e geração de conteúdo** — ai-gateway, generate-post, generate-job, generate-image, improve-content, chatbot (RAG)
+- CMS de blog (posts, categorias, traduções, agendamento)
+- Base de conhecimento e ingestão de documentos
+- Serviços, verticais, produtos, mercados
+- **Branding** — manual de marca, brand_assets, brand_downloads, identidade visual (integração com theme/theme.json)
+- Analytics do site
+
+O site consome esses dados em modo read-only; o chatbot chama API/Edge Function do ness.OS.
+
+---
 
 ## Dependências
 

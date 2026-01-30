@@ -68,13 +68,15 @@ Executar a implementação dos **30 épicos** do [DEVELOPMENT_PLAN](DEVELOPMENT_
 
 ---
 
-### Fase 3 — ness.GROWTH (3 semanas)
+### Fase 3 — ness.GROWTH (3 semanas + integração site)
 
 | Ordem | Epic | Lead | Playbooks auxiliares | Entregáveis |
 |-------|------|------|----------------------|-------------|
 | 1 | 3.1 Pipeline Comercial | frontend | database | Schema GROWTH, oportunidades, kanban, forecast |
 | 2 | 3.2 Gerador de Propostas | frontend | backend | Catálogo, precificação, templates, PDF, versionamento |
 | 3 | 3.3 Integração CRM | backend | database, frontend | sync-omie-crm, leads, interações, origem |
+
+**Integração Site Institucional:** Ver [plan-integracao-nessos-site-institucional](plan-integracao-nessos-site-institucional.md). Recursos do admin do site agregados por módulo: **Epic P.1** (ness.PEOPLE) vagas; **Epics G.1–G.7** (ness.GROWTH) blog, KB, serviços, produtos, branding, IA, media/analytics; **Epic O.1** (ness.OPS) processes, ncirt. Todo uso de IA centralizado no ness.OS.
 
 ---
 
@@ -196,7 +198,8 @@ Executar a implementação dos **30 épicos** do [DEVELOPMENT_PLAN](DEVELOPMENT_
 
 ## 6. Referências
 
-- [Plano mestre (workflow)](../.context/plans/ness-os-desenvolvimento.md) — consolidado com todos os planos; vinculado ao workflow PREVC
+- [Plano mestre consolidado](PLANO-MESTRE-NESSOS.md) — decisões, roadmap, épicos, checklist
+- [Plano mestre (workflow)](../.context/plans/ness-os-desenvolvimento.md) — vinculado ao workflow PREVC
 - [DEVELOPMENT_PLAN](DEVELOPMENT_PLAN.md) — fonte de verdade dos épicos
 - [DATABASE_SCHEMA](DATABASE_SCHEMA.md) — modelo completo
 - [plan-ajuste-schema-ao-projeto](plan-ajuste-schema-ao-projeto.md) — migrations

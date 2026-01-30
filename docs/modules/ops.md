@@ -6,6 +6,8 @@
 
 O ness.OPS é o **coração operacional** do ness.OS. Responsável por padronizar processos, mapear recursos e alimentar os demais módulos com dados reais da operação. A IA atua organizando o caos operacional e transformando-o em conhecimento estruturado.
 
+**Integração com site institucional:** O painel de processes (process-areas, extract, approve, refine) e ncirt (emergencies, settings) do site é agregado ao ness.OPS. Ver [plan-integracao-nessos-site-institucional](../plan-integracao-nessos-site-institucional.md). Rotas `/ops/processes`, `/ops/ncirt`.
+
 ## Objetivos
 
 - Mapear e padronizar processos operacionais

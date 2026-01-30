@@ -167,6 +167,10 @@ ness.OS/
 
 ---
 
+## 📋 Planejamento
+
+- **[Plano Mestre](docs/PLANO-MESTRE-NESSOS.md)** — Decisões estratégicas, roadmap unificado, épicos, integração com site institucional
+
 ## 📈 Roadmap
 
 - [x] Documentação de arquitetura

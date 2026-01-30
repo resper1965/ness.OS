@@ -131,6 +131,20 @@ CREATE SCHEMA kb;      -- Knowledge Base (RAG)
 
 ---
 
+## Integração com Site Institucional
+
+O ness.OS absorve **toda a área administrativa** do site institucional (corp-site-ness). O site passa a ser consumidor read-only; o admin centraliza em app.ness.com.br. Monorepo Turborepo: apps/site + apps/admin.
+
+**Planos:** [PLANO-MESTRE-NESSOS](docs/PLANO-MESTRE-NESSOS.md) | [Integração site](docs/plan-integracao-nessos-site-institucional.md)
+
+- **Supabase único** (ness.OS) — migração de dados do site
+- **ness.PEOPLE** — vagas, candidaturas
+- **ness.GROWTH** — blog, KB, serviços, verticais, produtos, branding, IA, media
+- **ness.OPS** — processes, ncirt
+- **Site** — apenas leitura (blog, jobs, services, contato, chatbot)
+
+---
+
 ## Integrações
 
 | Sistema | Protocolo | Dados |
@@ -177,7 +191,18 @@ CREATE SCHEMA kb;      -- Knowledge Base (RAG)
 - [Stack Supabase](docs/architecture/tech-stack-supabase.md)
 - [Integração Omie](docs/integrations/omie-erp.md)
 - [Especificação dos Agentes](docs/agents/agents-specification.md)
+- [Separação: Agentes da aplicação vs Playbooks AI](docs/context-separation.md)
+- [Plano: artefatos GitHub (schema fin, sync-omie, SETUP)](docs/plan-github-artefatos-iniciais.md)
+- [Plano: Ajuste dos schemas ao projeto (AI-context)](docs/plan-ajuste-schema-ao-projeto.md)
+- [Plano: Novos passos GitHub e integração (frontend, AI-context)](docs/plan-github-novos-passos-integracao.md)
 - [Modelo de Dados](docs/data-model/conceptual-model.md)
+- [SETUP](SETUP.md) — passo a passo para subir o ambiente
+- [Setup via MCP Supabase](docs/setup-mcp-supabase.md) — implementação feita via MCP (schema fin, Edge Function)
+- [Plano GitHub → integração AI-context](docs/plan-github-integracao-ai-context.md) — fluxo para ler GitHub e alinhar `.context/`
+- [DATABASE_SCHEMA](docs/DATABASE_SCHEMA.md) · [DEVELOPMENT_PLAN](docs/DEVELOPMENT_PLAN.md)
+- [Plano implementação épicos (AI-context)](docs/plan-implementacao-epicos-ai-context.md) — execução dos 30 épicos com Playbooks AI
+- [Plano ness. branding (AI-context)](docs/plan-ness-branding-ai-context.md) — convenções de marca e integração com AI-context
+- [Plano mestre (workflow)](.context/plans/ness-os-desenvolvimento.md) — consolidado; vincula todos os planos ao workflow PREVC
 
 ---
 

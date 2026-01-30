@@ -4,7 +4,9 @@
 
 ## Visão Geral
 
-O ness.PEOPLE é o módulo de **gestão de pessoas** do ness.OS, focado em desempenho e desenvolvimento. Sua inovação principal é a integração entre falhas operacionais e desenvolvimento humano, fechando o ciclo de aprendizado organizacional.
+O ness.PEOPLE é o módulo de **gestão de pessoas** do ness.OS, focado em desempenho, desenvolvimento e **recrutamento**. Sua inovação principal é a integração entre falhas operacionais e desenvolvimento humano, fechando o ciclo de aprendizado organizacional.
+
+**Integração com site institucional:** O painel de vagas do site (job_openings, candidaturas, templates) é agregado ao ness.PEOPLE. Ver [plan-integracao-nessos-site-institucional](../plan-integracao-nessos-site-institucional.md). Rota `/people/jobs`.
 
 ## Objetivos
 
@@ -200,7 +202,21 @@ Base de cursos disponíveis para desenvolvimento.
 | Pré-requisitos | Se houver |
 | Certificação | Se oferece certificado |
 
-### 5. Plano de Desenvolvimento Individual (PDI)
+### 5. Recrutamento e Vagas (integr. site institucional)
+
+Gestão de vagas, candidaturas e pipeline de talentos — agregado do admin do site institucional.
+
+**Escopo:**
+- CRUD job_openings (vagas abertas)
+- Templates de descrição de vagas
+- Candidaturas (job_applications), stakeholders, comentários
+- Site institucional exibe vagas em modo read-only (consumo do schema `people`)
+
+**Tabelas:** people.job_openings, people.job_opening_translations, people.job_departments, people.job_applications (ou equivalente).
+
+**Rota:** `/people/jobs`
+
+### 6. Plano de Desenvolvimento Individual (PDI)
 
 Consolidação de todas as recomendações em um plano estruturado.
 
