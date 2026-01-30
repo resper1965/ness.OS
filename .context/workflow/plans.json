@@ -1,0 +1,22 @@
+{
+  "active": [
+    {
+      "slug": "ness-os-completo-site",
+      "path": "plans/ness-os-completo-site.md",
+      "title": "Plano Completo: Criação do ness.OS com Site Institucional",
+      "summary": "Plano mestre para criar o ecossistema ness.OS (sistema interno) + ness.WEB (site institucional) em uma única base Next.js App Router, integrando Supabase, migração do site legacy, módulos Growth/OPS/People/FIN e deploy na Vercel.",
+      "linkedAt": "2026-01-30T16:43:29.246Z",
+      "status": "active"
+    },
+    {
+      "slug": "ness-os-proximos-passos",
+      "path": "plans/ness-os-proximos-passos.md",
+      "title": "Próximos Passos ness.OS",
+      "summary": "Deploy, migrations, migração de conteúdo do site legacy e melhorias pós-MVP",
+      "linkedAt": "2026-01-30T18:43:03.420Z",
+      "status": "active"
+    }
+  ],
+  "completed": [],
+  "primary": "ness-os-completo-site"
+}

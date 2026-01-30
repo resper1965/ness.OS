@@ -1,0 +1,22 @@
+{
+  "active": [
+    {
+      "slug": "migracao-site-legacy",
+      "path": "plans/migracao-site-legacy.md",
+      "title": "Migração Site Legacy para ness.OS",
+      "summary": "Migração do site institucional do corp-site-ness para src/app/(site), com rotas dinâmicas, componentes reutilizáveis e integração Supabase conforme docs/PLANO-MIGRACAO-SITE-LEGACY.md",
+      "linkedAt": "2026-01-30T16:19:16.125Z",
+      "status": "active"
+    },
+    {
+      "slug": "ness-os-completo-site",
+      "path": "plans/ness-os-completo-site.md",
+      "title": "Plano Completo: Criação do ness.OS com Site Institucional",
+      "summary": "Plano mestre para criar o ecossistema ness.OS (sistema interno) + ness.WEB (site institucional) em uma única base Next.js App Router, integrando Supabase, migração do site legacy, módulos Growth/OPS/People/FIN e deploy na Vercel.",
+      "linkedAt": "2026-01-30T16:29:40.711Z",
+      "status": "active"
+    }
+  ],
+  "completed": [],
+  "primary": "migracao-site-legacy"
+}
