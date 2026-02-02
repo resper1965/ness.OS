@@ -1,10 +1,17 @@
-import { createClient } from "@/lib/supabase/server";
-import Link from "next/link";
-import { JobForm } from "@/components/people/job-form";
+import { createClient } from '@/lib/supabase/server';
+import Link from 'next/link';
+import { JobForm } from '@/components/people/job-form';
+import { DataTable } from '@/components/shared/data-table';
+import { StatusBadge } from '@/components/shared/status-badge';
+
+type Job = { id: string; title: string; department: string | null; is_open: boolean };
 
 export default async function VagasPage() {
   const supabase = await createClient();
-  const { data: jobs } = await supabase.from("public_jobs").select("id, title, department, is_open").order("created_at", { ascending: false });
+  const { data: jobs } = await supabase
+    .from('public_jobs')
+    .select('id, title, department, is_open')
+    .order('created_at', { ascending: false });
 
   return (
     <div>
@@ -15,22 +22,26 @@ export default async function VagasPage() {
         </p>
       </div>
       <JobForm />
-      <div className="rounded-lg border border-slate-700 overflow-hidden mt-8">
-        <table className="w-full text-sm">
-          <thead className="bg-slate-800/50 text-slate-300">
-            <tr><th className="px-4 py-3 font-medium">Título</th><th className="px-4 py-3 font-medium">Departamento</th><th className="px-4 py-3 font-medium">Status</th><th className="px-4 py-3 font-medium"></th></tr>
-          </thead>
-          <tbody className="divide-y divide-slate-700 text-slate-400">
-            {(jobs ?? []).map((j) => (
-              <tr key={j.id}>
-                <td className="px-4 py-3">{j.title}</td>
-                <td className="px-4 py-3">{j.department ?? "-"}</td>
-                <td className="px-4 py-3">{j.is_open ? "Aberta" : "Fechada"}</td>
-                <td className="px-4 py-3"><Link href={`/app/people/vagas/${j.id}`} className="text-ness hover:underline">Editar</Link></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="mt-8">
+        <DataTable<Job>
+          data={jobs ?? []}
+          keyExtractor={(j) => j.id}
+          emptyMessage="Nenhuma vaga cadastrada."
+          columns={[
+            { key: 'title', header: 'Título' },
+            { key: 'department', header: 'Departamento', render: (j) => j.department ?? '-' },
+            {
+              key: 'is_open',
+              header: 'Status',
+              render: (j) => <StatusBadge status={j.is_open ? 'aberta' : 'fechada'} />,
+            },
+          ]}
+          actions={(j) => (
+            <Link href={`/app/people/vagas/${j.id}`} className="text-ness hover:underline">
+              Editar
+            </Link>
+          )}
+        />
       </div>
     </div>
   );

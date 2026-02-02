@@ -108,3 +108,8 @@ Maioria em .next/types são gerados — ignorar.
 
 ### Fase 5 (parcial)
 - [x] Migration 026_simplifica_indexes.sql — índices em leads, posts, jobs, contracts
+
+### Fase 3 (parcial)
+- [x] Criado `src/components/shared/status-badge.tsx` — badge com variantes (success, warning, error, etc.)
+- [x] Criado `src/components/shared/data-table.tsx` — tabela genérica com colunas configuráveis
+- [x] Vagas, Gaps, Contratos passam a usar DataTable + StatusBadge
