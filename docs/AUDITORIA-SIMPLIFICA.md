@@ -113,3 +113,10 @@ Maioria em .next/types são gerados — ignorar.
 - [x] Criado `src/components/shared/status-badge.tsx` — badge com variantes (success, warning, error, etc.)
 - [x] Criado `src/components/shared/data-table.tsx` — tabela genérica com colunas configuráveis
 - [x] Vagas, Gaps, Contratos passam a usar DataTable + StatusBadge
+
+### Fase 6 — Validação Final
+- [x] npm test — 3 passed
+- [x] tsc --noEmit — OK
+- [x] npm run lint — OK
+- [x] npm run build — OK
+- [x] docs/VALIDACAO-SIMPLIFICA.md
