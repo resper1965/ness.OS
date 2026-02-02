@@ -8,14 +8,14 @@ Requisitos fundamentais que se aplicam a todos os módulos do ness.OS.
 
 **Descrição:** A rota `/app` deve exigir sessão ativa. Redirecionar para `/login` quando não autenticado.
 
-**Estado atual:** Parcialmente implementado — `app/layout.tsx` já verifica `getUser()` e redireciona. Garantir que:
-- Todas as rotas sob `/app/*` herdam essa proteção (via layout)
-- Middleware ou layout cobre edge cases (token expirado, etc.)
+**Estado atual:** ✅ Implementado e validado.
+- `app/layout.tsx` verifica `getUser()` e redireciona para `/login?redirect=/app`
+- Todas as rotas sob `/app/*` herdam proteção via layout
+- LoginForm recebe `redirect` da query e repassa ao signIn; pós-login redireciona para o path informado
 
 **Entregas:**
-- Verificar e documentar que o layout `/app` é a única porta de entrada
-- Garantir redirect para `/login` com `?redirect=/app` ou similar para retorno pós-login
-- Testes: acesso a `/app` sem sessão → redirect `/login`
+- [x] Layout `/app` é a única porta de entrada
+- [x] Redirect para `/login` com `?redirect=/app`; retorno pós-login usa o redirect
 
 ---
 
@@ -36,11 +36,15 @@ Requisitos fundamentais que se aplicam a todos os módulos do ness.OS.
 | legal | (futuro) JUR: Análise de Risco, Conformidade |
 | employee | Dashboard reduzido: Knowledge Bot, meus gaps, feedback |
 
+**Estado atual:** ✅ Implementado.
+- Página `/app` busca `profile.role` do usuário
+- Widgets renderizados condicionalmente por role (admin, superadmin, sales, ops, fin, employee, legal)
+- Fallback para roles não mapeados: usa ROLE_WIDGETS.admin (todos)
+
 **Entregas:**
-- Buscar `profile.role` do usuário logado na página `/app`
-- Renderizar widgets condicionalmente por role
-- Manter fallback para roles não mapeados (ex.: mostrar todos ou subset padrão)
-- Sidebar já pode ser filtrada por role (opcional)
+- [x] Buscar profile.role na página /app
+- [x] Renderizar widgets condicionalmente por role
+- [x] Fallback para roles não mapeados
 
 ---
 

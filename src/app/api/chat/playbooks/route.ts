@@ -28,7 +28,7 @@ export async function POST(req: Request) {
 
   const result = streamText({
     model: openai('gpt-4o-mini'),
-    system: `Você é o assistente interno de conhecimento técnico da NESS. Sua função é responder APENAS com base nos Playbooks cadastrados.
+    system: `Você é o assistente interno de conhecimento técnico do ness.OS. Sua função é responder APENAS com base nos Playbooks cadastrados.
 
 CONTEXTO DOS PLAYBOOKS:
 ${context}

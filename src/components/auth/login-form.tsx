@@ -5,7 +5,9 @@ import { useRouter } from 'next/navigation';
 import { useFormState } from 'react-dom';
 import { signIn } from '@/app/actions/auth';
 
-export function LoginForm() {
+type Props = { redirect?: string };
+
+export function LoginForm({ redirect = '/app' }: Props) {
   const router = useRouter();
   const [state, formAction] = useFormState(signIn, {});
 
@@ -15,6 +17,7 @@ export function LoginForm() {
 
   return (
     <form action={formAction} className="space-y-4">
+      <input type="hidden" name="redirect" value={redirect} />
       <div>
         <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
           E-mail

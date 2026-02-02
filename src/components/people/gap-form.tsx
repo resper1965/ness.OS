@@ -3,9 +3,14 @@
 import { useFormState } from 'react-dom';
 import { createGap } from '@/app/actions/gaps';
 
-type Props = { profiles?: { id: string; full_name: string | null }[] };
+const helpClass = 'text-xs text-slate-500 mt-1';
 
-export function GapForm({ profiles = [] }: Props) {
+type Props = {
+  profiles?: { id: string; full_name: string | null }[];
+  playbooks?: { id: string; title: string }[];
+};
+
+export function GapForm({ profiles = [], playbooks = [] }: Props) {
   const [state, formAction] = useFormState(createGap, {});
   const inputClass = 'w-full rounded-md border border-slate-600 bg-slate-800 px-3 py-2 text-sm text-white';
 
@@ -22,11 +27,22 @@ export function GapForm({ profiles = [] }: Props) {
             <option key={p.id} value={p.id}>{p.full_name ?? p.id.slice(0, 8)}</option>
           ))}
         </select>
-        {profiles.length === 0 && <p className="text-xs text-slate-500 mt-1">Cadastre usuários no Auth para listar.</p>}
+        {profiles.length === 0 && <p className={helpClass}>Cadastre usuários no Auth para listar.</p>}
       </div>
       <div>
-        <label className="block text-sm text-slate-300 mb-2">Descrição</label>
-        <textarea name="description" rows={3} required className={inputClass} />
+        <label className="block text-sm text-slate-300 mb-2">Playbook Violado</label>
+        <select name="playbook_id" required className={inputClass}>
+          <option value="">Selecione</option>
+          {playbooks.map((p) => (
+            <option key={p.id} value={p.id}>{p.title}</option>
+          ))}
+        </select>
+        <p className={helpClass}>Manual/procedimento que não foi seguido.</p>
+      </div>
+      <div>
+        <label className="block text-sm text-slate-300 mb-2">Correção</label>
+        <textarea name="description" rows={3} required className={inputClass} placeholder="Descreva o que ocorreu e a correção necessária." />
+        <p className={helpClass}>O que foi identificado e como corrigir.</p>
       </div>
       <div>
         <label className="block text-sm text-slate-300 mb-2">Severidade</label>

@@ -44,7 +44,7 @@ export function ContactForm() {
         <label htmlFor="company" className="block text-sm font-medium mb-2 text-slate-300">
           Empresa
         </label>
-        <input id="company" name="company" className={inputClass} placeholder="NESS Tecnologia" />
+        <input id="company" name="company" className={inputClass} placeholder="ness. Tecnologia" />
         <p className="text-xs text-slate-500 mt-1">Opcional — ajuda na triagem.</p>
       </div>
       <div>

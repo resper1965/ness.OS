@@ -68,7 +68,7 @@ CREATE EXTENSION IF NOT EXISTS vector;
 
 **Implementação necessária:**
 - RAG sobre `document_embeddings` com `filter_source_type` permitindo `'post'` e conteúdo de serviços (evoluir schema se necessário: `source_type = 'service'` ou incluir serviços nos chunks)
-- System prompt: responder sobre soluções NESS; convidar a deixar contato
+- System prompt: responder sobre soluções ness.; convidar a deixar contato
 - **Captura de Lead:** ao final da conversa ou em CTA, redirecionar para formulário de contato ou registrar lead (nome, email) via `inbound_leads`
 - **Rate limit** e moderação para abuso (anon)
 

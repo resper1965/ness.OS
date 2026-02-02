@@ -11,6 +11,8 @@ export async function createContract(
   const mrr = parseFloat((formData.get('mrr') as string) || '0');
   const startDate = (formData.get('start_date') as string) || null;
   const endDate = (formData.get('end_date') as string) || null;
+  const renewalDate = (formData.get('renewal_date') as string) || null;
+  const adjustmentIndex = (formData.get('adjustment_index') as string) || null;
 
   if (!clientId) return { error: 'Cliente obrigatório.' };
 
@@ -20,6 +22,8 @@ export async function createContract(
     mrr,
     start_date: startDate || null,
     end_date: endDate || null,
+    renewal_date: renewalDate || null,
+    adjustment_index: adjustmentIndex || null,
   });
   if (error) return { error: error.message };
   revalidatePath('/app/fin/contratos');

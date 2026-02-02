@@ -4,6 +4,7 @@ import { signOut } from '@/app/actions/auth';
 const navItems = [
   { href: '/app', label: 'Dashboard' },
   { href: '/app/growth/posts', label: 'Posts' },
+  { href: '/app/growth/casos', label: 'Casos' },
   { href: '/app/growth/leads', label: 'Leads' },
   { href: '/app/growth/services', label: 'Serviços' },
   { href: '/app/ops/playbooks', label: 'Playbooks' },
@@ -20,6 +21,14 @@ const navItems = [
 export function AppSidebar() {
   return (
     <aside className="w-56 border-r border-slate-700 bg-slate-800/30 p-4 flex flex-col">
+      <header className="mb-6 pb-4 border-b border-slate-700">
+        <Link
+          href="/app"
+          className="text-lg font-semibold text-white hover:text-ness transition-colors"
+        >
+          ness<span className="text-ness">.</span>OS
+        </Link>
+      </header>
       <nav className="space-y-1 flex-1">
         {navItems.map((item) => (
           <Link

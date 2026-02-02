@@ -3,13 +3,17 @@ import { GapForm } from "@/components/people/gap-form";
 
 export default async function GapsPage() {
   const supabase = await createClient();
-  const { data: gaps } = await supabase.from("training_gaps").select("id, description, severity, resolved_at, profiles(full_name)").order("created_at", { ascending: false });
+  const { data: gaps } = await supabase
+    .from("training_gaps")
+    .select("id, description, severity, resolved_at, playbook_id, profiles(full_name), playbooks(title)")
+    .order("created_at", { ascending: false });
   const { data: profiles } = await supabase.from("profiles").select("id, full_name");
+  const { data: playbooks } = await supabase.from("playbooks").select("id, title").order("title");
 
   return (
     <div>
       <h1 className="text-2xl font-bold text-white mb-8">Gaps de Treinamento</h1>
-      <GapForm profiles={profiles ?? []} />
+      <GapForm profiles={profiles ?? []} playbooks={playbooks ?? []} />
       <div className="mt-8 rounded-lg border border-slate-700 overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-slate-800/50 text-slate-300">

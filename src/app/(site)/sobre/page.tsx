@@ -4,7 +4,7 @@ export default function SobrePage() {
       <h1 className="text-3xl font-bold mb-8 text-white">Sobre a ness.</h1>
       <div className="space-y-6 text-slate-300 leading-relaxed">
         <p>
-          A NESS é especialista em tecnologia, segurança da informação e operação de negócios.
+          A ness. é especialista em tecnologia, segurança da informação e operação de negócios.
           Ajudamos empresas a migrar de um modelo de &quot;esforço&quot; (vender horas) para um modelo
           de &quot;conhecimento&quot; (vender padrões e processos).
         </p>

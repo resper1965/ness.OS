@@ -35,7 +35,7 @@ const config: Config = {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
-        // NESS brand (do legacy)
+        // ness. brand (cor primária)
         ness: {
           50: "#e6f7ff",
           100: "#b3e6ff",

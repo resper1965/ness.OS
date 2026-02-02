@@ -11,6 +11,9 @@ export async function createPlaybook(
   const title = formData.get('title') as string;
   const slug = formData.get('slug') as string;
   const content = formData.get('content_markdown') as string;
+  const tagsRaw = (formData.get('tags') as string)?.trim();
+  const lastReviewed = (formData.get('last_reviewed_at') as string)?.trim() || null;
+  const tags = tagsRaw ? tagsRaw.split(',').map((t) => t.trim()).filter(Boolean) : [];
 
   if (!title?.trim() || !slug?.trim()) return { error: 'Título e slug obrigatórios.' };
 
@@ -22,6 +25,8 @@ export async function createPlaybook(
     title: title.trim(),
     slug: slug.trim().toLowerCase().replace(/\s+/g, '-'),
     content_markdown: content || null,
+    tags: tags.length ? tags : null,
+    last_reviewed_at: lastReviewed,
     created_by: user.id,
   }).select('id').single();
 
@@ -45,6 +50,9 @@ export async function updatePlaybook(
   const title = formData.get('title') as string;
   const slug = formData.get('slug') as string;
   const content = formData.get('content_markdown') as string;
+  const tagsRaw = (formData.get('tags') as string)?.trim();
+  const lastReviewed = (formData.get('last_reviewed_at') as string)?.trim() || null;
+  const tags = tagsRaw ? tagsRaw.split(',').map((t) => t.trim()).filter(Boolean) : [];
 
   if (!title?.trim() || !slug?.trim()) return { error: 'Título e slug obrigatórios.' };
 
@@ -55,6 +63,8 @@ export async function updatePlaybook(
       title: title.trim(),
       slug: slug.trim().toLowerCase().replace(/\s+/g, '-'),
       content_markdown: content || null,
+      tags: tags.length ? tags : null,
+      last_reviewed_at: lastReviewed,
       updated_at: new Date().toISOString(),
     })
     .eq('id', id);

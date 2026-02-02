@@ -36,8 +36,8 @@ export async function signIn(_prevState: AuthState, formData: FormData): Promise
     return { error: msg };
   }
 
-  // Retorna redirect em vez de chamar redirect() — evita NEXT_REDIRECT ser tratado como erro no useFormState
-  return { redirect: '/app' };
+  const redirectTo = (formData.get('redirect') as string)?.trim() || '/app';
+  return { redirect: redirectTo.startsWith('/') ? redirectTo : '/app' };
 }
 
 export async function signOut() {

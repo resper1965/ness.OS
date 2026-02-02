@@ -40,14 +40,19 @@ export function MetricasForm({ contracts, recentMetrics }: Props) {
           <p className={helpClass}>Mês ao qual se referem horas e custos.</p>
         </div>
         <div>
-          <label className="block text-sm text-slate-300 mb-2">Horas trabalhadas</label>
+          <label className="block text-sm text-slate-300 mb-2">Horas Humanas Gastas</label>
           <input name="hours_worked" type="number" step="0.5" defaultValue="0" className={inputClass} placeholder="40" />
-          <p className={helpClass}>Pode ser decimal (ex.: 37,5).</p>
+          <p className={helpClass}>Horas efetivas no contrato no mês. Pode ser decimal (ex.: 37,5).</p>
         </div>
         <div>
-          <label className="block text-sm text-slate-300 mb-2">Custo (R$)</label>
+          <label className="block text-sm text-slate-300 mb-2">Custo Hora (R$)</label>
+          <input name="hourly_rate" type="number" step="0.01" defaultValue="0" className={inputClass} placeholder="150.00" />
+          <p className={helpClass}>Custo por hora para cálculo: Margem = MRR - (Horas × Custo Hora + Custo Cloud).</p>
+        </div>
+        <div>
+          <label className="block text-sm text-slate-300 mb-2">Custo Cloud (R$)</label>
           <input name="cost_input" type="number" step="0.01" defaultValue="0" className={inputClass} placeholder="2500.00" />
-          <p className={helpClass}>Valores que reduzem a rentabilidade (cloud, horas, etc.).</p>
+          <p className={helpClass}>Custo de infraestrutura cloud e outros que reduzem a rentabilidade.</p>
         </div>
         <div className="flex items-center gap-2">
           <input type="checkbox" name="sla_achieved" id="sla" defaultChecked className="rounded border-slate-600 bg-slate-800 text-ness" />

@@ -1,7 +1,13 @@
 import Link from 'next/link';
 import { LoginForm } from '@/components/auth/login-form';
 
-export default function LoginPage() {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ redirect?: string }>;
+}) {
+  const params = await searchParams;
+  const redirect = params.redirect || '/app';
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-900">
       <div className="w-full max-w-sm space-y-6 rounded-xl border border-slate-700 bg-slate-800/50 p-8">
@@ -13,7 +19,7 @@ export default function LoginPage() {
             Área administrativa
           </p>
         </div>
-        <LoginForm />
+        <LoginForm redirect={redirect} />
         <Link
           href="/"
           className="block w-full text-center text-sm text-slate-400 hover:text-ness transition-colors"

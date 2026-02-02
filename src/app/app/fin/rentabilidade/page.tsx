@@ -44,6 +44,31 @@ export default async function RentabilidadePage() {
           </div>
         )}
       </div>
+      {rows && rows.length > 0 && (
+        <div className="mt-8">
+          <h2 className="text-lg font-semibold text-white mb-4">Rentabilidade por contrato</h2>
+          <div className="space-y-3">
+            {(rows as { contract_id: string; client_name: string; rentability: number; revenue: number }[]).map((r) => {
+              const pct = Number(r.revenue) > 0 ? (Number(r.rentability) / Number(r.revenue)) * 100 : 0;
+              const barW = Math.min(100, Math.max(0, 50 + pct));
+              return (
+                <div key={r.contract_id} className="flex items-center gap-4">
+                  <span className="w-40 text-sm text-slate-300 truncate">{r.client_name}</span>
+                  <div className="flex-1 h-6 bg-slate-800 rounded overflow-hidden">
+                    <div
+                      className={`h-full rounded transition-all ${Number(r.rentability) >= 0 ? 'bg-green-500/70' : 'bg-red-500/70'}`}
+                      style={{ width: `${barW}%` }}
+                    />
+                  </div>
+                  <span className={`w-24 text-right text-sm font-medium ${Number(r.rentability) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                    R$ {Number(r.rentability).toLocaleString('pt-BR')}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

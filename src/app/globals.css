@@ -22,12 +22,12 @@
     outline-offset: 2px;
   }
 
-  /* NESS site theme (dark) */
+  /* ness. site theme (dark) */
   :root {
     /* Backgrounds */
     --background: 222 47% 11%; /* #0f172a slate-900 */
     --foreground: 210 40% 98%; /* #f8fafc slate-50 */
-    /* Primary NESS cyan */
+    /* Primary ness. cyan */
     --primary: 199 100% 45%; /* #00ade8 */
     --primary-foreground: 0 0% 100%;
     --secondary: 199 100% 36%; /* #008bb8 */
@@ -116,7 +116,7 @@
   }
 }
 
-/* Custom scrollbar - NESS dark */
+/* Custom scrollbar - ness. dark */
 ::-webkit-scrollbar {
   width: 8px;
 }

@@ -4,6 +4,19 @@
 
 ---
 
+## 0. Branding (ness.)
+
+| Item | Uso correto |
+|------|-------------|
+| **Plataforma** | ness.OS |
+| **Marca** | ness. (com ponto) |
+| **Módulos** | ness.GROWTH, ness.OPS, ness.FIN, ness.PEOPLE, ness.JUR, ness.GOV |
+| **Evitar** | NESS isolado em textos user-facing |
+
+**Execução autônoma:** **"BOOOM"**, "execute plano autonomo" ou "siga o plano de pendências" → seguir [PLANO-EXECUCAO-AUTONOMA-PENDENCIAS.md](PLANO-EXECUCAO-AUTONOMA-PENDENCIAS.md)
+
+---
+
 ## 1. Segurança (SecOps First)
 
 - **Nunca exponha lógica de negócio no Client-Side.** Use Server Actions para tudo.

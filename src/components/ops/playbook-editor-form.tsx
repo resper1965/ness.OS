@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 type Props = {
   action: (prev: unknown, fd: FormData) => Promise<{ success?: boolean; error?: string }>;
-  initialValues?: { title?: string; slug?: string; content_markdown?: string };
+  initialValues?: { title?: string; slug?: string; content_markdown?: string; tags?: string[] | null; last_reviewed_at?: string | null };
 };
 
 export function PlaybookEditorForm({ action, initialValues }: Props) {
@@ -34,6 +34,16 @@ export function PlaybookEditorForm({ action, initialValues }: Props) {
         <label className="block text-sm font-medium text-slate-300 mb-2">Slug</label>
         <input name="slug" type="text" required defaultValue={initialValues?.slug} className={inputClass} placeholder="manual-secops-checklist" />
         <p className={helpClass}>Sem espaços ou acentos. Ex.: manual-secops-checklist</p>
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-slate-300 mb-2">Tags</label>
+        <input name="tags" type="text" defaultValue={Array.isArray(initialValues?.tags) ? initialValues.tags.join(', ') : ''} className={inputClass} placeholder="deploy, backup, secops" />
+        <p className={helpClass}>Separadas por vírgula. Ex.: deploy, backup, secops</p>
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-slate-300 mb-2">Data de Revisão</label>
+        <input name="last_reviewed_at" type="date" defaultValue={initialValues?.last_reviewed_at ?? ''} className={inputClass} />
+        <p className={helpClass}>Última vez que o manual foi revisado.</p>
       </div>
       <div>
         <label className="block text-sm font-medium text-slate-300 mb-2">Conteúdo (Markdown)</label>

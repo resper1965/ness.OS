@@ -40,6 +40,20 @@ export function ContractForm({ clients }: Props) {
         <input name="end_date" type="date" className={inputClass} />
         <p className={helpClass}>Opcional — deixe vazio se indefinido.</p>
       </div>
+      <div>
+        <label className="block text-sm text-slate-300 mb-2">Data Renovação</label>
+        <input name="renewal_date" type="date" className={inputClass} />
+        <p className={helpClass}>Quando o contrato deve ser renovado.</p>
+      </div>
+      <div>
+        <label className="block text-sm text-slate-300 mb-2">Índice Reajuste</label>
+        <select name="adjustment_index" className={inputClass}>
+          <option value="">Nenhum</option>
+          <option value="IGPM">IGPM</option>
+          <option value="IPCA">IPCA</option>
+        </select>
+        <p className={helpClass}>Índice para reajuste anual (ex.: IGPM, IPCA).</p>
+      </div>
       <button type="submit" className="rounded-md bg-ness px-4 py-2 text-sm font-medium text-white hover:bg-ness-600">
         Criar contrato
       </button>

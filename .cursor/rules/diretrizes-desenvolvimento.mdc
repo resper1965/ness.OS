@@ -1,9 +1,18 @@
 ---
-description: Diretrizes de desenvolvimento ness.OS — Segurança, Integridade, Design
+description: Diretrizes de desenvolvimento ness.OS — Segurança, Integridade, Design, Branding
 alwaysApply: true
 ---
 
 # Diretrizes de Desenvolvimento ness.OS
+
+## 0. Branding (ness.)
+
+- **Plataforma:** ness.OS (com ponto e O maiúsculo em OS)
+- **Marca:** ness. (com ponto) — ex.: "ness. Tecnologia", "© ness."
+- **Módulos:** ness.GROWTH, ness.OPS, ness.FIN, ness.PEOPLE, ness.JUR, ness.GOV
+- Em textos user-facing, use "ness." ou "ness.OS" conforme o contexto. Evite "NESS" isolado.
+
+**Execução autônoma de pendências:** Ao receber **"BOOOM"**, "execute plano autonomo" ou "siga o plano de pendências", seguir docs/PLANO-EXECUCAO-AUTONOMA-PENDENCIAS.md na ordem das fases 0→1→2→3→4.
 
 ## 1. Segurança (SecOps First)
 
