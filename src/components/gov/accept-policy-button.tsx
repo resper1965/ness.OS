@@ -1,6 +1,6 @@
 'use client';
 
-import { acceptPolicyVersion } from '@/app/actions/policies';
+import { acceptPolicyVersion } from '@/app/actions/gov';
 import { useTransition } from 'react';
 
 type Props = { policyVersionId: string };

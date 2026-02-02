@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
-import { updateService } from "@/app/actions/admin-services";
+import { updateService } from '@/app/actions/growth';
 import { ServiceEditForm } from "@/components/growth/service-edit-form";
 
 type Props = { params: Promise<{ id: string }> };

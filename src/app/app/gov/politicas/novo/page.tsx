@@ -1,5 +1,5 @@
 import { PolicyForm } from '@/components/gov/policy-form';
-import { createPolicyFromForm } from '@/app/actions/policies';
+import { createPolicyFromForm } from '@/app/actions/gov';
 import Link from 'next/link';
 
 export default function GovPoliticasNovoPage() {

@@ -1,4 +1,4 @@
-import { createSuccessCase } from '@/app/actions/success-cases';
+import { createSuccessCase } from '@/app/actions/growth';
 import { CaseForm } from '@/components/growth/case-form';
 
 export default function NovoCasePage() {

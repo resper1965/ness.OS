@@ -1,4 +1,4 @@
-import { getPendingAcceptances } from '@/app/actions/policies';
+import { getPendingAcceptances } from '@/app/actions/gov';
 import { AcceptPolicyButton } from '@/components/gov/accept-policy-button';
 import Link from 'next/link';
 

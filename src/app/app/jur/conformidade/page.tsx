@@ -1,4 +1,4 @@
-import { getFrameworks, getChecksByFramework } from '@/app/actions/compliance';
+import { getFrameworks, getChecksByFramework } from '@/app/actions/jur';
 import { createClient } from '@/lib/supabase/server';
 import { ComplianceCheckForm } from '@/components/jur/compliance-check-form';
 

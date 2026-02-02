@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { generatePostFromCase } from '@/app/actions/content-ai';
+import { generatePostFromCase } from '@/app/actions/ai';
 
 type Props = { caseId: string };
 

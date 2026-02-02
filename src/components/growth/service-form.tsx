@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormState } from 'react-dom';
-import { createService } from '@/app/actions/admin-services';
+import { createService } from '@/app/actions/growth';
 
 type Props = { playbooks: { id: string; title: string }[] };
 

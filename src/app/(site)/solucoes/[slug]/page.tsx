@@ -1,4 +1,4 @@
-import { getServiceBySlug } from "@/app/actions/services";
+import { getServiceBySlug } from '@/app/actions/growth';
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ProseContent } from "@/components/site/prose-content";

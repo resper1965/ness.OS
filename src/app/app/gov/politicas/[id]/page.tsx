@@ -1,4 +1,4 @@
-import { getPolicyById, updatePolicyFromForm } from '@/app/actions/policies';
+import { getPolicyById, updatePolicyFromForm } from '@/app/actions/gov';
 import { PolicyForm } from '@/components/gov/policy-form';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';

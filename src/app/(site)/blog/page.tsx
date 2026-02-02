@@ -1,4 +1,4 @@
-import { getPosts } from "@/app/actions/posts";
+import { getPosts } from '@/app/actions/growth';
 import Link from "next/link";
 
 export default async function BlogPage() {

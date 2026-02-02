@@ -1,4 +1,4 @@
-import { getPostBySlug } from "@/app/actions/posts";
+import { getPostBySlug } from '@/app/actions/growth';
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { HeroSection } from "@/components/site/hero-section";

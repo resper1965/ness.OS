@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormState } from 'react-dom';
-import { createComplianceCheckFromForm } from '@/app/actions/compliance';
+import { createComplianceCheckFromForm } from '@/app/actions/jur';
 
 type Props = {
   frameworks: { id: string; name: string; code: string }[];

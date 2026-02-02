@@ -33,13 +33,17 @@ export async function getPolicyById(id: string) {
   return data;
 }
 
-export async function createPolicy(formData: FormData) {
+export async function createPolicyFromForm(_prev: unknown, formData: FormData) {
   return createPolicyImpl(formData);
 }
 
-/** Wrapper para useFormState: (prev, formData) => Promise<...> */
-export async function createPolicyFromForm(_prev: unknown, formData: FormData) {
-  return createPolicyImpl(formData);
+export async function updatePolicyFromForm(
+  _prev: unknown,
+  formData: FormData
+): Promise<{ error?: string; success?: boolean }> {
+  const id = formData.get('id') as string;
+  if (!id) return { error: 'ID ausente.' };
+  return updatePolicy(id, formData);
 }
 
 async function createPolicyImpl(formData: FormData) {
@@ -122,11 +126,7 @@ export async function getPendingAcceptances() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return [];
 
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('id')
-    .eq('id', user.id)
-    .single();
+  const { data: profile } = await supabase.from('profiles').select('id').eq('id', user.id).single();
   if (!profile) return [];
 
   const { data: accepted } = await supabase
@@ -138,26 +138,10 @@ export async function getPendingAcceptances() {
 
   const { data: versions } = await supabase
     .from('policy_versions')
-    .select(`
-      id,
-      version,
-      content_text,
-      created_at,
-      policies(id, title, slug)
-    `)
+    .select(`id, version, content_text, created_at, policies(id, title, slug)`)
     .order('created_at', { ascending: false });
 
-  const pending = (versions ?? []).filter((v) => !acceptedIds.has(v.id));
-  return pending;
-}
-
-export async function updatePolicyFromForm(
-  _prev: unknown,
-  formData: FormData
-): Promise<{ error?: string; success?: boolean }> {
-  const id = formData.get('id') as string;
-  if (!id) return { error: 'ID ausente.' };
-  return updatePolicy(id, formData);
+  return (versions ?? []).filter((v) => !acceptedIds.has(v.id));
 }
 
 export async function acceptPolicyVersion(policyVersionId: string) {
@@ -165,19 +149,12 @@ export async function acceptPolicyVersion(policyVersionId: string) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: 'Não autenticado.' };
 
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('id')
-    .eq('id', user.id)
-    .single();
+  const { data: profile } = await supabase.from('profiles').select('id').eq('id', user.id).single();
   if (!profile) return { error: 'Perfil não encontrado.' };
 
   const { error } = await supabase
     .from('policy_acceptances')
-    .insert({
-      policy_version_id: policyVersionId,
-      profile_id: profile.id,
-    });
+    .insert({ policy_version_id: policyVersionId, profile_id: profile.id });
 
   if (error) return { error: error.message };
 

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { gerarPropostaPDF } from './proposta-pdf';
-import { generateProposalWithAI } from '@/app/actions/proposals-ai';
+import { generateProposalWithAI } from '@/app/actions/ai';
 
 type Props = {
   clients: { id: string; name: string }[];

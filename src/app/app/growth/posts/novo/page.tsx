@@ -1,4 +1,4 @@
-import { createPost } from '@/app/actions/admin-posts';
+import { createPost } from '@/app/actions/growth';
 import { PostEditorForm } from '@/components/growth/post-editor-form';
 
 export default function NovoPostPage() {

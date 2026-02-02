@@ -114,6 +114,14 @@ Maioria em .next/types são gerados — ignorar.
 - [x] Criado `src/components/shared/data-table.tsx` — tabela genérica com colunas configuráveis
 - [x] Vagas, Gaps, Contratos passam a usar DataTable + StatusBadge
 
+### Consolidação final (2026-02-02)
+- [x] growth.ts — posts, services, success-cases (+ leads já existente)
+- [x] jur.ts — compliance (getFrameworks, getChecksByFramework, createComplianceCheck)
+- [x] gov.ts — policies (getPolicies, getPolicyById, create/update, acceptances)
+- [x] ai.ts — content-ai + proposals-ai (generatePostFromCase, generateProposalWithAI)
+- [x] Removidos: admin-posts, posts, admin-services, services, success-cases, compliance, policies, content-ai, proposals-ai
+- [x] **Actions: 17 → 8** (growth, ops, fin, people, jur, gov, ai + auth/site)
+
 ### Fase 6 — Validação Final
 - [x] npm test — 3 passed
 - [x] tsc --noEmit — OK

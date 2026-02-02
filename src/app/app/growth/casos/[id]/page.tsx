@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
-import { updateSuccessCase } from '@/app/actions/success-cases';
+import { updateSuccessCase } from '@/app/actions/growth';
 import { CaseForm } from '@/components/growth/case-form';
 import { CaseToPostButton } from '@/components/growth/case-to-post-button';
 
