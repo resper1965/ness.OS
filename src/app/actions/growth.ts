@@ -152,6 +152,17 @@ export async function updatePost(
 
 // === SERVICES ===
 
+/** Serviços ativos para home e listagens (id, name, slug, marketing_pitch) */
+export async function getActiveServices() {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from('services_catalog')
+    .select('id, name, slug, marketing_pitch')
+    .eq('is_active', true)
+    .order('name');
+  return data ?? [];
+}
+
 export async function getServiceBySlug(slug: string) {
   const supabase = await createClient();
   const { data, error } = await supabase

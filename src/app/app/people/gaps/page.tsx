@@ -1,6 +1,8 @@
 import { createClient } from '@/lib/supabase/server';
 import { GapForm } from '@/components/people/gap-form';
 import { DataTable } from '@/components/shared/data-table';
+import { AppPageHeader } from '@/components/shared/app-page-header';
+import { PageContent } from '@/components/shared/page-content';
 import { StatusBadge } from '@/components/shared/status-badge';
 
 type Gap = {
@@ -21,10 +23,13 @@ export default async function GapsPage() {
   const { data: playbooks } = await supabase.from('playbooks').select('id, title').order('title');
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-white mb-8">Gaps de Treinamento</h1>
+    <PageContent>
+      <AppPageHeader
+        title="Gaps de Treinamento"
+        subtitle="Registro de lacunas de conhecimento. Vincule a playbooks para treinamento."
+      />
       <GapForm profiles={profiles ?? []} playbooks={playbooks ?? []} />
-      <div className="mt-8">
+      <div>
         <DataTable<Gap>
           data={(gaps ?? []) as Gap[]}
           keyExtractor={(g) => g.id}
@@ -49,6 +54,6 @@ export default async function GapsPage() {
           ]}
         />
       </div>
-    </div>
+    </PageContent>
   );
 }

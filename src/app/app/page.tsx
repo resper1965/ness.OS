@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { AppPageHeader } from '@/components/shared/app-page-header';
+import { NessBrand } from '@/components/shared/ness-brand';
+import { PageContent } from '@/components/shared/page-content';
 
 const ALL_WIDGETS = [
   { key: 'leads', href: '/app/growth/leads', title: 'Leads', desc: 'Leads do site em Kanban. Qualifique e acompanhe conversões.' },
@@ -42,13 +44,16 @@ export default async function AppDashboardPage() {
   const widgets = ALL_WIDGETS.filter((w) => allowedKeys.includes(w.key));
 
   return (
-    <div className="space-y-8">
+    <PageContent>
       <AppPageHeader
-        title="Dashboard ness.OS"
+        title={
+          <>
+            Dashboard <NessBrand suffix="OS" />
+          </>
+        }
         subtitle={
           <>
-            Central de gestão do ness.OS. Aqui você organiza operação, vendas, pessoas e financeiro.
-            {role && <span className="block mt-1 text-xs text-slate-500">Role: {role}</span>}
+            Central de gestão do <NessBrand suffix="OS" />. Aqui você organiza operação, vendas, pessoas e financeiro.
           </>
         }
       />
@@ -67,9 +72,9 @@ export default async function AppDashboardPage() {
       </div>
 
       <div className="rounded-lg border border-slate-700/50 bg-slate-800/30 p-4 text-sm text-slate-400">
-        <strong className="text-slate-300">Fluxo:</strong> Playbooks (OPS) → Serviços (Growth) → Contratos (FIN) → Métricas (OPS).
+        <strong className="text-slate-300">Fluxo:</strong> Playbooks (ness.OPS) → Serviços (ness.GROWTH) → Contratos (ness.FIN) → Métricas (ness.OPS).
         O site público consome o que você publica aqui.
       </div>
-    </div>
+    </PageContent>
   );
 }

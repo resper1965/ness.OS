@@ -2,6 +2,8 @@ import { getPolicyById, updatePolicyFromForm } from '@/app/actions/gov';
 import { PolicyForm } from '@/components/gov/policy-form';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { AppPageHeader } from '@/components/shared/app-page-header';
+import { PageContent } from '@/components/shared/page-content';
 
 export default async function GovPoliticasEditPage({
   params,
@@ -17,16 +19,16 @@ export default async function GovPoliticasEditPage({
   const defaultContent = latest?.content_text ?? '';
 
   return (
-    <div>
-      <div className="mb-6">
-        <Link href="/app/gov/politicas" className="text-ness hover:underline text-sm">
-          ← Voltar
-        </Link>
-        <h1 className="text-2xl font-bold text-white mt-2">Editar: {policy.title}</h1>
-        <p className="text-slate-400 text-sm mt-1">
-          Ao salvar, será criada uma nova versão.
-        </p>
-      </div>
+    <PageContent>
+      <AppPageHeader
+        title={`Editar: ${policy.title}`}
+        subtitle="Ao salvar, será criada uma nova versão."
+        actions={
+          <Link href="/app/gov/politicas" className="text-sm text-slate-400 hover:text-ness">
+            ← Voltar
+          </Link>
+        }
+      />
       <PolicyForm
         action={updatePolicyFromForm}
         policyId={id}
@@ -34,6 +36,6 @@ export default async function GovPoliticasEditPage({
         defaultSlug={policy.slug ?? ''}
         defaultContent={defaultContent}
       />
-    </div>
+    </PageContent>
   );
 }

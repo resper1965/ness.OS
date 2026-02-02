@@ -1,4 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
+import { AppPageHeader } from '@/components/shared/app-page-header';
+import { PageContent } from '@/components/shared/page-content';
 
 export default async function GrowthBrandPage() {
   const supabase = await createClient();
@@ -8,10 +10,12 @@ export default async function GrowthBrandPage() {
     .order('created_at', { ascending: false });
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-white mb-2">Brand Guardian</h1>
-      <p className="text-slate-400 mb-6">Centraliza assets e consistência visual.</p>
-      <div className="rounded-lg border border-slate-700 overflow-hidden">
+    <PageContent>
+      <AppPageHeader
+        title="Brand Guardian"
+        subtitle="Centraliza assets e consistência visual."
+      />
+      <div className="overflow-hidden rounded-lg border border-slate-700">
         <table className="w-full text-left text-sm">
           <thead className="bg-slate-800/50 text-slate-300">
             <tr>
@@ -34,6 +38,6 @@ export default async function GrowthBrandPage() {
           <div className="px-4 py-12 text-center text-slate-500">Nenhum asset.</div>
         )}
       </div>
-    </div>
+    </PageContent>
   );
 }

@@ -1,5 +1,8 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
+import { AppPageHeader } from '@/components/shared/app-page-header';
+import { PageContent } from '@/components/shared/page-content';
+import { PrimaryButton } from '@/components/shared/primary-button';
 
 export default async function GovPoliticasPage() {
   const supabase = await createClient();
@@ -15,22 +18,13 @@ export default async function GovPoliticasPage() {
     .order('created_at', { ascending: false });
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-white">Políticas</h1>
-          <p className="text-slate-400 text-sm mt-1">
-            Normas internas com versionamento e rastreabilidade de aceite.
-          </p>
-        </div>
-        <Link
-          href="/app/gov/politicas/novo"
-          className="rounded-md bg-ness px-4 py-2 text-sm font-medium text-white hover:bg-ness-600"
-        >
-          Nova política
-        </Link>
-      </div>
-      <div className="rounded-lg border border-slate-700 overflow-hidden">
+    <PageContent>
+      <AppPageHeader
+        title="Políticas"
+        subtitle="Normas internas com versionamento e rastreabilidade de aceite."
+        actions={<PrimaryButton href="/app/gov/politicas/novo">Nova política</PrimaryButton>}
+      />
+      <div className="overflow-hidden rounded-lg border border-slate-700">
         <table className="w-full text-left text-sm">
           <thead className="bg-slate-800/50 text-slate-300">
             <tr>
@@ -68,15 +62,12 @@ export default async function GovPoliticasPage() {
         {(!policies || policies.length === 0) && (
           <div className="px-4 py-12 text-center">
             <p className="text-slate-400">Nenhuma política cadastrada.</p>
-            <Link
-              href="/app/gov/politicas/novo"
-              className="inline-block mt-4 rounded-md bg-ness px-4 py-2 text-sm font-medium text-white hover:bg-ness-600"
-            >
-              Nova política
-            </Link>
+            <div className="mt-4">
+              <PrimaryButton href="/app/gov/politicas/novo">Nova política</PrimaryButton>
+            </div>
           </div>
         )}
       </div>
-    </div>
+    </PageContent>
   );
 }

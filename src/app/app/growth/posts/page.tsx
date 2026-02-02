@@ -1,6 +1,8 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { AppPageHeader } from '@/components/shared/app-page-header';
+import { PageContent } from '@/components/shared/page-content';
+import { PrimaryButton } from '@/components/shared/primary-button';
 
 export default async function GrowthPostsPage() {
   const supabase = await createClient();
@@ -10,20 +12,13 @@ export default async function GrowthPostsPage() {
     .order('created_at', { ascending: false });
 
   return (
-    <div>
+    <PageContent>
       <AppPageHeader
         title="Posts do Blog"
         subtitle="Artigos publicados em /blog. Ative &quot;Publicar no Site&quot; para exibir."
-        actions={
-          <Link
-            href="/app/growth/posts/novo"
-            className="rounded-md bg-ness px-4 py-2 text-sm font-medium text-white hover:bg-ness-600"
-          >
-            Novo post
-          </Link>
-        }
+        actions={<PrimaryButton href="/app/growth/posts/novo">Novo post</PrimaryButton>}
       />
-      <div className="rounded-lg border border-slate-700 overflow-hidden">
+      <div className="overflow-hidden rounded-lg border border-slate-700">
         <table className="w-full text-left text-sm">
           <thead className="bg-slate-800/50 text-slate-300">
             <tr>
@@ -70,11 +65,13 @@ export default async function GrowthPostsPage() {
         {(!posts || posts.length === 0) && (
           <div className="px-4 py-12 text-center">
             <p className="text-slate-400">Nenhum post cadastrado.</p>
-            <p className="text-slate-500 text-sm mt-2">Crie o primeiro para publicar no blog do site.</p>
-            <Link href="/app/growth/posts/novo" className="inline-block mt-4 rounded-md bg-ness px-4 py-2 text-sm font-medium text-white hover:bg-ness-600">Novo post</Link>
+            <p className="mt-2 text-sm text-slate-500">Crie o primeiro para publicar no blog do site.</p>
+            <div className="mt-4">
+              <PrimaryButton href="/app/growth/posts/novo">Novo post</PrimaryButton>
+            </div>
           </div>
         )}
       </div>
-    </div>
+    </PageContent>
   );
 }

@@ -1,10 +1,15 @@
 import { RiskAnalyzer } from '@/components/jur/risk-analyzer';
+import { AppPageHeader } from '@/components/shared/app-page-header';
+import { PageContent } from '@/components/shared/page-content';
 
 export default function JurRiscoPage() {
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-white mb-6">Análise de Risco Contratual</h1>
+    <PageContent>
+      <AppPageHeader
+        title="Análise de Risco Contratual"
+        subtitle="Analise minutas com IA para identificar riscos."
+      />
       <RiskAnalyzer />
-    </div>
+    </PageContent>
   );
 }

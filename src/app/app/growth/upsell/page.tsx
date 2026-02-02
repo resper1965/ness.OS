@@ -1,4 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
+import { AppPageHeader } from '@/components/shared/app-page-header';
+import { PageContent } from '@/components/shared/page-content';
 
 export default async function GrowthUpsellPage() {
   const supabase = await createClient();
@@ -15,12 +17,12 @@ export default async function GrowthUpsellPage() {
     .limit(50);
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-white mb-2">Upsell Alerts</h1>
-      <p className="text-slate-400 mb-6">
-        Alertas de consumo e oportunidades de upsell.
-      </p>
-      <div className="rounded-lg border border-slate-700 overflow-hidden">
+    <PageContent>
+      <AppPageHeader
+        title="Upsell Alerts"
+        subtitle="Alertas de consumo e oportunidades de upsell."
+      />
+      <div className="overflow-hidden rounded-lg border border-slate-700">
         <table className="w-full text-left text-sm">
           <thead className="bg-slate-800/50 text-slate-300">
             <tr>
@@ -54,6 +56,6 @@ export default async function GrowthUpsellPage() {
           </div>
         )}
       </div>
-    </div>
+    </PageContent>
   );
 }

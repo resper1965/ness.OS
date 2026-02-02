@@ -9,6 +9,8 @@ type DataTableProps<T extends Record<string, unknown>> = {
   columns: Column<T>[];
   keyExtractor: (row: T) => string;
   emptyMessage?: string;
+  emptyDescription?: string;
+  emptyAction?: React.ReactNode;
   actions?: (row: T) => React.ReactNode;
 };
 
@@ -17,11 +19,13 @@ export function DataTable<T extends Record<string, unknown>>({
   columns,
   keyExtractor,
   emptyMessage = 'Nenhum registro encontrado.',
+  emptyDescription,
+  emptyAction,
   actions,
 }: DataTableProps<T>) {
   return (
-    <div className="rounded-lg border border-slate-700 overflow-hidden">
-      <table className="w-full text-sm">
+    <div className="overflow-hidden rounded-lg border border-slate-700">
+      <table className="w-full text-left text-sm">
         <thead className="bg-slate-800/50 text-slate-300">
           <tr>
             {columns.map((col) => (
@@ -37,6 +41,8 @@ export function DataTable<T extends Record<string, unknown>>({
             <tr>
               <td colSpan={columns.length + (actions ? 1 : 0)} className="px-4 py-12 text-center">
                 <p className="text-slate-400">{emptyMessage}</p>
+                {emptyDescription && <p className="mt-2 text-sm text-slate-500">{emptyDescription}</p>}
+                {emptyAction && <div className="mt-4">{emptyAction}</div>}
               </td>
             </tr>
           ) : (

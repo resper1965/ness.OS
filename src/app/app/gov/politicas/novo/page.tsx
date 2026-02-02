@@ -1,17 +1,21 @@
-import { PolicyForm } from '@/components/gov/policy-form';
-import { createPolicyFromForm } from '@/app/actions/gov';
 import Link from 'next/link';
+import { createPolicyFromForm } from '@/app/actions/gov';
+import { PolicyForm } from '@/components/gov/policy-form';
+import { AppPageHeader } from '@/components/shared/app-page-header';
+import { PageContent } from '@/components/shared/page-content';
 
 export default function GovPoliticasNovoPage() {
   return (
-    <div>
-      <div className="mb-6">
-        <Link href="/app/gov/politicas" className="text-ness hover:underline text-sm">
-          ← Voltar
-        </Link>
-        <h1 className="text-2xl font-bold text-white mt-2">Nova política</h1>
-      </div>
+    <PageContent>
+      <AppPageHeader
+        title="Nova política"
+        actions={
+          <Link href="/app/gov/politicas" className="text-sm text-slate-400 hover:text-ness">
+            ← Voltar
+          </Link>
+        }
+      />
       <PolicyForm action={createPolicyFromForm} />
-    </div>
+    </PageContent>
   );
 }

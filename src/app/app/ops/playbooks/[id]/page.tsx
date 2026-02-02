@@ -1,7 +1,10 @@
 import { createClient } from '@/lib/supabase/server';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { updatePlaybook } from '@/app/actions/ops';
 import { PlaybookEditorForm } from '@/components/ops/playbook-editor-form';
+import { AppPageHeader } from '@/components/shared/app-page-header';
+import { PageContent } from '@/components/shared/page-content';
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -19,9 +22,16 @@ export default async function EditarPlaybookPage({ params }: Props) {
   const updateAction = (prev: unknown, fd: FormData) => updatePlaybook(id, prev, fd);
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-white mb-8">Editar: {playbook.title}</h1>
+    <PageContent>
+      <AppPageHeader
+        title={`Editar: ${playbook.title}`}
+        actions={
+          <Link href="/app/ops/playbooks" className="text-sm text-slate-400 hover:text-ness">
+            ← Voltar
+          </Link>
+        }
+      />
       <PlaybookEditorForm action={updateAction} initialValues={playbook} />
-    </div>
+    </PageContent>
   );
 }

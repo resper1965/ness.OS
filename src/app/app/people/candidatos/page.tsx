@@ -1,16 +1,21 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from '@/lib/supabase/server';
+import { AppPageHeader } from '@/components/shared/app-page-header';
+import { PageContent } from '@/components/shared/page-content';
 
 export default async function CandidatosPage() {
   const supabase = await createClient();
   const { data: apps } = await supabase
-    .from("job_applications")
-    .select("id, candidate_name, candidate_email, created_at, public_jobs(title)")
-    .order("created_at", { ascending: false });
+    .from('job_applications')
+    .select('id, candidate_name, candidate_email, created_at, public_jobs(title)')
+    .order('created_at', { ascending: false });
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-white mb-8">Candidatos</h1>
-      <div className="rounded-lg border border-slate-700 overflow-hidden">
+    <PageContent>
+      <AppPageHeader
+        title="Candidatos"
+        subtitle="Candidaturas das vagas publicadas em /carreiras."
+      />
+      <div className="overflow-hidden rounded-lg border border-slate-700">
         <table className="w-full text-sm">
           <thead className="bg-slate-800/50 text-slate-300">
             <tr>
@@ -35,6 +40,6 @@ export default async function CandidatosPage() {
           <div className="px-4 py-12 text-center text-slate-400">Nenhuma candidatura.</div>
         )}
       </div>
-    </div>
+    </PageContent>
   );
 }

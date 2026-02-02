@@ -1,6 +1,8 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { AppPageHeader } from '@/components/shared/app-page-header';
+import { PageContent } from '@/components/shared/page-content';
+import { PrimaryButton } from '@/components/shared/primary-button';
 
 export default async function PlaybooksPage() {
   const supabase = await createClient();
@@ -10,17 +12,13 @@ export default async function PlaybooksPage() {
     .order('updated_at', { ascending: false });
 
   return (
-    <div>
+    <PageContent>
       <AppPageHeader
         title="Playbooks"
         subtitle="Manuais técnicos que definem &quot;como fazemos&quot;. Todo serviço vendido deve ter um playbook vinculado."
-        actions={
-          <Link href="/app/ops/playbooks/novo" className="rounded-md bg-ness px-4 py-2 text-sm font-medium text-white hover:bg-ness-600">
-            Novo playbook
-          </Link>
-        }
+        actions={<PrimaryButton href="/app/ops/playbooks/novo">Novo playbook</PrimaryButton>}
       />
-      <div className="rounded-lg border border-slate-700 overflow-hidden">
+      <div className="overflow-hidden rounded-lg border border-slate-700">
         <table className="w-full text-left text-sm">
           <thead className="bg-slate-800/50 text-slate-300">
             <tr>
@@ -46,11 +44,13 @@ export default async function PlaybooksPage() {
         {(!playbooks || playbooks.length === 0) && (
           <div className="px-4 py-12 text-center">
             <p className="text-slate-400">Nenhum playbook cadastrado.</p>
-            <p className="text-slate-500 text-sm mt-2">Crie o primeiro para documentar procedimentos e habilitar o Knowledge Bot.</p>
-            <Link href="/app/ops/playbooks/novo" className="inline-block mt-4 rounded-md bg-ness px-4 py-2 text-sm font-medium text-white hover:bg-ness-600">Novo playbook</Link>
+            <p className="mt-2 text-sm text-slate-500">Crie o primeiro para documentar procedimentos e habilitar o Knowledge Bot.</p>
+            <div className="mt-4">
+              <PrimaryButton href="/app/ops/playbooks/novo">Novo playbook</PrimaryButton>
+            </div>
           </div>
         )}
       </div>
-    </div>
+    </PageContent>
   );
 }

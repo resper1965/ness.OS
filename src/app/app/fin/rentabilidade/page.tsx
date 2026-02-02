@@ -1,18 +1,18 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from '@/lib/supabase/server';
+import { AppPageHeader } from '@/components/shared/app-page-header';
+import { PageContent } from '@/components/shared/page-content';
 
 export default async function RentabilidadePage() {
   const supabase = await createClient();
-  const { data: rows } = await supabase.from("contract_rentability").select("*");
+  const { data: rows } = await supabase.from('contract_rentability').select('*');
 
   return (
-    <div>
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-white">Rentabilidade</h1>
-        <p className="text-slate-400 text-sm mt-1">
-          Receita (MRR) menos custos operacionais por contrato. Margem negativa em vermelho.
-        </p>
-      </div>
-      <div className="rounded-lg border border-slate-700 overflow-hidden">
+    <PageContent>
+      <AppPageHeader
+        title="Rentabilidade"
+        subtitle="Receita (MRR) menos custos operacionais por contrato. Margem negativa em vermelho."
+      />
+      <div className="overflow-hidden rounded-lg border border-slate-700">
         <table className="w-full text-sm">
           <thead className="bg-slate-800/50 text-slate-300">
             <tr>
@@ -38,15 +38,15 @@ export default async function RentabilidadePage() {
         {(!rows || rows.length === 0) && (
           <div className="px-4 py-12 text-center">
             <p className="text-slate-400">Nenhum dado de rentabilidade.</p>
-            <p className="text-slate-500 text-sm mt-2">
+            <p className="mt-2 text-sm text-slate-500">
               Cadastre contratos e insira métricas (horas, custo cloud) em OPS → Métricas.
             </p>
           </div>
         )}
       </div>
       {rows && rows.length > 0 && (
-        <div className="mt-8">
-          <h2 className="text-lg font-semibold text-white mb-4">Rentabilidade por contrato</h2>
+        <div>
+          <h2 className="mb-4 text-lg font-semibold text-white">Rentabilidade por contrato</h2>
           <div className="space-y-3">
             {(rows as { contract_id: string; client_name: string; rentability: number; revenue: number }[]).map((r) => {
               const pct = Number(r.revenue) > 0 ? (Number(r.rentability) / Number(r.revenue)) * 100 : 0;
@@ -69,6 +69,6 @@ export default async function RentabilidadePage() {
           </div>
         </div>
       )}
-    </div>
+    </PageContent>
   );
 }

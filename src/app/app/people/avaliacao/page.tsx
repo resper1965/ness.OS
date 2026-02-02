@@ -1,4 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
+import { AppPageHeader } from '@/components/shared/app-page-header';
+import { PageContent } from '@/components/shared/page-content';
 
 export default async function PeopleAvaliacaoPage() {
   const supabase = await createClient();
@@ -9,12 +11,12 @@ export default async function PeopleAvaliacaoPage() {
     .limit(50);
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-white mb-2">Avaliação 360º</h1>
-      <p className="text-slate-400 mb-6">
-        Feedback contínuo e scores por colaborador.
-      </p>
-      <div className="rounded-lg border border-slate-700 overflow-hidden">
+    <PageContent>
+      <AppPageHeader
+        title="Avaliação 360º"
+        subtitle="Feedback contínuo e scores por colaborador."
+      />
+      <div className="overflow-hidden rounded-lg border border-slate-700">
         <table className="w-full text-left text-sm">
           <thead className="bg-slate-800/50 text-slate-300">
             <tr>
@@ -43,6 +45,6 @@ export default async function PeopleAvaliacaoPage() {
           </div>
         )}
       </div>
-    </div>
+    </PageContent>
   );
 }

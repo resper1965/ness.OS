@@ -1,6 +1,8 @@
 import { getFrameworks, getChecksByFramework } from '@/app/actions/jur';
 import { createClient } from '@/lib/supabase/server';
 import { ComplianceCheckForm } from '@/components/jur/compliance-check-form';
+import { AppPageHeader } from '@/components/shared/app-page-header';
+import { PageContent } from '@/components/shared/page-content';
 
 export default async function JurConformidadePage() {
   const frameworks = await getFrameworks();
@@ -11,15 +13,14 @@ export default async function JurConformidadePage() {
     .order('title');
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-white mb-2">Conformidade</h1>
-      <p className="text-slate-400 mb-6">
-        Verificação de aderência à LGPD, Marco Civil e leis trabalhistas.
-      </p>
-
-      <div className="space-y-8">
+    <PageContent>
+      <AppPageHeader
+        title="Conformidade"
+        subtitle="Verificação de aderência à LGPD, Marco Civil e leis trabalhistas."
+      />
+      <div className="space-y-6">
         <div>
-          <h2 className="text-lg font-semibold text-white mb-4">Novo check</h2>
+          <h2 className="mb-4 text-lg font-semibold text-white">Novo check</h2>
           <ComplianceCheckForm
             frameworks={frameworks}
             playbooks={playbooks ?? []}
@@ -30,7 +31,7 @@ export default async function JurConformidadePage() {
           <FrameworkChecks key={fw.id} frameworkId={fw.id} name={fw.name} />
         ))}
       </div>
-    </div>
+    </PageContent>
   );
 }
 
@@ -39,8 +40,8 @@ async function FrameworkChecks({ frameworkId, name }: { frameworkId: string; nam
 
   return (
     <div>
-      <h2 className="text-lg font-semibold text-white mb-3">{name}</h2>
-      <div className="rounded-lg border border-slate-700 overflow-hidden">
+      <h2 className="mb-3 text-lg font-semibold text-white">{name}</h2>
+      <div className="overflow-hidden rounded-lg border border-slate-700">
         <table className="w-full text-left text-sm">
           <thead className="bg-slate-800/50 text-slate-300">
             <tr>

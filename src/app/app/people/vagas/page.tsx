@@ -2,6 +2,8 @@ import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { JobForm } from '@/components/people/job-form';
 import { DataTable } from '@/components/shared/data-table';
+import { AppPageHeader } from '@/components/shared/app-page-header';
+import { PageContent } from '@/components/shared/page-content';
 import { StatusBadge } from '@/components/shared/status-badge';
 
 type Job = { id: string; title: string; department: string | null; is_open: boolean };
@@ -14,15 +16,13 @@ export default async function VagasPage() {
     .order('created_at', { ascending: false });
 
   return (
-    <div>
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-white">Vagas</h1>
-        <p className="text-slate-400 text-sm mt-1">
-          Vagas abertas aparecem em /carreiras. Candidaturas vão para Candidatos.
-        </p>
-      </div>
+    <PageContent>
+      <AppPageHeader
+        title="Vagas"
+        subtitle="Vagas abertas aparecem em /carreiras. Candidaturas vão para Candidatos."
+      />
       <JobForm />
-      <div className="mt-8">
+      <div>
         <DataTable<Job>
           data={jobs ?? []}
           keyExtractor={(j) => j.id}
@@ -43,6 +43,6 @@ export default async function VagasPage() {
           )}
         />
       </div>
-    </div>
+    </PageContent>
   );
 }

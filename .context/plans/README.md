@@ -8,6 +8,7 @@ This directory contains plans for coordinating work across documentation and pla
 3. [Redução de Complexidade](./reducao-complexidade-codebase.md) — Simplificação codebase (SIMPLIFICA) — **primary**, ações ai-context
 4. [Fluxo Explicativo Inputs](./fluxo-explicativo-inputs.md)
 5. [Migracao Site Legacy](./migracao-site-legacy.md)
+6. [Migração corp-site-ness](./migracao-corp-site-ness.md) — **Preservar site existente; conteúdo seed**
 6. [Ness Fin Cfo Digital](./ness-fin-cfo-digital.md)
 7. [Ness Gov Governanca Interna](./ness-gov-governanca-interna.md)
 8. [Ness Growth Inteligencia Comercial](./ness-growth-inteligencia-comercial.md)

@@ -1,4 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
+import { AppPageHeader } from '@/components/shared/app-page-header';
+import { PageContent } from '@/components/shared/page-content';
 
 export default async function FinAlertasPage() {
   const supabase = await createClient();
@@ -16,10 +18,12 @@ export default async function FinAlertasPage() {
     .order('renewal_date');
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-white mb-2">Alertas de Renovação</h1>
-      <p className="text-slate-400 mb-6">Contratos com renovação nos próximos 30 dias.</p>
-      <div className="rounded-lg border border-slate-700 overflow-hidden">
+    <PageContent>
+      <AppPageHeader
+        title="Alertas de Renovação"
+        subtitle="Contratos com renovação nos próximos 30 dias."
+      />
+      <div className="overflow-hidden rounded-lg border border-slate-700">
         <table className="w-full text-left text-sm">
           <thead className="bg-slate-800/50 text-slate-300">
             <tr>
@@ -46,6 +50,6 @@ export default async function FinAlertasPage() {
           <div className="px-4 py-12 text-center text-slate-500">Nenhum contrato com renovação nos próximos 30 dias.</div>
         )}
       </div>
-    </div>
+    </PageContent>
   );
 }

@@ -1,7 +1,10 @@
-import { createClient } from "@/lib/supabase/server";
-import { notFound } from "next/navigation";
+import { createClient } from '@/lib/supabase/server';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import { updateService } from '@/app/actions/growth';
-import { ServiceEditForm } from "@/components/growth/service-edit-form";
+import { ServiceEditForm } from '@/components/growth/service-edit-form';
+import { AppPageHeader } from '@/components/shared/app-page-header';
+import { PageContent } from '@/components/shared/page-content';
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -16,9 +19,16 @@ export default async function EditServicePage({ params }: Props) {
   const updateAction = (prev: unknown, fd: FormData) => updateService(id, prev, fd);
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-white mb-8">Editar: {service.name}</h1>
+    <PageContent>
+      <AppPageHeader
+        title={`Editar: ${service.name}`}
+        actions={
+          <Link href="/app/growth/services" className="text-sm text-slate-400 hover:text-ness">
+            ← Voltar
+          </Link>
+        }
+      />
       <ServiceEditForm action={updateAction} service={service} playbooks={playbooks ?? []} />
-    </div>
+    </PageContent>
   );
 }

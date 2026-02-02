@@ -1,6 +1,8 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { AppPageHeader } from '@/components/shared/app-page-header';
+import { PageContent } from '@/components/shared/page-content';
+import { PrimaryButton } from '@/components/shared/primary-button';
 
 export default async function GrowthCasosPage() {
   const supabase = await createClient();
@@ -10,20 +12,13 @@ export default async function GrowthCasosPage() {
     .order('created_at', { ascending: false });
 
   return (
-    <div>
+    <PageContent>
       <AppPageHeader
         title="Casos de Sucesso"
         subtitle="Casos publicados em /casos. Ative &quot;Publicar no Site&quot; para exibir."
-        actions={
-          <Link
-            href="/app/growth/casos/novo"
-            className="rounded-md bg-ness px-4 py-2 text-sm font-medium text-white hover:bg-ness-600"
-          >
-            Novo caso
-          </Link>
-        }
+        actions={<PrimaryButton href="/app/growth/casos/novo">Novo caso</PrimaryButton>}
       />
-      <div className="rounded-lg border border-slate-700 overflow-hidden">
+      <div className="overflow-hidden rounded-lg border border-slate-700">
         <table className="w-full text-left text-sm">
           <thead className="bg-slate-800/50 text-slate-300">
             <tr>
@@ -65,13 +60,13 @@ export default async function GrowthCasosPage() {
         {(!cases || cases.length === 0) && (
           <div className="px-4 py-12 text-center">
             <p className="text-slate-400">Nenhum caso cadastrado.</p>
-            <p className="text-slate-500 text-sm mt-2">Crie o primeiro para publicar em /casos.</p>
-            <Link href="/app/growth/casos/novo" className="inline-block mt-4 rounded-md bg-ness px-4 py-2 text-sm font-medium text-white hover:bg-ness-600">
-              Novo caso
-            </Link>
+            <p className="mt-2 text-sm text-slate-500">Crie o primeiro para publicar em /casos.</p>
+            <div className="mt-4">
+              <PrimaryButton href="/app/growth/casos/novo">Novo caso</PrimaryButton>
+            </div>
           </div>
         )}
       </div>
-    </div>
+    </PageContent>
   );
 }

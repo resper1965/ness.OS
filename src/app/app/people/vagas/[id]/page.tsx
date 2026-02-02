@@ -1,7 +1,10 @@
 import { createClient } from '@/lib/supabase/server';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { updateJob } from '@/app/actions/people';
 import { JobEditForm } from '@/components/people/job-edit-form';
+import { AppPageHeader } from '@/components/shared/app-page-header';
+import { PageContent } from '@/components/shared/page-content';
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -13,9 +16,16 @@ export default async function EditarVagaPage({ params }: Props) {
   const updateAction = (prev: unknown, fd: FormData) => updateJob(id, prev, fd);
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-white mb-8">Editar: {job.title}</h1>
+    <PageContent>
+      <AppPageHeader
+        title={`Editar: ${job.title}`}
+        actions={
+          <Link href="/app/people/vagas" className="text-sm text-slate-400 hover:text-ness">
+            ← Voltar
+          </Link>
+        }
+      />
       <JobEditForm action={updateAction} job={job} />
-    </div>
+    </PageContent>
   );
 }

@@ -3,6 +3,7 @@ import { ContractForm } from '@/components/fin/contract-form';
 import { ClientForm } from '@/components/fin/client-form';
 import { DataTable } from '@/components/shared/data-table';
 import { AppPageHeader } from '@/components/shared/app-page-header';
+import { PageContent } from '@/components/shared/page-content';
 
 type Contract = {
   id: string;
@@ -21,14 +22,14 @@ export default async function ContratosPage() {
   const { data: clients } = await supabase.from('clients').select('id, name').order('name');
 
   return (
-    <div>
+    <PageContent>
       <AppPageHeader
         title="Contratos"
         subtitle="MRR e vigência por cliente. Base para cálculo de rentabilidade e métricas."
       />
       <ClientForm />
       <ContractForm clients={clients ?? []} />
-      <div className="mt-8">
+      <div>
         <DataTable<Contract>
           data={(contracts ?? []) as Contract[]}
           keyExtractor={(c) => c.id}
@@ -63,6 +64,6 @@ export default async function ContratosPage() {
           ]}
         />
       </div>
-    </div>
+    </PageContent>
   );
 }

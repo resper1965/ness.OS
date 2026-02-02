@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "seed:generate": "node scripts/seed-from-corp-site.js > supabase/seed/002_corp_site_content.sql",
+    "seed:complete": "cd supabase/seed && cat 000_playbooks_seed.sql 002_corp_site_content.sql 003_blog_posts_seed.sql 004_verify_seed.sql > complete_seed.sql",
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run"

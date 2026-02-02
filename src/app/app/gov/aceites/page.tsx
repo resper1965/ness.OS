@@ -1,17 +1,19 @@
 import { getPendingAcceptances } from '@/app/actions/gov';
 import { AcceptPolicyButton } from '@/components/gov/accept-policy-button';
 import Link from 'next/link';
+import { AppPageHeader } from '@/components/shared/app-page-header';
+import { PageContent } from '@/components/shared/page-content';
 
 export default async function GovAceitesPage() {
   const pending = await getPendingAcceptances();
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-white mb-2">Rastreabilidade de Aceite</h1>
-      <p className="text-slate-400 mb-6">
-        Controle digital de assinaturas de NDAs, termos e políticas desde o onboarding.
-      </p>
-      <div className="rounded-lg border border-slate-700 overflow-hidden">
+    <PageContent>
+      <AppPageHeader
+        title="Rastreabilidade de Aceite"
+        subtitle="Controle digital de assinaturas de NDAs, termos e políticas desde o onboarding."
+      />
+      <div className="overflow-hidden rounded-lg border border-slate-700">
         <table className="w-full text-left text-sm">
           <thead className="bg-slate-800/50 text-slate-300">
             <tr>
@@ -47,10 +49,10 @@ export default async function GovAceitesPage() {
         {pending.length === 0 && (
           <div className="px-4 py-12 text-center">
             <p className="text-slate-400">Nenhuma política pendente de aceite.</p>
-            <p className="text-slate-500 text-sm mt-2">Todas as versões de políticas já foram aceitas por você.</p>
+            <p className="mt-2 text-sm text-slate-500">Todas as versões de políticas já foram aceitas por você.</p>
           </div>
         )}
       </div>
-    </div>
+    </PageContent>
   );
 }

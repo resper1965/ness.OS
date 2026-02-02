@@ -1,25 +1,25 @@
-import { createClient } from "@/lib/supabase/server";
-import Link from "next/link";
-import { ServiceForm } from "@/components/growth/service-form";
+import { createClient } from '@/lib/supabase/server';
+import Link from 'next/link';
+import { ServiceForm } from '@/components/growth/service-form';
+import { AppPageHeader } from '@/components/shared/app-page-header';
+import { PageContent } from '@/components/shared/page-content';
 
 export default async function GrowthServicesPage() {
   const supabase = await createClient();
   const { data: services } = await supabase
-    .from("services_catalog")
-    .select("id, name, slug, is_active, playbook_id, playbooks(title)")
-    .order("name");
-  const { data: playbooks } = await supabase.from("playbooks").select("id, title").order("title");
+    .from('services_catalog')
+    .select('id, name, slug, is_active, playbook_id, playbooks(title)')
+    .order('name');
+  const { data: playbooks } = await supabase.from('playbooks').select('id, title').order('title');
 
   return (
-    <div>
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-white">Catálogo de Serviços</h1>
-        <p className="text-slate-400 text-sm mt-1">
-          Serviços vendáveis. Só podem ficar ativos se tiverem playbook vinculado (Trava Growth×OPS).
-        </p>
-      </div>
+    <PageContent>
+      <AppPageHeader
+        title="Catálogo de Serviços"
+        subtitle="Serviços vendáveis. Só podem ficar ativos se tiverem playbook vinculado (Trava Growth×OPS)."
+      />
       <ServiceForm playbooks={playbooks ?? []} />
-      <div className="mt-8 rounded-lg border border-slate-700 overflow-hidden">
+      <div className="overflow-hidden rounded-lg border border-slate-700">
         <table className="w-full text-sm">
           <thead className="bg-slate-800/50 text-slate-300">
             <tr>
@@ -45,6 +45,6 @@ export default async function GrowthServicesPage() {
           </tbody>
         </table>
       </div>
-    </div>
+    </PageContent>
   );
 }
