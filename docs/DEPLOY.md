@@ -3,7 +3,7 @@
 ## 1. Supabase
 
 1. Crie o projeto no [Supabase](https://supabase.com)
-2. Execute as migrations em ordem (SQL Editor): 001, 002, 003, 004, 005, 006
+2. Execute as migrations em ordem (SQL Editor): 001 a 021 (ou use MCP Supabase apply_migration)
 3. Execute o seed (opcional): `supabase/seed/001_static_pages_legal.sql` → páginas /legal/privacidade e /legal/termos
 4. Crie o bucket **os-assets** no Storage (privado)
 5. Configure Auth (Email/Password) e crie o primeiro usuário
@@ -14,11 +14,12 @@ No projeto Vercel, Settings > Environment Variables:
 
 | Nome | Valor | Ambiente |
 |------|-------|----------|
-| NEXT_PUBLIC_SUPABASE_URL | `https://mjkzhzcwqvgcrfutoqsc.supabase.co` | Production, Preview |
-| NEXT_PUBLIC_SUPABASE_ANON_KEY | Chave anon do projeto (Supabase → Settings → API) | Production, Preview |
-| OPENAI_API_KEY | Chave da OpenAI (para Knowledge Bot / RAG) | Production, Preview |
+| NEXT_PUBLIC_SUPABASE_URL | URL do projeto Supabase | Production, Preview |
+| NEXT_PUBLIC_SUPABASE_ANON_KEY | Chave anon (JWT) | Production, Preview |
+| NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY | Alternativa: sb_publishable_* (se anon não disponível) | Production, Preview |
+| OPENAI_API_KEY | Para Knowledge Bot, Agente Propostas, Chatbot público, RAG | Production, Preview |
 
-**Valores corretos**: Supabase Dashboard → Settings → API. Use a **anon/public** key (JWT ou sb_publishable).
+**Valores corretos**: Supabase Dashboard → Settings → API. Use a **anon** (JWT) ou **sb_publishable**.
 
 ## 3. Vercel
 
