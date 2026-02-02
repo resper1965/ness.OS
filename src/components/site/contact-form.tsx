@@ -1,7 +1,7 @@
 "use client";
 
 import { useFormState } from "react-dom";
-import { submitLead } from "@/app/actions/leads";
+import { submitLead } from '@/app/actions/growth';
 
 const initialState: { success?: boolean; error?: string } = {};
 

@@ -2,15 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
-import { z } from 'zod';
-
-const postSchema = z.object({
-  title: z.string().min(1, 'Título obrigatório'),
-  slug: z.string().min(1, 'Slug obrigatório').regex(/^[a-z0-9-]+$/, 'Slug: apenas letras minúsculas, números e hífens'),
-  seo_description: z.string().optional(),
-  content_markdown: z.string().optional(),
-  is_published: z.boolean().optional(),
-});
+import { postSchema } from '@/lib/validators/schemas';
 
 export type PostFormState = { success?: boolean; error?: string };
 

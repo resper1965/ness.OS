@@ -1,6 +1,6 @@
 'use client';
 
-import { updateLeadStatus } from '@/app/actions/admin-leads';
+import { updateLeadStatus } from '@/app/actions/growth';
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
 

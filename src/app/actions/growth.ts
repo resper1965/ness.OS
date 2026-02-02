@@ -1,21 +1,14 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
-import { z } from 'zod';
+import { revalidatePath } from 'next/cache';
+import { leadSchema } from '@/lib/validators/schemas';
 
-const leadSchema = z.object({
-  name: z.string().min(2, 'Nome deve ter ao menos 2 caracteres'),
-  email: z.string().email('E-mail inválido'),
-  company: z.string().optional(),
-  message: z.string().optional(),
-  origin_url: z.string().optional(),
-});
+const VALID_STATUSES = ['new', 'qualified', 'proposal', 'won', 'lost'] as const;
 
-export type LeadFormState = {
-  success?: boolean;
-  error?: string;
-};
+export type LeadFormState = { success?: boolean; error?: string };
 
+/** Submit lead (formulário público de contato) */
 export async function submitLead(
   _prevState: LeadFormState,
   formData: FormData
@@ -44,9 +37,23 @@ export async function submitLead(
     status: 'new',
   });
 
-  if (error) {
-    return { error: 'Erro ao enviar. Tente novamente.' };
+  if (error) return { error: 'Erro ao enviar. Tente novamente.' };
+  return { success: true };
+}
+
+/** Update lead status (Kanban admin) */
+export async function updateLeadStatus(id: string, status: string) {
+  if (!VALID_STATUSES.includes(status as (typeof VALID_STATUSES)[number])) {
+    return { error: 'Status inválido.' };
   }
 
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from('inbound_leads')
+    .update({ status })
+    .eq('id', id);
+
+  if (error) return { error: error.message };
+  revalidatePath('/app/growth/leads');
   return { success: true };
 }

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { submitLead } from '@/app/actions/leads';
+import { submitLead } from '@/app/actions/growth';
 
 vi.mock('@/lib/supabase/server', () => ({
   createClient: vi.fn(() =>
