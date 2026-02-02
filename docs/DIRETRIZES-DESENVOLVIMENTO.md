@@ -13,7 +13,9 @@
 | **Módulos** | ness.GROWTH, ness.OPS, ness.FIN, ness.PEOPLE, ness.JUR, ness.GOV |
 | **Evitar** | NESS isolado em textos user-facing |
 
-**Execução autônoma:** **"BOOOM"**, "execute plano autonomo" ou "siga o plano de pendências" → seguir [PLANO-EXECUCAO-AUTONOMA-PENDENCIAS.md](PLANO-EXECUCAO-AUTONOMA-PENDENCIAS.md)
+**Execução autônoma:**
+- **BOOOM:** Executa Fases 0–4 → [PLANO-EXECUCAO-AUTONOMA-PENDENCIAS.md](PLANO-EXECUCAO-AUTONOMA-PENDENCIAS.md)
+- **EXECUTE FASE 5:** Executa Fases 5–10 → [PLANO-EXECUCAO-FASE-5-FINAL.md](PLANO-EXECUCAO-FASE-5-FINAL.md)
 
 ---
 

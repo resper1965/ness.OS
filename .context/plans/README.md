@@ -3,7 +3,9 @@
 This directory contains plans for coordinating work across documentation and playbooks.
 
 ## Plan Queue
-1. [Fluxo Explicativo Inputs](./fluxo-explicativo-inputs.md)
+1. [Execução Autônoma Pendências](./execucao-autonoma-pendencias.md) — Fases 0–4 (BOOOM) ✅
+2. [Execução Fase 5 Final](./execucao-fase-5-final.md) — Fases 5–10 (EXECUTE FASE 5)
+3. [Fluxo Explicativo Inputs](./fluxo-explicativo-inputs.md)
 2. [Migracao Site Legacy](./migracao-site-legacy.md)
 3. [Ness Fin Cfo Digital](./ness-fin-cfo-digital.md)
 4. [Ness Gov Governanca Interna](./ness-gov-governanca-interna.md)

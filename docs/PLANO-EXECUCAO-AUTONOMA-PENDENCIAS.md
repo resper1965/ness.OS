@@ -2,6 +2,8 @@
 
 > Para executar: diga **"BOOOM"**, **"execute plano autonomo"** ou **"siga o plano de pendências"**. O agente seguirá esta sequência de passos em ordem.
 
+> **Fases 0–4 concluídas.** Próximo: [PLANO-EXECUCAO-FASE-5-FINAL.md](PLANO-EXECUCAO-FASE-5-FINAL.md) — diga **"EXECUTE FASE 5"** para continuar.
+
 ---
 
 ## Ordem de execução e dependências
