@@ -1,4 +1,4 @@
-import { createPlaybook } from '@/app/actions/playbooks';
+import { createPlaybook } from '@/app/actions/ops';
 import { PlaybookEditorForm } from '@/components/ops/playbook-editor-form';
 
 export default function NovoPlaybookPage() {

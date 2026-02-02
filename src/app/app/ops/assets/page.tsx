@@ -1,4 +1,4 @@
-import { listAssets } from "@/app/actions/assets";
+import { listAssets } from '@/app/actions/ops';
 import { AssetUploadForm } from "@/components/ops/asset-upload-form";
 
 export default async function AssetsPage() {

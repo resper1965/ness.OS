@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormState } from 'react-dom';
-import { createJob } from '@/app/actions/jobs';
+import { createJob } from '@/app/actions/people';
 
 export function JobForm() {
   const [state, formAction] = useFormState(createJob, {});

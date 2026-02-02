@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormState } from 'react-dom';
-import { uploadAsset } from '@/app/actions/assets';
+import { uploadAsset } from '@/app/actions/ops';
 
 export function AssetUploadForm() {
   const [state, formAction] = useFormState(uploadAsset, {});

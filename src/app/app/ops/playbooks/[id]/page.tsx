@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
-import { updatePlaybook } from '@/app/actions/playbooks';
+import { updatePlaybook } from '@/app/actions/ops';
 import { PlaybookEditorForm } from '@/components/ops/playbook-editor-form';
 
 type Props = { params: Promise<{ id: string }> };

@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormState } from 'react-dom';
-import { addClient } from '@/app/actions/clients';
+import { addClient } from '@/app/actions/fin';
 
 export function ClientForm() {
   const [state, formAction] = useFormState(addClient, {});

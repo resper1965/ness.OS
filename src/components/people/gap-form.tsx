@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormState } from 'react-dom';
-import { createGap } from '@/app/actions/gaps';
+import { createGap } from '@/app/actions/people';
 
 const helpClass = 'text-xs text-slate-500 mt-1';
 

@@ -99,3 +99,12 @@ Maioria em .next/types são gerados — ignorar.
 ### Fase 4 (parcial)
 - [x] Criado `src/lib/validators/schemas.ts` — leadSchema, postSchema
 - [x] admin-posts.ts passa a importar postSchema do central
+
+### Fase 2 (continuação)
+- [x] Criado `src/app/actions/ops.ts` — playbooks, assets, metricas (-3 arquivos)
+- [x] Criado `src/app/actions/fin.ts` — clients, contracts (-2 arquivos)
+- [x] Criado `src/app/actions/people.ts` — jobs, job-application, gaps (-3 arquivos)
+- [x] Removidos: playbooks, assets, metricas, contracts, clients, jobs, job-application, gaps
+
+### Fase 5 (parcial)
+- [x] Migration 026_simplifica_indexes.sql — índices em leads, posts, jobs, contracts

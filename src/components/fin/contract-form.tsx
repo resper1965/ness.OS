@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormState } from 'react-dom';
-import { createContract } from '@/app/actions/contracts';
+import { createContract } from '@/app/actions/fin';
 
 type Props = { clients: { id: string; name: string }[] };
 

@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
-import { updateJob } from '@/app/actions/jobs';
+import { updateJob } from '@/app/actions/people';
 import { JobEditForm } from '@/components/people/job-edit-form';
 
 type Props = { params: Promise<{ id: string }> };

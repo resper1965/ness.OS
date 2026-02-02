@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormState } from 'react-dom';
-import { saveMetric } from '@/app/actions/metricas';
+import { saveMetric } from '@/app/actions/ops';
 
 type Contract = { id: string; mrr: number; client_id: string; clients: { name: string } | { name: string }[] | null };
 type Metric = { id: string; contract_id: string; month: string; hours_worked: number; cost_input: number; sla_achieved: boolean };

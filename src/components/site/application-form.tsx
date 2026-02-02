@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormState } from 'react-dom';
-import { submitApplication } from '@/app/actions/job-application';
+import { submitApplication } from '@/app/actions/people';
 
 type Props = { jobId: string };
 
