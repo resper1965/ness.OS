@@ -1,5 +1,5 @@
 import { PolicyForm } from '@/components/gov/policy-form';
-import { createPolicy } from '@/app/actions/policies';
+import { createPolicyFromForm } from '@/app/actions/policies';
 import Link from 'next/link';
 
 export default function GovPoliticasNovoPage() {
@@ -11,7 +11,7 @@ export default function GovPoliticasNovoPage() {
         </Link>
         <h1 className="text-2xl font-bold text-white mt-2">Nova política</h1>
       </div>
-      <PolicyForm action={createPolicy} />
+      <PolicyForm action={createPolicyFromForm} />
     </div>
   );
 }

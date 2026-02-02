@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormState } from 'react-dom';
-import { createComplianceCheck } from '@/app/actions/compliance';
+import { createComplianceCheckFromForm } from '@/app/actions/compliance';
 
 type Props = {
   frameworks: { id: string; name: string; code: string }[];
@@ -9,7 +9,7 @@ type Props = {
 };
 
 export function ComplianceCheckForm({ frameworks, playbooks }: Props) {
-  const [state, formAction] = useFormState(createComplianceCheck, {});
+  const [state, formAction] = useFormState(createComplianceCheckFromForm, { success: false });
 
   return (
     <form action={formAction} className="flex flex-wrap gap-4 items-end max-w-3xl">

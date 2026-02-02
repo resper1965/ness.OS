@@ -32,11 +32,14 @@ export default async function GrowthUpsellPage() {
           </thead>
           <tbody className="divide-y divide-slate-700">
             {(alerts ?? []).map((a) => {
-              const contract = a.contracts as { clients: { name: string } | null } | null;
-              const client = contract?.clients;
+              const contracts = a.contracts as unknown;
+              const contract = Array.isArray(contracts) ? contracts[0] : contracts;
+              const clients = contract && typeof contract === 'object' && 'clients' in contract ? (contract as { clients: unknown }).clients : null;
+              const client = Array.isArray(clients) ? clients[0] : clients;
+              const clientName = client && typeof client === 'object' && 'name' in client ? (client as { name: string }).name : null;
               return (
                 <tr key={a.id} className="text-slate-300">
-                  <td className="px-4 py-3">{client?.name ?? '-'}</td>
+                  <td className="px-4 py-3">{clientName ?? '-'}</td>
                   <td className="px-4 py-3 text-slate-400">{a.alert_type ?? '-'}</td>
                   <td className="px-4 py-3">{a.message ?? '-'}</td>
                   <td className="px-4 py-3 text-slate-400">{new Date(a.created_at).toLocaleDateString('pt-BR')}</td>

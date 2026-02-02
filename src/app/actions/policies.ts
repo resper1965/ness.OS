@@ -34,6 +34,15 @@ export async function getPolicyById(id: string) {
 }
 
 export async function createPolicy(formData: FormData) {
+  return createPolicyImpl(formData);
+}
+
+/** Wrapper para useFormState: (prev, formData) => Promise<...> */
+export async function createPolicyFromForm(_prev: unknown, formData: FormData) {
+  return createPolicyImpl(formData);
+}
+
+async function createPolicyImpl(formData: FormData) {
   const title = formData.get('title') as string;
   const slug = formData.get('slug') as string;
   const contentText = formData.get('content_text') as string;

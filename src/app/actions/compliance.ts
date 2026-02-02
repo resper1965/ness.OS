@@ -22,6 +22,11 @@ export async function getChecksByFramework(frameworkId: string) {
   return data ?? [];
 }
 
+/** Wrapper para useFormState: (prev, formData) => Promise<...> */
+export async function createComplianceCheckFromForm(_prev: unknown, formData: FormData) {
+  return createComplianceCheck(formData);
+}
+
 export async function createComplianceCheck(formData: FormData) {
   const frameworkId = formData.get('framework_id') as string;
   const processRef = formData.get('process_ref') as string;
