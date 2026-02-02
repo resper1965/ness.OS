@@ -25,9 +25,11 @@ function chunkBySentences(input: string, maxChunkSize = 500): string[] {
   return chunks;
 }
 
+export type EmbeddingSourceType = 'playbook' | 'post' | 'service';
+
 export async function generateEmbeddings(
   value: string,
-  sourceType: 'playbook' | 'post',
+  sourceType: EmbeddingSourceType,
   sourceId: string
 ): Promise<void> {
   const chunks = chunkBySentences(value);
@@ -74,6 +76,35 @@ export async function findRelevantPlaybookContent(
 
   if (error) {
     console.error('findRelevantPlaybookContent error:', error);
+    return [];
+  }
+
+  return (data ?? []).map((r: { content_chunk: string; similarity: number }) => ({
+    content_chunk: r.content_chunk,
+    similarity: r.similarity,
+  }));
+}
+
+export async function findRelevantPublicContent(
+  query: string,
+  limit = 4
+): Promise<Array<{ content_chunk: string; similarity: number }>> {
+  const { embedding } = await embed({
+    model: openai.embedding('text-embedding-3-small'),
+    value: query.replace(/\n/g, ' '),
+  });
+
+  const supabase = await createClient();
+  const embeddingStr = `[${embedding.join(',')}]`;
+
+  const { data, error } = await supabase.rpc('match_document_embeddings', {
+    query_embedding: embeddingStr,
+    match_count: limit,
+    filter_source_type: 'public',
+  });
+
+  if (error) {
+    console.error('findRelevantPublicContent error:', error);
     return [];
   }
 

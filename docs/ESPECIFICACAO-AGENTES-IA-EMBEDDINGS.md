@@ -51,7 +51,12 @@ CREATE EXTENSION IF NOT EXISTS vector;
 
 **Implementação:** RAG sobre `document_embeddings` com `filter_source_type = 'playbook'`. System prompt instrui a responder **apenas** com base nos trechos retornados.
 
-**Status:** ✅ Implementado
+**Regras anti-alucinação (RF.OPS.03):**
+- Responder SOMENTE com conteúdo extraído dos trechos. Proibido inventar, generalizar ou adicionar informações externas.
+- Se o contexto não contiver a resposta: mensagem padrão "Não encontrei essa informação nos playbooks..."
+- Qualquer procedimento citado deve estar explícito no contexto.
+
+**Status:** ✅ Implementado e validado
 
 ---
 

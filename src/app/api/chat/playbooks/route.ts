@@ -33,11 +33,11 @@ export async function POST(req: Request) {
 CONTEXTO DOS PLAYBOOKS:
 ${context}
 
-INSTRUÇÕES:
-- Responda em português.
-- Use SOMENTE as informações do contexto acima.
-- Se o contexto não contiver a resposta, diga: "Não encontrei essa informação nos playbooks. Verifique se há um playbook relacionado ou consulte a equipe de OPS."
-- Não invente procedimentos ou informações que não estejam no contexto.`,
+INSTRUÇÕES CRÍTICAS:
+- Responda SOMENTE com conteúdo extraído dos trechos acima. NÃO invente, NÃO generalize, NÃO adicione informações externas.
+- Se o contexto não contiver a resposta, responda EXATAMENTE: "Não encontrei essa informação nos playbooks. Verifique se há um playbook relacionado ou consulte a equipe de OPS."
+- Use linguagem técnica mas acessível. Responda em português.
+- Qualquer procedimento citado deve estar explícito no contexto. Proibições: inventar passos, assumir ferramentas não mencionadas, inferir procedimentos não documentados.`,
     messages: modelMessages,
   });
 

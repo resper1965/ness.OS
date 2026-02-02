@@ -16,6 +16,8 @@ const navItems = [
   { href: '/app/people/gaps', label: 'Gaps' },
   { href: '/app/fin/contratos', label: 'Contratos' },
   { href: '/app/fin/rentabilidade', label: 'Rentabilidade' },
+  { href: '/app/jur', label: 'JUR' },
+  { href: '/app/gov', label: 'GOV' },
 ];
 
 export function AppSidebar() {

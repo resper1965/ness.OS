@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 import { updateSuccessCase } from '@/app/actions/success-cases';
 import { CaseForm } from '@/components/growth/case-form';
+import { CaseToPostButton } from '@/components/growth/case-to-post-button';
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -16,6 +17,7 @@ export default async function EditarCasePage({ params }: Props) {
     <div>
       <h1 className="text-2xl font-bold text-white mb-8">Editar: {caseData.title}</h1>
       <CaseForm action={action} initialValues={caseData} />
+      <CaseToPostButton caseId={id} />
     </div>
   );
 }

@@ -22,7 +22,7 @@ const ROLE_WIDGETS: Record<string, readonly (typeof ALL_WIDGETS)[number]['key'][
   ops: ['playbooks', 'metricas', 'knowledge-bot', 'assets'],
   fin: ['contratos', 'rentabilidade'],
   employee: ['knowledge-bot', 'gaps'],
-  legal: [], // futuro JUR
+  legal: ['leads', 'knowledge-bot'], // JUR: acesso básico
 };
 
 export default async function AppDashboardPage() {

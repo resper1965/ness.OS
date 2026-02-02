@@ -1,5 +1,6 @@
 import { SiteHeader } from "@/components/site/site-header";
 import { SiteFooter } from "@/components/site/site-footer";
+import { ChatWidget } from "@/components/site/chat-widget";
 
 export default function SiteLayout({
   children,
@@ -13,6 +14,7 @@ export default function SiteLayout({
         {children}
       </main>
       <SiteFooter />
+      <ChatWidget />
     </div>
   );
 }
