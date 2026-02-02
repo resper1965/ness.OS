@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
+import { AppPageHeader } from '@/components/shared/app-page-header';
 
 const ALL_WIDGETS = [
   { key: 'leads', href: '/app/growth/leads', title: 'Leads', desc: 'Leads do site em Kanban. Qualifique e acompanhe conversões.' },
@@ -42,15 +43,15 @@ export default async function AppDashboardPage() {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-bold text-white mb-2">Dashboard ness.OS</h1>
-        <p className="text-slate-400">
-          Central de gestão do ness.OS. Aqui você organiza operação, vendas, pessoas e financeiro.
-        </p>
-        {role && (
-          <p className="text-xs text-slate-500 mt-1">Role: {role}</p>
-        )}
-      </div>
+      <AppPageHeader
+        title="Dashboard ness.OS"
+        subtitle={
+          <>
+            Central de gestão do ness.OS. Aqui você organiza operação, vendas, pessoas e financeiro.
+            {role && <span className="block mt-1 text-xs text-slate-500">Role: {role}</span>}
+          </>
+        }
+      />
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {widgets.map((w) => (

@@ -1,26 +1,25 @@
-import { createClient } from "@/lib/supabase/server";
-import Link from "next/link";
+import { createClient } from '@/lib/supabase/server';
+import Link from 'next/link';
+import { AppPageHeader } from '@/components/shared/app-page-header';
 
 export default async function PlaybooksPage() {
   const supabase = await createClient();
   const { data: playbooks } = await supabase
-    .from("playbooks")
-    .select("id, title, slug, updated_at")
-    .order("updated_at", { ascending: false });
+    .from('playbooks')
+    .select('id, title, slug, updated_at')
+    .order('updated_at', { ascending: false });
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-white">Playbooks</h1>
-          <p className="text-slate-400 text-sm mt-1">
-            Manuais técnicos que definem &quot;como fazemos&quot;. Todo serviço vendido deve ter um playbook vinculado.
-          </p>
-        </div>
-        <Link href="/app/ops/playbooks/novo" className="rounded-md bg-ness px-4 py-2 text-sm font-medium text-white hover:bg-ness-600">
-          Novo playbook
-        </Link>
-      </div>
+      <AppPageHeader
+        title="Playbooks"
+        subtitle="Manuais técnicos que definem &quot;como fazemos&quot;. Todo serviço vendido deve ter um playbook vinculado."
+        actions={
+          <Link href="/app/ops/playbooks/novo" className="rounded-md bg-ness px-4 py-2 text-sm font-medium text-white hover:bg-ness-600">
+            Novo playbook
+          </Link>
+        }
+      />
       <div className="rounded-lg border border-slate-700 overflow-hidden">
         <table className="w-full text-left text-sm">
           <thead className="bg-slate-800/50 text-slate-300">

@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 import { ContractForm } from '@/components/fin/contract-form';
 import { ClientForm } from '@/components/fin/client-form';
 import { DataTable } from '@/components/shared/data-table';
+import { AppPageHeader } from '@/components/shared/app-page-header';
 
 type Contract = {
   id: string;
@@ -21,12 +22,10 @@ export default async function ContratosPage() {
 
   return (
     <div>
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-white">Contratos</h1>
-        <p className="text-slate-400 text-sm mt-1">
-          MRR e vigência por cliente. Base para cálculo de rentabilidade e métricas.
-        </p>
-      </div>
+      <AppPageHeader
+        title="Contratos"
+        subtitle="MRR e vigência por cliente. Base para cálculo de rentabilidade e métricas."
+      />
       <ClientForm />
       <ContractForm clients={clients ?? []} />
       <div className="mt-8">

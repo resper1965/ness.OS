@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { LeadKanban } from '@/components/growth/lead-kanban';
+import { AppPageHeader } from '@/components/shared/app-page-header';
 
 const COLUMNS = [
   { key: 'new', label: 'Novo', help: 'Lead recém-chegado. Aguardando primeiro contato.' },
@@ -26,12 +27,10 @@ export default async function GrowthLeadsPage() {
 
   return (
     <div>
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-white">Leads (CRM)</h1>
-        <p className="text-slate-400 text-sm mt-1">
-          Leads capturados no formulário de contato. Arraste os cards para alterar o status.
-        </p>
-      </div>
+      <AppPageHeader
+        title="Leads (CRM)"
+        subtitle="Leads capturados no formulário de contato. Arraste os cards para alterar o status."
+      />
       <LeadKanban columns={COLUMNS} leadsByStatus={byStatus} />
     </div>
   );

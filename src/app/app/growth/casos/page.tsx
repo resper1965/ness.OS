@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
+import { AppPageHeader } from '@/components/shared/app-page-header';
 
 export default async function GrowthCasosPage() {
   const supabase = await createClient();
@@ -10,20 +11,18 @@ export default async function GrowthCasosPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-white">Casos de Sucesso</h1>
-          <p className="text-slate-400 text-sm mt-1">
-            Casos publicados em /casos. Ative &quot;Publicar no Site&quot; para exibir.
-          </p>
-        </div>
-        <Link
-          href="/app/growth/casos/novo"
-          className="rounded-md bg-ness px-4 py-2 text-sm font-medium text-white hover:bg-ness-600"
-        >
-          Novo caso
-        </Link>
-      </div>
+      <AppPageHeader
+        title="Casos de Sucesso"
+        subtitle="Casos publicados em /casos. Ative &quot;Publicar no Site&quot; para exibir."
+        actions={
+          <Link
+            href="/app/growth/casos/novo"
+            className="rounded-md bg-ness px-4 py-2 text-sm font-medium text-white hover:bg-ness-600"
+          >
+            Novo caso
+          </Link>
+        }
+      />
       <div className="rounded-lg border border-slate-700 overflow-hidden">
         <table className="w-full text-left text-sm">
           <thead className="bg-slate-800/50 text-slate-300">
