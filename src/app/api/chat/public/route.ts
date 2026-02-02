@@ -9,26 +9,30 @@ const requestCounts = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT = 20;
 const WINDOW_MS = 60_000;
 
-function checkRateLimit(ip: string): boolean {
+function checkRateLimit(ip: string): { allowed: boolean; remaining: number } {
   const now = Date.now();
   const entry = requestCounts.get(ip);
   if (!entry) {
     requestCounts.set(ip, { count: 1, resetAt: now + WINDOW_MS });
-    return true;
+    return { allowed: true, remaining: RATE_LIMIT - 1 };
   }
   if (now > entry.resetAt) {
     requestCounts.set(ip, { count: 1, resetAt: now + WINDOW_MS });
-    return true;
+    return { allowed: true, remaining: RATE_LIMIT - 1 };
   }
-  if (entry.count >= RATE_LIMIT) return false;
+  if (entry.count >= RATE_LIMIT) return { allowed: false, remaining: 0 };
   entry.count++;
-  return true;
+  return { allowed: true, remaining: RATE_LIMIT - entry.count };
 }
 
 export async function POST(req: Request) {
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || req.headers.get('x-real-ip') || 'unknown';
-  if (!checkRateLimit(ip)) {
-    return new Response('Muitas requisições. Tente novamente em breve.', { status: 429 });
+  const { allowed, remaining } = checkRateLimit(ip);
+  if (!allowed) {
+    return new Response('Muitas requisições. Tente novamente em breve.', {
+      status: 429,
+      headers: { 'X-RateLimit-Remaining': '0' },
+    });
   }
 
   const { messages: uiMessages } = (await req.json()) as { messages: UIMessage[] };
@@ -46,6 +50,7 @@ export async function POST(req: Request) {
     : 'Nenhum conteúdo relevante encontrado.';
 
   const result = streamText({
+    headers: { 'X-RateLimit-Remaining': String(Math.max(0, remaining)) },
     model: openai('gpt-4o-mini'),
     system: `Você é o assistente virtual do ness. — ecossistema de gestão e site institucional. Responda com base APENAS no contexto fornecido.
 
@@ -61,5 +66,7 @@ INSTRUÇÕES:
     messages: modelMessages,
   });
 
-  return result.toUIMessageStreamResponse();
+  const res = result.toUIMessageStreamResponse();
+  res.headers.set('X-RateLimit-Remaining', String(Math.max(0, remaining)));
+  return res;
 }
