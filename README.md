@@ -8,4 +8,4 @@ Ecossistema NESS: plataforma interna (ness.OS) + site público (ness.WEB) em uma
 **Stack:** Next.js 14 (App Router), Supabase, Tailwind, shadcn/ui, Vercel AI SDK, pgvector
 
 **Documentação:**  
-[PRD](docs/PRD-GLOBAL-NESSOS-NESSWEB.md) · [Arquitetura](docs/ARQUITETURA-TECNICA-NESSOS.md) · [Deploy](docs/DEPLOY.md) · [Diretrizes](docs/DIRETRIZES-DESENVOLVIMENTO.md) · [Validação Fase V](docs/VALIDACAO-FASE-V.md)
+[PRD](docs/PRD-GLOBAL-NESSOS-NESSWEB.md) · [Arquitetura](docs/ARQUITETURA-TECNICA-NESSOS.md) · [Deploy](docs/DEPLOY.md) · [Diretrizes](docs/DIRETRIZES-DESENVOLVIMENTO.md) · [Validação Fase V](docs/VALIDACAO-FASE-V.md) · [Redução de Complexidade](docs/PLANO-REDUCAO-COMPLEXIDADE.md)
