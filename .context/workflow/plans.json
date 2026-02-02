@@ -1,6 +1,15 @@
 {
   "active": [
     {
+      "slug": "reducao-complexidade-codebase",
+      "path": "plans/reducao-complexidade-codebase.md",
+      "title": "Redução de Complexidade — SIMPLIFICA",
+      "summary": "Simplificar codebase: consolidar Server Actions por domínio, unificar componentes (DataTable, EntityForm, StatusBadge), centralizar schemas Zod, otimizar DB. 6 fases: Auditoria → Actions → Componentes → Lib → DB → Validação.",
+      "linkedAt": "2026-02-02T00:00:00.000Z",
+      "status": "active",
+      "trigger": "SIMPLIFICA"
+    },
+    {
       "slug": "ness-growth-inteligencia-comercial",
       "path": "plans/ness-growth-inteligencia-comercial.md",
       "title": "ness.GROWTH — Comercial & Conteúdo",
@@ -10,5 +19,5 @@
     }
   ],
   "completed": [],
-  "primary": "ness-growth-inteligencia-comercial"
+  "primary": "reducao-complexidade-codebase"
 }

@@ -1,20 +1,86 @@
 ---
 status: ready
 generated: 2026-02-02
+planSlug: reducao-complexidade-codebase
 planVinculado: docs/PLANO-REDUCAO-COMPLEXIDADE.md
 constrains:
   - "Apenas Supabase + Vercel"
   - "Nunca multi-tenancy"
   - "Monolito otimizado"
+phases:
+  - phase-1
+  - phase-2
+  - phase-3
+  - phase-4
+  - phase-5
+  - phase-6
 ---
 
 # Redução de Complexidade — ness.OS
 
 > Simplificar codebase sem quebrar em microserviços. Foco em eliminar duplicação, consolidar abstrações e otimizar estrutura mantendo stack Supabase + Vercel.
 
-**Documento completo:** [docs/PLANO-REDUCAO-COMPLEXIDADE.md](../docs/PLANO-REDUCAO-COMPLEXIDADE.md)
+**Documento completo:** [docs/PLANO-REDUCAO-COMPLEXIDADE.md](../../docs/PLANO-REDUCAO-COMPLEXIDADE.md)
 
 **Trigger:** **"SIMPLIFICA"**, "reduz complexidade" ou "otimiza codebase"
+
+---
+
+## Ações Executáveis (ai-context)
+
+> Use `plan({ action: "updateStep", planSlug: "reducao-complexidade-codebase", phaseId, stepIndex, status, output?, notes? })` para marcar progresso.
+
+### phase-1 — Auditoria
+| stepIndex | Ação | Comando | Entrega |
+|-----------|------|---------|---------|
+| 1 | Server Actions duplicadas | `grep -rn "createClient\|createServerClient" src/app/actions/` | Lista actions a consolidar |
+| 2 | Componentes redundantes | Inspecionar `src/components/*/` forms/tables | Lista componentes a unificar |
+| 3 | Schemas Zod repetidos | `grep -rn "z\.object" src/` | Lista schemas a centralizar |
+| 4 | Código morto | `npx ts-prune` | Lista exports não usados |
+| 5 | Documentar auditoria | Criar `docs/AUDITORIA-SIMPLIFICA.md` | DoD Fase 1 |
+
+### phase-2 — Server Actions
+| stepIndex | Ação | Artefato | Commit |
+|-----------|------|----------|--------|
+| 1 | Criar `src/lib/supabase/queries/base.ts` (withSupabase) | base.ts | - |
+| 2 | Consolidar leads + admin-leads + posts → `growth.ts` | growth.ts | refactor(actions) |
+| 3 | Consolidar playbooks + assets → `ops.ts` | ops.ts | refactor(actions) |
+| 4 | Mover jobs → `people.ts`, compliance → `jur.ts` | people.ts, jur.ts | refactor(actions) |
+| 5 | Consolidar content-ai + proposals-ai → `ai.ts` | ai.ts | refactor(actions) |
+| 6 | Migrar policies → `gov.ts`, contracts → `fin.ts` | gov.ts, fin.ts | refactor(actions) |
+
+### phase-3 — Componentes
+| stepIndex | Ação | Artefato | Substituir |
+|-----------|------|----------|------------|
+| 1 | Criar `DataTable<T>` genérico | shared/data-table.tsx | leads-table, contracts-table, jobs-table |
+| 2 | Criar `EntityForm<T>` genérico | shared/entity-form.tsx | lead-form, post-form, contract-form |
+| 3 | Criar `StatusBadge` unificado | shared/status-badge.tsx | Badges em módulos |
+| 4 | Atualizar imports nas páginas | - | - |
+
+### phase-4 — Lib/Utils
+| stepIndex | Ação | Artefato |
+|-----------|------|----------|
+| 1 | Criar `src/lib/validators/schemas.ts` | leadSchema, postSchema, contractSchema, etc. |
+| 2 | Criar `src/lib/ai/prompts.ts` | Prompts centralizados |
+| 3 | Remover código morto (ts-prune) | - |
+
+### phase-5 — Database
+| stepIndex | Ação | Artefato |
+|-----------|------|----------|
+| 1 | Auditoria tabelas (SQL) | - |
+| 2 | Adicionar índices | migrations/XXX_optimization_indexes.sql |
+| 3 | Consolidar views (rentabilidade) | - |
+
+### phase-6 — Validação
+| stepIndex | Ação | Comando |
+|-----------|------|---------|
+| 1 | Testes | `npm test` |
+| 2 | Tipos | `npx tsc --noEmit` |
+| 3 | Lint | `npm run lint` |
+| 4 | Build | `npm run build` |
+| 5 | Checklist manual | Rotas, Auth, CRUD, Chatbot, Upload |
+
+---
 
 ## Princípios
 

@@ -5,7 +5,7 @@ This directory contains plans for coordinating work across documentation and pla
 ## Plan Queue
 1. [Execução Autônoma Pendências](./execucao-autonoma-pendencias.md) — Fases 0–4 (BOOOM) ✅
 2. [Execução Fase 5 Final](./execucao-fase-5-final.md) — Fases 5–10 (EXECUTE FASE 5) ✅
-3. [Redução de Complexidade](./reducao-complexidade-codebase.md) — Simplificação codebase (SIMPLIFICA)
+3. [Redução de Complexidade](./reducao-complexidade-codebase.md) — Simplificação codebase (SIMPLIFICA) — **primary**, ações ai-context
 4. [Fluxo Explicativo Inputs](./fluxo-explicativo-inputs.md)
 5. [Migracao Site Legacy](./migracao-site-legacy.md)
 6. [Ness Fin Cfo Digital](./ness-fin-cfo-digital.md)

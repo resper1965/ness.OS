@@ -1,0 +1,70 @@
+{
+  "planSlug": "reducao-complexidade-codebase",
+  "progress": 0,
+  "phases": {
+    "phase-1": {
+      "phaseId": "phase-1",
+      "status": "pending",
+      "steps": [
+        { "stepIndex": 1, "description": "Server Actions duplicadas", "status": "pending" },
+        { "stepIndex": 2, "description": "Componentes redundantes", "status": "pending" },
+        { "stepIndex": 3, "description": "Schemas Zod repetidos", "status": "pending" },
+        { "stepIndex": 4, "description": "Código morto", "status": "pending" },
+        { "stepIndex": 5, "description": "Documentar auditoria", "status": "pending" }
+      ]
+    },
+    "phase-2": {
+      "phaseId": "phase-2",
+      "status": "pending",
+      "steps": [
+        { "stepIndex": 1, "description": "Criar base.ts (withSupabase)", "status": "pending" },
+        { "stepIndex": 2, "description": "Consolidar growth.ts", "status": "pending" },
+        { "stepIndex": 3, "description": "Consolidar ops.ts", "status": "pending" },
+        { "stepIndex": 4, "description": "Migrar people.ts, jur.ts", "status": "pending" },
+        { "stepIndex": 5, "description": "Consolidar ai.ts", "status": "pending" },
+        { "stepIndex": 6, "description": "Migrar gov.ts, fin.ts", "status": "pending" }
+      ]
+    },
+    "phase-3": {
+      "phaseId": "phase-3",
+      "status": "pending",
+      "steps": [
+        { "stepIndex": 1, "description": "DataTable genérico", "status": "pending" },
+        { "stepIndex": 2, "description": "EntityForm genérico", "status": "pending" },
+        { "stepIndex": 3, "description": "StatusBadge unificado", "status": "pending" },
+        { "stepIndex": 4, "description": "Atualizar imports", "status": "pending" }
+      ]
+    },
+    "phase-4": {
+      "phaseId": "phase-4",
+      "status": "pending",
+      "steps": [
+        { "stepIndex": 1, "description": "schemas.ts centralizado", "status": "pending" },
+        { "stepIndex": 2, "description": "prompts.ts centralizado", "status": "pending" },
+        { "stepIndex": 3, "description": "Remover código morto", "status": "pending" }
+      ]
+    },
+    "phase-5": {
+      "phaseId": "phase-5",
+      "status": "pending",
+      "steps": [
+        { "stepIndex": 1, "description": "Auditoria tabelas", "status": "pending" },
+        { "stepIndex": 2, "description": "Adicionar índices", "status": "pending" },
+        { "stepIndex": 3, "description": "Consolidar views", "status": "pending" }
+      ]
+    },
+    "phase-6": {
+      "phaseId": "phase-6",
+      "status": "pending",
+      "steps": [
+        { "stepIndex": 1, "description": "npm test", "status": "pending" },
+        { "stepIndex": 2, "description": "tsc --noEmit", "status": "pending" },
+        { "stepIndex": 3, "description": "npm run lint", "status": "pending" },
+        { "stepIndex": 4, "description": "npm run build", "status": "pending" },
+        { "stepIndex": 5, "description": "Checklist manual", "status": "pending" }
+      ]
+    }
+  },
+  "decisions": [],
+  "lastUpdated": "2026-02-02T00:00:00.000Z"
+}
