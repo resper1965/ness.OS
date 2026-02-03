@@ -23,16 +23,16 @@ phases:
 
 execution:
   history:
-    - timestamp: "2026-02-03T20:52:41.949Z"
+    - timestamp: "2026-02-03T20:52:42.060Z"
       phase: E
       action: step_completed
       plan: "integracao-omie-erp"
       planPhase: "phase-2"
-      stepIndex: 2
-      stepDescription: "Step 2"
-      notes: "lib/omie/client.ts: omiePost, listarClientes"
-  last_activity: "2026-02-03T20:52:41.949Z"
-  resume_context: "Concluído: Step 2"
+      stepIndex: 3
+      stepDescription: "Step 3"
+      notes: "Sync clientes: upsert por omie_codigo/document"
+  last_activity: "2026-02-03T20:52:42.060Z"
+  resume_context: "Concluído: Step 3"
 
 approval:
   plan_created: true

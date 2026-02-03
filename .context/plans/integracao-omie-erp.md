@@ -32,7 +32,7 @@ phases:
   - id: "phase-3"
     name: "Validation & Handoff"
     prevc: "V"
-lastUpdated: "2026-02-03T20:52:41.905Z"
+lastUpdated: "2026-02-03T20:52:42.007Z"
 ---
 
 # Integração Omie ERP — ness.FIN (CEP)
@@ -150,8 +150,8 @@ lastUpdated: "2026-02-03T20:52:41.905Z"
 
 1. **Migration `erp_sync_log`** — Campos: id, started_at, finished_at, status (running|success|error), record_count (opcional), error_message (opcional), created_at. RLS: apenas roles autorizados (admin/cfo).
 2. [x] **Cliente HTTP Omie** — Módulo server-only (ex.: `lib/omie/client.ts` ou em `app/actions`) que recebe app_key/app_secret de env, monta body JSON e chama endpoints Omie; tratar erros e timeouts. *(completed: 2026-02-03T20:52:41.905Z)*
-3. **Sync clientes** — Ação que chama ListarClientes (ou paginado), normaliza dados e upsert em `clients` (criar ou atualizar por codigo_cliente/CNPJ); registrar em `erp_sync_log`.
-4. **Sync contas a receber** — Listar lançamentos por período; decidir se persiste em tabela auxiliar (ex.: `erp_receivables`) ou só agrega em memória para reconciliação; registrar sync em `erp_sync_log`.
+3. [x] **Sync clientes** — Ação que chama ListarClientes (ou paginado), normaliza dados e upsert em `clients` (criar ou atualizar por codigo_cliente/CNPJ); registrar em `erp_sync_log`. *(completed: 2026-02-03T20:52:42.007Z)*
+4. [ ] **Sync contas a receber** — Listar lançamentos por período; decidir se persiste em tabela auxiliar (ex.: `erp_receivables`) ou só agrega em memória para reconciliação; registrar sync em `erp_sync_log`.
 5. **Rota ou Server Action de sync** — `POST /api/fin/erp/sync` ou Server Action `syncOmieErp()` protegida por role; chama sync clientes + contas a receber e atualiza `erp_sync_log`.
 6. **UI ness.FIN** — Em /app/fin/contratos ou /app/fin/rentabilidade: botão "Sincronizar ERP", status da última sync (última data, status success/error), mensagem de erro se falhou.
 7. **Reconciliação MRR** — Job ou ação que compara `contracts.mrr` (por cliente) com faturamento Omie (agregado das contas a receber do período); exibir alerta ou coluna "Divergência" quando fora da tolerância.
@@ -203,7 +203,7 @@ lastUpdated: "2026-02-03T20:52:41.905Z"
 
 ## Execution History
 
-> Last updated: 2026-02-03T20:52:41.905Z | Progress: 100%
+> Last updated: 2026-02-03T20:52:42.007Z | Progress: 100%
 
 ### phase-1 [DONE]
 - Started: 2026-02-03T20:47:26.531Z
@@ -218,7 +218,9 @@ lastUpdated: "2026-02-03T20:52:41.905Z"
 
 ### phase-2 [DONE]
 - Started: 2026-02-03T20:52:41.905Z
-- Completed: 2026-02-03T20:52:41.905Z
+- Completed: 2026-02-03T20:52:42.007Z
 
 - [x] Step 2: Step 2 *(2026-02-03T20:52:41.905Z)*
   - Notes: lib/omie/client.ts: omiePost, listarClientes
+- [x] Step 3: Step 3 *(2026-02-03T20:52:42.007Z)*
+  - Notes: Sync clientes: upsert por omie_codigo/document

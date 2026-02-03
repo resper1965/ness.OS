@@ -1,6 +1,6 @@
 {
   "planSlug": "integracao-omie-erp",
-  "progress": 80,
+  "progress": 100,
   "phases": {
     "phase-1": {
       "phaseId": "phase-1",
@@ -33,7 +33,7 @@
     },
     "phase-2": {
       "phaseId": "phase-2",
-      "status": "in_progress",
+      "status": "completed",
       "startedAt": "2026-02-03T20:52:41.905Z",
       "steps": [
         {
@@ -44,13 +44,14 @@
           "notes": "lib/omie/client.ts: omiePost, listarClientes"
         },
         {
-          "stepIndex": 4,
-          "description": "Step 4",
-          "status": "pending",
-          "notes": "Sync contas a receber: listarContasReceber (TODO)"
+          "stepIndex": 3,
+          "description": "Step 3",
+          "status": "completed",
+          "completedAt": "2026-02-03T20:52:42.007Z",
+          "notes": "Sync clientes: upsert por omie_codigo/document"
         }
       ],
-      "completedAt": "2026-02-03T20:52:41.905Z"
+      "completedAt": "2026-02-03T20:52:42.007Z"
     }
   },
   "decisions": [
@@ -63,5 +64,5 @@
       "decidedAt": "2026-02-03T20:47:33.017Z"
     }
   ],
-  "lastUpdated": "2026-02-03T20:52:42.008Z"
+  "lastUpdated": "2026-02-03T20:52:42.007Z"
 }
