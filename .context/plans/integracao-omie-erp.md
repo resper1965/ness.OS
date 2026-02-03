@@ -32,7 +32,7 @@ phases:
   - id: "phase-3"
     name: "Validation & Handoff"
     prevc: "V"
-lastUpdated: "2026-02-03T20:47:28.652Z"
+lastUpdated: "2026-02-03T20:47:30.802Z"
 ---
 
 # Integração Omie ERP — ness.FIN (CEP)
@@ -136,7 +136,7 @@ lastUpdated: "2026-02-03T20:47:28.652Z"
 1. [x] **Confirmar credenciais e escopo** — Validar OMIE_APP_KEY e OMIE_APP_SECRET; listar endpoints que serão usados na primeira entrega: ListarClientes, listar contas a receber (e filtros/período). *(completed: 2026-02-03T20:47:26.531Z)*
 2. **Mapeamento de dados** — Definir: Omie cliente (codigo_cliente / CNPJ) → `clients` (campo `omie_codigo` ou similar); contas a receber → como agregar faturamento por cliente/contrato para comparação com `contracts.mrr`.
 3. [x] **Regras de reconciliação** — Definir tolerância de divergência MRR vs. faturamento Omie (ex.: % ou valor fixo); quando disparar alerta na UI. *(completed: 2026-02-03T20:47:28.652Z)*
-4. **Documentar decisões** — Atualizar este plano com: endpoints escolhidos, formato de mapeamento, e link para doc oficial Omie usada.
+4. [x] **Documentar decisões** — Atualizar este plano com: endpoints escolhidos, formato de mapeamento, e link para doc oficial Omie usada. *(completed: 2026-02-03T20:47:30.802Z)*
 
 **Commit Checkpoint:** `chore(plan): phase 1 discovery integracao-omie-erp`
 
@@ -203,13 +203,15 @@ lastUpdated: "2026-02-03T20:47:28.652Z"
 
 ## Execution History
 
-> Last updated: 2026-02-03T20:47:28.652Z | Progress: 100%
+> Last updated: 2026-02-03T20:47:30.802Z | Progress: 100%
 
 ### phase-1 [DONE]
 - Started: 2026-02-03T20:47:26.531Z
-- Completed: 2026-02-03T20:47:28.652Z
+- Completed: 2026-02-03T20:47:30.802Z
 
 - [x] Step 1: Step 1 *(2026-02-03T20:47:26.531Z)*
   - Notes: Credenciais e escopo: OMIE_APP_KEY/SECRET em env; endpoints ListarClientes e financas/contareceber
 - [x] Step 3: Step 3 *(2026-02-03T20:47:28.652Z)*
   - Notes: Reconciliação: tolerância 5% MRR ou R$50; período mês corrente; alerta na UI
+- [x] Step 4: Step 4 *(2026-02-03T20:47:30.802Z)*
+  - Output: .context/workflow/artifacts/integracao-omie-erp-phase-p-design.md

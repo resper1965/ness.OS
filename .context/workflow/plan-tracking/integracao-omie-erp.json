@@ -20,11 +20,27 @@
           "status": "completed",
           "completedAt": "2026-02-03T20:47:28.652Z",
           "notes": "Reconciliação: tolerância 5% MRR ou R$50; período mês corrente; alerta na UI"
+        },
+        {
+          "stepIndex": 4,
+          "description": "Step 4",
+          "status": "completed",
+          "completedAt": "2026-02-03T20:47:30.802Z",
+          "output": ".context/workflow/artifacts/integracao-omie-erp-phase-p-design.md"
         }
       ],
-      "completedAt": "2026-02-03T20:47:28.652Z"
+      "completedAt": "2026-02-03T20:47:30.802Z"
     }
   },
-  "decisions": [],
-  "lastUpdated": "2026-02-03T20:47:28.652Z"
+  "decisions": [
+    {
+      "title": "Mapeamento Omie ↔ clients",
+      "description": "clients.omie_codigo (unique); match por document/CNPJ na primeira sync; upsert por omie_codigo depois.",
+      "phase": "P",
+      "status": "accepted",
+      "id": "dec-1770151653017",
+      "decidedAt": "2026-02-03T20:47:33.017Z"
+    }
+  ],
+  "lastUpdated": "2026-02-03T20:47:30.802Z"
 }
