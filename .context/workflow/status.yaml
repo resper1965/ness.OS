@@ -19,15 +19,16 @@ phases:
 
 execution:
   history:
-    - timestamp: "2026-02-03T20:43:33.144Z"
+    - timestamp: "2026-02-03T20:47:26.767Z"
       phase: P
-      action: started
-    - timestamp: "2026-02-03T20:43:38.009Z"
-      phase: P
-      action: plan_linked
+      action: step_completed
       plan: "integracao-omie-erp"
-  last_activity: "2026-02-03T20:43:38.009Z"
-  resume_context: "Plano vinculado - aguardando revisão"
+      planPhase: "phase-1"
+      stepIndex: 1
+      stepDescription: "Step 1"
+      notes: "Credenciais e escopo: OMIE_APP_KEY/SECRET em env; endpoints ListarClientes e financas/contareceber"
+  last_activity: "2026-02-03T20:47:26.767Z"
+  resume_context: "Concluído: Step 1"
 
 approval:
   plan_created: true

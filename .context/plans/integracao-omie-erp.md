@@ -1,5 +1,6 @@
 ---
 status: ready
+progress: 100
 generated: 2026-02-03
 planSlug: integracao-omie-erp
 planVinculado: docs/PLANO-NESS-FIN-CFO-DIGITAL.md
@@ -31,6 +32,7 @@ phases:
   - id: "phase-3"
     name: "Validation & Handoff"
     prevc: "V"
+lastUpdated: "2026-02-03T20:47:26.531Z"
 ---
 
 # Integração Omie ERP — ness.FIN (CEP)
@@ -131,7 +133,7 @@ phases:
 
 **Steps**
 
-1. **Confirmar credenciais e escopo** — Validar OMIE_APP_KEY e OMIE_APP_SECRET; listar endpoints que serão usados na primeira entrega: ListarClientes, listar contas a receber (e filtros/período).
+1. [x] **Confirmar credenciais e escopo** — Validar OMIE_APP_KEY e OMIE_APP_SECRET; listar endpoints que serão usados na primeira entrega: ListarClientes, listar contas a receber (e filtros/período). *(completed: 2026-02-03T20:47:26.531Z)*
 2. **Mapeamento de dados** — Definir: Omie cliente (codigo_cliente / CNPJ) → `clients` (campo `omie_codigo` ou similar); contas a receber → como agregar faturamento por cliente/contrato para comparação com `contracts.mrr`.
 3. **Regras de reconciliação** — Definir tolerância de divergência MRR vs. faturamento Omie (ex.: % ou valor fixo); quando disparar alerta na UI.
 4. **Documentar decisões** — Atualizar este plano com: endpoints escolhidos, formato de mapeamento, e link para doc oficial Omie usada.
@@ -198,6 +200,18 @@ phases:
 - **Artefato:** [.context/workflow/artifacts/integracao-omie-erp-phase-p-design.md](../workflow/artifacts/integracao-omie-erp-phase-p-design.md)
 
 ---
+
+## Execution History
+
+> Last updated: 2026-02-03T20:47:26.531Z | Progress: 100%
+
+### phase-1 [DONE]
+- Started: 2026-02-03T20:47:26.531Z
+- Completed: 2026-02-03T20:47:26.531Z
+
+- [x] Step 1: Step 1 *(2026-02-03T20:47:26.531Z)*
+  - Notes: Credenciais e escopo: OMIE_APP_KEY/SECRET em env; endpoints ListarClientes e financas/contareceber
+
 
 ## Evidence & Follow-up
 

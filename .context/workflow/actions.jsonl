@@ -113,3 +113,4 @@
 {"timestamp":"2026-02-03T20:43:38.012Z","tool":"plan","action":"link","status":"success","details":{"params":{"action":"link","planSlug":"integracao-omie-erp"},"result":{"success":true}}}
 {"timestamp":"2026-02-03T20:46:22.960Z","tool":"agent","action":"getSequence","status":"success","details":{"params":{"action":"getSequence","phases":["P"]}}}
 {"timestamp":"2026-02-03T20:46:25.044Z","tool":"agent","action":"orchestrate","status":"success","details":{"params":{"action":"orchestrate","phase":"P"},"result":{"count":3}}}
+{"timestamp":"2026-02-03T20:47:26.774Z","tool":"plan","action":"updateStep","status":"success","details":{"params":{"action":"updateStep","planSlug":"integracao-omie-erp","phaseId":"phase-1","status":"completed","stepIndex":1,"notes":"Credenciais e escopo: OMIE_APP_KEY/SECRET em env; endpoints ListarClientes e financas/contareceber"},"result":{"success":true,"planSlug":"integracao-omie-erp","status":"completed"}}}
