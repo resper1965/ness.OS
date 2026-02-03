@@ -1,23 +1,14 @@
 {
   "active": [
     {
-      "slug": "reducao-complexidade-codebase",
-      "path": "plans/reducao-complexidade-codebase.md",
-      "title": "Redução de Complexidade — SIMPLIFICA",
-      "summary": "Simplificar codebase: consolidar Server Actions por domínio, unificar componentes (DataTable, EntityForm, StatusBadge), centralizar schemas Zod, otimizar DB. 6 fases: Auditoria → Actions → Componentes → Lib → DB → Validação.",
-      "linkedAt": "2026-02-02T00:00:00.000Z",
-      "status": "active",
-      "trigger": "SIMPLIFICA"
-    },
-    {
-      "slug": "ness-growth-inteligencia-comercial",
-      "path": "plans/ness-growth-inteligencia-comercial.md",
-      "title": "ness.GROWTH — Comercial & Conteúdo",
-      "summary": "Motor de Vendas e alimentação do Site Público. Trava do Catálogo (playbook_id). Integração Site (Case, Vaga → site). Agentes: Propostas (cliente+playbook→minuta) e Conteúdo (case→post).",
-      "linkedAt": "2026-01-30T22:07:19.463Z",
+      "slug": "integracao-omie-erp",
+      "path": "plans/integracao-omie-erp.md",
+      "title": "Integração Omie ERP — ness.FIN (CEP)",
+      "summary": "Planejar e implementar integração com Omie ERP: sync clientes, contratos e contas a receber; reconciliar MRR com faturamento; mapear despesas por contrato. Usar OMIE_APP_KEY e OMIE_APP_SECRET.",
+      "linkedAt": "2026-02-03T20:43:38.005Z",
       "status": "active"
     }
   ],
   "completed": [],
-  "primary": "reducao-complexidade-codebase"
+  "primary": "integracao-omie-erp"
 }

@@ -4,6 +4,39 @@ name: glossary
 description: Project terminology, type definitions, domain entities, and business rules
 category: glossary
 generated: 2026-01-30
-status: unfilled
+status: filled
 scaffoldVersion: "2.0.0"
 ---
+
+# Glossário ness.OS
+
+## Conceitos centrais
+
+| Termo | Definição |
+|-------|-----------|
+| **ness.OS** | Plataforma central de gestão e inteligência corporativa da NESS. Atua como Sistema Nervoso Digital. |
+| **ness.WEB** | Site institucional público — blog, soluções, carreiras, contato. Consome dados publicados pelo ness.OS. |
+| **Sistema Nervoso Digital** | Metáfora: o ness.OS integra operação, finanças, jurídico, pessoas e comercial em um ecossistema auditável. |
+| **Orquestrador de Negócios** | Transição de prestadora de serviços (esforço) para orquestradora (conhecimento padronizado, rentabilidade real). |
+
+## Módulos
+
+| Módulo | Foco |
+|--------|------|
+| **ness.GROWTH** | Inteligência comercial, marketing, DXP — Smart Proposals, Motor de Conteúdo, Chatbot RAG, Branding |
+| **ness.OPS** | Gestão do conhecimento e operação — Engenharia de Processos (Playbooks), Ingestão de Indicadores, Mapeamento de Recursos |
+| **ness.FIN** | CFO Digital — rentabilidade real, ciclo de vida de contratos, custos |
+| **ness.JUR** | Jurídico e compliance — análise de contratos, conformidade legal (LGPD, Marco Civil) |
+| **ness.GOV** | Governança corporativa — políticas internas, rastreabilidade de aceite |
+| **ness.PEOPLE** | Talentos e ATS — recrutamento integrado, avaliação 360º, treinamento orientado por gaps |
+
+## Termos técnicos
+
+| Termo | Definição |
+|-------|-----------|
+| **Playbook** | Manual de procedimentos padronizados; travado ao catálogo de serviços (services_catalog.playbook_id). |
+| **Base de Conhecimento de Sucesso** | Contratos e escopos históricos validados; usados para gerar propostas via IA. |
+| **RAG** | Retrieval-Augmented Generation — chatbot que consulta documentação real (playbooks, portfólio) sem alucinações. |
+| **Trava de Catálogo** | Serviço ativo exige playbook associado; GROWTH vende apenas o que OPS documentou. |
+| **AppPageHeader** | Header fixo da página no app (/app/*): título, subtítulo, ações; 64px; position: fixed, não some ao rolar. |
+| **Layout do app** | Sidebar (ness.OS) 224px + área principal; header da página fixo; docs: LAYOUT-APP-HEADERS.md. |

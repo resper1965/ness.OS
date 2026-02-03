@@ -4,7 +4,7 @@ Welcome to the repository knowledge base. Start with the project overview, then 
 
 ## Core Guides
 - [Project Overview](./project-overview.md)
-- [Architecture Notes](./architecture.md)
+- [Architecture Notes](./architecture.md) — inclui layout do app e headers fixos
 - [Development Workflow](./development-workflow.md)
 - [Testing Strategy](./testing-strategy.md)
 - [Glossary & Domain Concepts](./glossary.md)

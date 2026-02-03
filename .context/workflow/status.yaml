@@ -1,51 +1,35 @@
 project:
-  name: "ness-growth-fase1"
-  scale: MEDIUM
-  started: "2026-01-30T22:06:56.827Z"
-  current_phase: V
+  name: "integracao-omie-erp"
+  scale: LARGE
+  started: "2026-02-03T20:43:33.144Z"
+  current_phase: P
 
 phases:
   P:
-    status: filled
-    started_at: "2026-01-30T22:06:56.827Z"
-    completed_at: "2026-01-30T22:07:11.072Z"
+    status: in_progress
+    started_at: "2026-02-03T20:43:33.144Z"
   R:
-    status: filled
-    started_at: "2026-01-30T22:07:11.073Z"
-    completed_at: "2026-01-30T22:07:17.440Z"
+    status: pending
   E:
-    status: filled
-    started_at: "2026-01-30T22:07:17.441Z"
-    completed_at: "2026-01-30T22:11:01.326Z"
+    status: pending
   V:
-    status: completed
-    started_at: "2026-01-30T22:11:01.329Z"
-    completed_at: "2026-01-30T22:11:15.715Z"
-    outputs:
-      - path: "Build passou"
-        status: filled
-      - path: "RF.GRO.01 e RF.GRO.02 implementados"
-        status: filled
+    status: pending
   C:
-    status: skipped
-    reason: "Not required for scale MEDIUM"
+    status: pending
 
 execution:
   history:
-    - timestamp: "2026-01-30T22:11:15.715Z"
-      phase: V
-      action: completed
-  last_activity: "2026-01-30T22:11:15.715Z"
-  resume_context: "Fase V (Validação) concluída"
-
-settings:
-  autonomous_mode: true
-  require_plan: true
-  require_approval: true
+    - timestamp: "2026-02-03T20:43:33.144Z"
+      phase: P
+      action: started
+    - timestamp: "2026-02-03T20:43:38.009Z"
+      phase: P
+      action: plan_linked
+      plan: "integracao-omie-erp"
+  last_activity: "2026-02-03T20:43:38.009Z"
+  resume_context: "Plano vinculado - aguardando revisão"
 
 approval:
   plan_created: true
-  plan_approved: true
-  approved_by: "system-migration"
-  approved_at: "2026-01-30T22:07:19.464Z"
+  plan_approved: false
 

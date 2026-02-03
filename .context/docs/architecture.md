@@ -3,18 +3,27 @@ type: doc
 name: architecture
 description: System architecture, layers, patterns, and design decisions
 category: architecture
-generated: 2026-02-02
+generated: 2026-02-03
 status: filled
 scaffoldVersion: "2.0.0"
 ---
 
 # Arquitetura ness.OS
 
+**Visão dos 6 módulos:** [ness-os-definicao-visao](../plans/ness-os-definicao-visao.md)
+
 ## Rotas
 
 - `app/(site)/` — Site público (blog, carreiras, contato, soluções, casos)
 - `app/(app)/` — Dashboard interno (growth, ops, fin, people, jur, gov)
 - `app/api/` — API routes (chat/playbooks, chat/public, jur/risk)
+
+## Layout do app (/app/*)
+
+- **Estrutura:** `AppLayout` → sidebar fixa + `main` com `overflow-auto`. Conteúdo de cada página dentro de `PageContent`.
+- **Sidebar:** `AppSidebar` — largura 224px (w-56); header "ness.OS" com altura 64px e uma linha separadora.
+- **Header da página:** `AppPageHeader` — **fixo** (`position: fixed`, left: 224px, right: 0, z-10); altura 64px; não desaparece ao rolar. Espaçador abaixo evita sobreposição do conteúdo.
+- **Constantes:** `src/lib/header-constants.ts` (APP_HEADER_HEIGHT_PX = 64). Referência: [docs/LAYOUT-APP-HEADERS.md](../../docs/LAYOUT-APP-HEADERS.md).
 
 ## Camadas
 

@@ -7,12 +7,12 @@ phases:
   - phase-2
 constrains:
   - "Manter consistência visual com design system existente"
-  - "Header fixo sem scroll, mesma altura que sidebar header"
+  - "Header fixo sem scroll (position: fixed), mesma altura que sidebar header (64px)"
 ---
 
 # Agrupar Menu + Header Fixo — ness.OS
 
-> Menu lateral agrupado por módulos. Header da página sticky, mesma altura do header da sidebar.
+> Menu lateral agrupado por módulos. Header da página fixo (position: fixed), 64px, não some ao rolar; mesma altura do header da sidebar.
 
 **Trigger:** "agrupar menu", "menu por módulos", "header fixo", "header não deve scroll"
 
@@ -29,8 +29,8 @@ constrains:
 ### phase-2 — Header da página
 | stepIndex | Ação | Artefato | Status |
 |-----------|------|----------|--------|
-| 1 | Definir altura compartilhada (h-14) para sidebar header e page header | APP_HEADER_HEIGHT | ✅ |
-| 2 | Criar AppPageHeader sticky, mesma altura | shared/app-page-header.tsx | ✅ |
-| 3 | Atualizar sidebar header para altura fixa | app-sidebar.tsx | ✅ |
-| 4 | Layout main: header sticky + conteúdo scroll | main overflow-auto, header sticky | ✅ |
+| 1 | Definir altura compartilhada 64px (APP_HEADER_HEIGHT_PX) para sidebar e page header | header-constants.ts | ✅ |
+| 2 | AppPageHeader fixo (position: fixed), 64px, não some ao rolar | shared/app-page-header.tsx | ✅ |
+| 3 | Sidebar header 64px (min/max), uma linha separadora | app-sidebar.tsx | ✅ |
+| 4 | Layout main: header fixo + conteúdo scroll | main overflow-auto, header fixed | ✅ |
 | 5 | Migrar páginas para usar AppPageHeader | Dashboard, Casos, Leads, Posts, Playbooks, Contratos, GOV, JUR | ✅ |

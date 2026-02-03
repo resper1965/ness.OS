@@ -1,0 +1,14 @@
+{
+  "active": [
+    {
+      "slug": "ness-os-definicao-visao",
+      "path": "plans/ness-os-definicao-visao.md",
+      "title": "ness.OS: O Sistema Operacional de Gestão e Inteligência Corporativa",
+      "summary": "**Tipo:** Documento de visão e definição canônica. Referência para planos de implementação por módulo.",
+      "linkedAt": "2026-02-03T15:00:10.247Z",
+      "status": "active"
+    }
+  ],
+  "completed": [],
+  "primary": "ness-os-definicao-visao"
+}
