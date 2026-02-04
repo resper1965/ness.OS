@@ -69,6 +69,13 @@ useEffect(() => {
 - **Props:** `id`, `label`, `name`, `placeholder?`, `helper?`, `error?`, `disabled?`, `required?`, `as?: 'input' | 'select' | 'textarea'`.
 - **Acessibilidade:** label com `htmlFor`/`id`; `aria-invalid` e `aria-describedby` quando há helper/erro; erro com `role="alert"`.
 
+### Componentes UI (primitivos shadcn-style)
+
+- **Pasta:** `src/components/ui/` — primitivos alinhados ao [plano Bundui componentes profundos](../.context/plans/bundui-componentes-profundos-nessos.md).
+- **Button:** `import { Button, buttonVariants } from "@/components/ui/button"`. Variantes: default (ness), destructive, outline, secondary, ghost, link. Tamanhos: default, sm, lg, icon.
+- **Card:** `import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"`. Bordas slate-700, fundo slate-800/50.
+- **Documentação:** `src/components/ui/README.md`. Wrappers existentes (PrimaryButton, PageCard) permanecem; podem usar ui/ internamente no futuro.
+
 ### PrimaryButton
 
 - **Loading:** prop `loading` desabilita o botão e exibe spinner; usar em submits (`as="button"` + `type="submit"`).
@@ -99,6 +106,13 @@ useEffect(() => {
 
 - Sidebar colapsável (drawer) em &lt;768px (SidebarProvider/AppSidebar).
 - Tabelas com `overflow-x-auto` dentro de PageCard; touch targets em botões ≥ 44px (py-2 px-4).
+
+## Tema (light/dark)
+
+- **Provider:** `next-themes` no root layout (`src/app/layout.tsx`); `ThemeProvider` em `src/components/providers/theme-provider.tsx`.
+- **Toggle:** `ThemeToggle` em `src/components/app/theme-toggle.tsx`; exposto no AppHeader (ícone Sol/Lua). Alterna entre `dark` e `light`; preferência persistida em cookie (next-themes).
+- **Variáveis:** `globals.css` — `:root` = tema escuro (default); `.light` = tema claro (--background, --foreground, --primary, --muted, --border, etc.). Primary ness (#00ade8) mantido em ambos.
+- **Default:** tema escuro (`defaultTheme="dark"`). Contraste WCAG: validar em ambos os modos (VALIDACAO-MANUAL item 8).
 
 ## Checklist de validação (Fase 5)
 

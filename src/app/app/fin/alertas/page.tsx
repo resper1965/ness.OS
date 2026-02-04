@@ -11,7 +11,7 @@ export default async function FinAlertasPage() {
   in30.setDate(in30.getDate() + 30);
   const in30Str = in30.toISOString().slice(0, 10);
 
-  const [renewalRes, reconciliationAlerts] = await Promise.all([
+  const [renewalRes, endDateRes, reconciliationAlerts] = await Promise.all([
     supabase
       .from('contracts')
       .select('id, mrr, renewal_date, clients(name)')
@@ -19,9 +19,17 @@ export default async function FinAlertasPage() {
       .gte('renewal_date', today)
       .lte('renewal_date', in30Str)
       .order('renewal_date'),
+    supabase
+      .from('contracts')
+      .select('id, mrr, end_date, clients(name)')
+      .not('end_date', 'is', null)
+      .gte('end_date', today)
+      .lte('end_date', in30Str)
+      .order('end_date'),
     getReconciliationAlerts(),
   ]);
   const data = renewalRes.data;
+  const endDateData = endDateRes.data;
 
   return (
     <PageContent>
@@ -91,6 +99,37 @@ export default async function FinAlertasPage() {
           </table>
           {(!data || data.length === 0) && (
             <div className="px-4 py-12 text-center text-slate-500">Nenhum contrato com renovação nos próximos 30 dias.</div>
+          )}
+        </div>
+      </PageCard>
+
+      {/* Vencimento (end_date) */}
+      <PageCard title="Vencimento (próximos 30 dias)">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm">
+            <thead className="bg-slate-800/50 text-slate-300">
+              <tr className="h-[52px]">
+                <th className="px-5 py-4 font-medium">Cliente</th>
+                <th className="px-5 py-4 font-medium">MRR</th>
+                <th className="px-5 py-4 font-medium">Vencimento</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-700">
+              {(endDateData ?? []).map((c) => {
+                const client = Array.isArray(c.clients) ? c.clients[0] : c.clients;
+                const name = (client as { name?: string } | null)?.name;
+                return (
+                  <tr key={c.id} className="text-slate-300">
+                    <td className="px-5 py-4">{name ?? '-'}</td>
+                    <td className="px-5 py-4">R$ {Number(c.mrr).toLocaleString('pt-BR')}</td>
+                    <td className="px-5 py-4 text-amber-400">{c.end_date ? new Date(c.end_date).toLocaleDateString('pt-BR') : '-'}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          {(!endDateData || endDateData.length === 0) && (
+            <div className="px-4 py-12 text-center text-slate-500">Nenhum contrato com vencimento nos próximos 30 dias.</div>
           )}
         </div>
       </PageCard>

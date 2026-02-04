@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { SidebarTrigger } from '@/components/app/sidebar-context';
+import { ThemeToggle } from '@/components/app/theme-toggle';
 import { APP_HEADER_HEIGHT_PX } from '@/lib/header-constants';
 import { navModules, getAllItems } from '@/lib/nav-config';
 
@@ -39,6 +40,9 @@ export function AppHeader() {
           <span className="font-medium text-slate-200">{breadcrumb.label}</span>
         </div>
       )}
+      <div className="ml-auto">
+        <ThemeToggle />
+      </div>
     </header>
   );
 }

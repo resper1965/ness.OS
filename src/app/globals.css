@@ -27,7 +27,7 @@
     outline: none;
   }
 
-  /* ness. site theme (dark) */
+  /* ness. site theme (dark) — default */
   :root {
     /* Backgrounds */
     --background: 222 47% 11%; /* #0f172a slate-900 */
@@ -43,6 +43,24 @@
     --accent-foreground: 210 40% 98%;
     --border: 215 28% 17%;
     --input: 215 28% 17%;
+    --ring: 199 100% 45%;
+    --destructive: 0 84% 60%;
+  }
+
+  /* Tema claro (classe .light no html — next-themes) */
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --primary: 199 100% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 199 100% 36%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 20% 35%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222 47% 11%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
     --ring: 199 100% 45%;
     --destructive: 0 84% 60%;
   }

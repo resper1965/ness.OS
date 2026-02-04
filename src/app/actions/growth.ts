@@ -3,6 +3,8 @@
 import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { leadSchema, postSchema } from '@/lib/validators/schemas';
+import { emitModuleEvent } from '@/lib/events/emit';
+import { processModuleEvent } from '@/lib/events/process';
 
 const VALID_STATUSES = ['new', 'qualified', 'proposal', 'won', 'lost'] as const;
 
@@ -31,16 +33,30 @@ export async function submitLead(
   }
 
   const supabase = await createClient();
-  const { error } = await supabase.from('inbound_leads').insert({
+  const { data: inserted, error } = await supabase
+    .from('inbound_leads')
+    .insert({
+      name: parsed.data.name,
+      email: parsed.data.email,
+      company: parsed.data.company ?? null,
+      message: parsed.data.message ?? null,
+      origin_url: parsed.data.origin_url ?? null,
+      status: 'new',
+    })
+    .select('id')
+    .single();
+
+  if (error) return { error: 'Erro ao enviar. Tente novamente.' };
+
+  const payload = {
+    entity_id: inserted?.id ?? null,
     name: parsed.data.name,
     email: parsed.data.email,
     company: parsed.data.company ?? null,
-    message: parsed.data.message ?? null,
-    origin_url: parsed.data.origin_url ?? null,
-    status: 'new',
-  });
+  };
+  await emitModuleEvent('growth', 'lead.created', inserted?.id ?? null, payload);
+  await processModuleEvent('growth', 'lead.created', payload);
 
-  if (error) return { error: 'Erro ao enviar. Tente novamente.' };
   return { success: true };
 }
 

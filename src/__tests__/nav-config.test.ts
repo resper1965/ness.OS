@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { navModules, getAllItems, type NavModule } from '@/lib/nav-config';
 
 describe('nav-config', () => {
-  it('navModules tem início e módulos GROWTH, OPS, PEOPLE, FIN, JUR, GOV', () => {
+  it('navModules tem início e módulos GROWTH, OPS, PEOPLE, FIN, JUR, GOV, DATA', () => {
     const ids = navModules.map((m) => m.id);
     expect(ids).toContain('inicio');
     expect(ids).toContain('growth');
@@ -11,6 +11,7 @@ describe('nav-config', () => {
     expect(ids).toContain('fin');
     expect(ids).toContain('jur');
     expect(ids).toContain('gov');
+    expect(ids).toContain('data');
   });
 
   it('módulo inicio tem apenas Dashboard', () => {

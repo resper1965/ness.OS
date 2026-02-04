@@ -1,38 +1,69 @@
 project:
-  name: "pendencias-abertas-nessos"
+  name: "pendentes-detalhado-gemini"
   scale: LARGE
-  started: "2026-02-04T11:26:03.238Z"
-  current_phase: E
+  started: "2026-02-04T21:01:41.241Z"
+  current_phase: C
 
 phases:
   P:
     status: filled
-    started_at: "2026-02-04T11:26:03.238Z"
-    completed_at: "2026-02-04T11:33:33.184Z"
+    started_at: "2026-02-04T21:01:41.241Z"
+    completed_at: "2026-02-04T21:05:50.578Z"
   R:
     status: filled
-    started_at: "2026-02-04T11:33:33.185Z"
-    completed_at: "2026-02-04T11:34:47.501Z"
+    started_at: "2026-02-04T21:05:50.579Z"
+    completed_at: "2026-02-04T21:10:24.929Z"
   E:
-    status: in_progress
-    started_at: "2026-02-04T11:34:47.502Z"
+    status: filled
+    started_at: "2026-02-04T21:10:24.930Z"
+    completed_at: "2026-02-04T21:13:29.795Z"
   V:
-    status: pending
+    status: filled
+    started_at: "2026-02-04T21:13:29.796Z"
+    completed_at: "2026-02-04T22:07:32.142Z"
   C:
-    status: pending
+    status: completed
+    started_at: "2026-02-04T22:07:32.144Z"
+    completed_at: "2026-02-04T22:09:01.649Z"
+    outputs:
+      - path: ".context/workflow/artifacts/pendentes-detalhado-gemini-phase-e-full-execution.md"
+        status: filled
+      - path: ".context/workflow/artifacts/pendentes-detalhado-gemini-phase-c-confirmation.md"
+        status: filled
+
+agents:
+  architect-specialist:
+    status: completed
+    completed_at: "2026-02-04T21:08:16.532Z"
+    outputs: ["artifacts/pendentes-detalhado-gemini-phase-r-architect-review.md"]
+  code-reviewer:
+    status: completed
+    started_at: "2026-02-04T21:08:16.534Z"
+    completed_at: "2026-02-04T21:09:30.437Z"
+    outputs: ["artifacts/pendentes-detalhado-gemini-phase-r-code-review.md"]
+  security-auditor:
+    status: in_progress
+    started_at: "2026-02-04T21:09:30.439Z"
+  feature-developer:
+    status: completed
+    completed_at: "2026-02-04T22:04:48.738Z"
+    outputs: ["artifacts/pendentes-detalhado-gemini-phase-e-full-execution.md"]
+  backend-specialist:
+    status: in_progress
+    started_at: "2026-02-04T22:04:48.741Z"
 
 execution:
   history:
-    - timestamp: "2026-02-04T11:34:47.502Z"
-      phase: E
-      action: started
-  last_activity: "2026-02-04T11:34:47.502Z"
-  resume_context: "Fase E (Execução) em progresso"
+    - timestamp: "2026-02-04T22:09:01.649Z"
+      phase: C
+      action: completed
+  last_activity: "2026-02-04T22:09:01.649Z"
+  resume_context: "Fase C (Confirmação) concluída"
 
 approval:
   plan_created: true
   plan_approved: true
-  approved_by: "reviewer"
-  approved_at: "2026-02-04T11:34:42.976Z"
-  approval_notes: "Fase R concluída: escopo e sequência aprovados; artefato phase-r-review.md"
+  approved_by: "solo-dev"
+  approved_at: "2026-02-04T21:10:15.677Z"
+  approval_notes: "Revisão R concluída: architect OK, code-review OK, security-audit OK. Aprovado para fase E (Execute)."
 

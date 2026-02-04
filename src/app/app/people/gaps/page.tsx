@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { GapForm } from '@/components/people/gap-form';
+import { EntityForm } from '@/components/shared/entity-form';
 import { DataTable } from '@/components/shared/data-table';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
@@ -29,7 +30,9 @@ export default async function GapsPage() {
         title="Gaps de Treinamento"
         subtitle="Registro de lacunas de conhecimento. Vincule a playbooks para treinamento."
       />
-      <GapForm profiles={profiles ?? []} playbooks={playbooks ?? []} />
+      <EntityForm title="Novo gap de treinamento">
+        <GapForm profiles={profiles ?? []} playbooks={playbooks ?? []} />
+      </EntityForm>
       <PageCard title="Gaps de Treinamento">
         <DataTable<Gap>
           data={(gaps ?? []) as Gap[]}

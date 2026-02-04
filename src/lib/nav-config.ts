@@ -33,7 +33,7 @@ export const navModules: NavModule[] = [
     title: 'ness.OPS',
     areas: [
       { id: 'conhecimento', title: 'Conhecimento', items: [{ href: '/app/ops/playbooks', label: 'Playbooks' }, { href: '/app/ops/playbooks/chat', label: 'Knowledge Bot' }] },
-      { id: 'operacao', title: 'Operação', items: [{ href: '/app/ops/metricas', label: 'Métricas' }, { href: '/app/ops/timer', label: 'Timer' }, { href: '/app/ops/indicators', label: 'Indicadores' }, { href: '/app/ops/assets', label: 'Assets' }] },
+      { id: 'operacao', title: 'Operação', items: [{ href: '/app/ops/workflows', label: 'Workflows' }, { href: '/app/ops/metricas', label: 'Métricas' }, { href: '/app/ops/timer', label: 'Timer' }, { href: '/app/ops/indicators', label: 'Indicadores' }, { href: '/app/ops/assets', label: 'Assets' }] },
     ],
   },
   {
@@ -48,6 +48,7 @@ export const navModules: NavModule[] = [
     id: 'fin',
     title: 'ness.FIN',
     areas: [
+      { id: 'visao-geral', title: 'Visão Geral', items: [{ href: '/app/fin', label: 'Visão Geral' }] },
       { id: 'contratos', title: 'Contratos', items: [{ href: '/app/fin/contratos', label: 'Contratos' }] },
       { id: 'financeiro', title: 'Financeiro', items: [{ href: '/app/fin/rentabilidade', label: 'Rentabilidade' }, { href: '/app/fin/alertas', label: 'Alertas' }] },
     ],
@@ -68,6 +69,15 @@ export const navModules: NavModule[] = [
       { href: '/app/gov', label: 'Visão Geral' },
       { href: '/app/gov/politicas', label: 'Políticas' },
       { href: '/app/gov/aceites', label: 'Aceites' },
+    ],
+  },
+  {
+    id: 'data',
+    title: 'ness.DATA',
+    items: [
+      { href: '/app/data', label: 'Visão Geral' },
+      { href: '/app/ops/indicators', label: 'Indicadores' },
+      { href: '/app/fin/contratos', label: 'Sync ERP (Omie)' },
     ],
   },
 ];

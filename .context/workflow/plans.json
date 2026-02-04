@@ -1,14 +1,14 @@
 {
   "active": [
     {
-      "slug": "pendencias-abertas-nessos",
-      "path": "plans/pendencias-abertas-nessos.md",
-      "title": "Pendências abertas ness.OS — resumo consolidado",
-      "summary": "Resumo de todos os itens em aberto para priorização e execução via ai-context/workflows. Atualizado após conclusão da adaptação de layout (Fase C) e incorporação do dólar em ness.DATA.",
-      "linkedAt": "2026-02-04T11:26:12.096Z",
+      "slug": "pendentes-detalhado-gemini",
+      "path": "plans/pendentes-detalhado-gemini.md",
+      "title": "Pendências ness.OS — planejamento detalhado (agente Gemini)",
+      "summary": "Lista detalhada do que falta ser feito, priorizada por P0–P3 e por módulo, para execução com **agente LLM Gemini** via ai-context/workflows.",
+      "linkedAt": "2026-02-04T21:05:46.252Z",
       "status": "active"
     }
   ],
   "completed": [],
-  "primary": "pendencias-abertas-nessos"
+  "primary": "pendentes-detalhado-gemini"
 }

@@ -170,3 +170,31 @@ export async function saveMetric(
   revalidatePath('/app/fin/rentabilidade');
   return { success: true };
 }
+
+// === WORKFLOWS (HITL) ===
+
+/** Resolve aprovação pendente (aprovar ou rejeitar). Atualiza workflow_pending_approvals e revalida /app/ops/workflows. */
+export async function resolveWorkflowApproval(
+  approvalId: string,
+  status: 'approved' | 'rejected',
+  resolutionPayload?: Record<string, unknown>
+): Promise<{ success?: boolean; error?: string }> {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { error: 'Não autenticado.' };
+
+  const { error } = await supabase
+    .from('workflow_pending_approvals')
+    .update({
+      status,
+      resolved_at: new Date().toISOString(),
+      resolved_by: user.id,
+      resolution_payload: resolutionPayload ?? null,
+    })
+    .eq('id', approvalId)
+    .eq('status', 'pending');
+
+  if (error) return { error: error.message };
+  revalidatePath('/app/ops/workflows');
+  return { success: true };
+}

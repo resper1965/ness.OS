@@ -5,11 +5,18 @@ vi.mock('@/lib/supabase/server', () => ({
   createClient: vi.fn(() =>
     Promise.resolve({
       from: () => ({
-        insert: () => Promise.resolve({ error: null }),
+        insert: () => ({
+          select: () => ({
+            single: () => Promise.resolve({ data: { id: 'test-id' }, error: null }),
+          }),
+        }),
       }),
     })
   ),
 }));
+
+vi.mock('@/lib/events/emit', () => ({ emitModuleEvent: vi.fn(() => Promise.resolve()) }));
+vi.mock('@/lib/events/process', () => ({ processModuleEvent: vi.fn(() => Promise.resolve()) }));
 
 describe('submitLead', () => {
   it('retorna erro quando nome inválido', async () => {
