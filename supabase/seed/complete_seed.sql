@@ -337,6 +337,19 @@ ON CONFLICT (slug) DO UPDATE SET
 
 
 -- Fim seed corp-site-ness
+-- Classificação de entregas (executar após 002_corp_site_content.sql)
+-- Serviços: n.secops, n.infraops, n.devarch, n.autoops, n.cirt, DPOaaS
+-- Produtos: n.privacy, n.faturasONS, n.flow, n.discovery
+-- Verticais: forense.io, trustness.
+
+UPDATE public.services_catalog SET delivery_type = 'service'
+  WHERE slug IN ('nsecops', 'ninfraops', 'ndevarch', 'nautoops', 'ncirt', 'trustness-dpo');
+
+UPDATE public.services_catalog SET delivery_type = 'product'
+  WHERE slug IN ('nprivacy', 'nfaturasons', 'nflow', 'ndiscovery');
+
+UPDATE public.services_catalog SET delivery_type = 'vertical'
+  WHERE slug IN ('forense', 'trustness');
 -- Seed posts do blog (public_posts)
 -- Conteúdo do corp-site/home.json + exemplos
 
@@ -372,10 +385,8 @@ ON CONFLICT (slug) DO UPDATE SET
   seo_description = EXCLUDED.seo_description,
   is_published = EXCLUDED.is_published,
   published_at = EXCLUDED.published_at;
-
-
 -- === VERIFICAÇÃO (legitima execução) ===
--- Exibe contagens e alertas se esperado não bate
+-- Exibe contagens e WARNING se esperado não bate. Mensagens em NOTICES.
 
 DO $$
 DECLARE
@@ -388,9 +399,7 @@ BEGIN
   SELECT COUNT(*) INTO n_playbooks FROM public.playbooks;
   SELECT COUNT(*) INTO n_services FROM public.services_catalog WHERE is_active = true;
   SELECT COUNT(*) INTO n_static FROM public.static_pages;
-  SELECT COUNT(*) INTO n_posts FROM public.public_posts WHERE is_published = true;
-
-  RAISE NOTICE '=== SEED VERIFICADO ===';
+  SELECT COUNT(*) INTO n_posts FROM public.public_posts WHERE is_published = true;  RAISE NOTICE '=== SEED VERIFICADO ===';
   RAISE NOTICE 'playbooks: % (esperado >= 11)', n_playbooks;
   RAISE NOTICE 'services_catalog (ativos): % (esperado >= 11)', n_services;
   RAISE NOTICE 'static_pages: % (esperado >= 6)', n_static;

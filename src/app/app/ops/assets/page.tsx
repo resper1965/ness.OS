@@ -17,7 +17,7 @@ export default async function AssetsPage() {
       <PageCard title="Arquivos">
         <ul className="divide-y divide-slate-700">
           {(files ?? []).map((f) => (
-            <li key={f.path} className="px-4 py-3 text-sm text-slate-400">{f.name}</li>
+            <li key={f.path} className="px-5 py-4 text-sm text-slate-400">{f.name}</li>
           ))}
           {(!files || files.length === 0) && (
             <li className="px-4 py-8 text-center text-slate-500">Nenhum arquivo. Faça upload acima.</li>

@@ -11,9 +11,9 @@ export function PageCard({
   title?: string;
 }) {
   return (
-    <div className={`overflow-hidden rounded-lg border border-slate-700 ${className}`}>
+    <div className={`overflow-x-auto rounded-lg border border-slate-700 ${className}`}>
       {title && (
-        <div className="border-b border-slate-700 bg-slate-800/50 px-4 py-3">
+        <div className="flex min-h-[52px] items-center border-b border-slate-700 bg-slate-800/50 px-5 py-4">
           <h2 className="text-sm font-semibold text-slate-200">{title}</h2>
         </div>
       )}

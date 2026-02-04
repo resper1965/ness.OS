@@ -1,0 +1,30 @@
+{
+  "active": [
+    {
+      "slug": "integracao-omie-erp",
+      "path": "plans/integracao-omie-erp.md",
+      "title": "Integração Omie ERP — ness.FIN (CEP)",
+      "summary": "Planejar e implementar integração com Omie ERP: sync clientes, contratos e contas a receber; reconciliar MRR com faturamento; mapear despesas por contrato. Usar OMIE_APP_KEY e OMIE_APP_SECRET.",
+      "linkedAt": "2026-02-03T20:43:38.005Z",
+      "status": "active"
+    },
+    {
+      "slug": "adaptacao-layout-bundui-nessos",
+      "path": "plans/adaptacao-layout-bundui-nessos.md",
+      "title": "Adaptação do layout Bundui (shadcn-ui-kit-dashboard) para ness.OS",
+      "summary": "Planejamento para incorporar o layout e padrões do [Bundui Shadcn Admin Dashboard Free](https://github.com/bundui/shadcn-admin-dashboard-free) na aplicação ness.OS, evitando quebra, seguindo melhores práticas e usando ai-context (plan + workflow + agentes).",
+      "linkedAt": "2026-02-03T21:57:05.765Z",
+      "status": "active"
+    },
+    {
+      "slug": "pendencias-abertas-nessos",
+      "path": "plans/pendencias-abertas-nessos.md",
+      "title": "Pendências abertas ness.OS — resumo consolidado",
+      "summary": "Resumo de todos os itens em aberto para priorização e execução via ai-context/workflows. Atualizado após conclusão da adaptação de layout (Fase C) e incorporação do dólar em ness.DATA.",
+      "linkedAt": "2026-02-04T11:24:11.325Z",
+      "status": "active"
+    }
+  ],
+  "completed": [],
+  "primary": "integracao-omie-erp"
+}

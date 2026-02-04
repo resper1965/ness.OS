@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 type Props = {
   action: (prev: unknown, fd: FormData) => Promise<{ success?: boolean; error?: string }>;
-  initialValues?: { title?: string; slug?: string; raw_data?: string; summary?: string; content_html?: string; is_published?: boolean };
+  initialValues?: { id?: string; title?: string; slug?: string; raw_data?: string; summary?: string; content_html?: string; is_published?: boolean };
 };
 
 export function CaseForm({ action, initialValues }: Props) {
@@ -22,25 +22,26 @@ export function CaseForm({ action, initialValues }: Props) {
   }
 
   return (
-    <form action={formAction} className="max-w-2xl space-y-6">
+    <form action={formAction} className="max-w-4xl space-y-8">
+      {initialValues?.id && <input type="hidden" name="_id" value={initialValues.id} />}
       {state?.error && <p className="text-sm text-red-400">{state.error}</p>}
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">Título</label>
+        <label className="block text-sm font-medium text-slate-300 mb-3">Título</label>
         <input name="title" type="text" required defaultValue={initialValues?.title} className={inputClass} placeholder="Cliente X reduziu 40% de incidentes" />
         <p className={helpClass}>Título do caso de sucesso.</p>
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">Slug</label>
+        <label className="block text-sm font-medium text-slate-300 mb-3">Slug</label>
         <input name="slug" type="text" required defaultValue={initialValues?.slug} className={inputClass} placeholder="cliente-x-reduziu-incidentes" />
         <p className={helpClass}>URL amigável. Minúsculo, hífens.</p>
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">Dados brutos (raw)</label>
+        <label className="block text-sm font-medium text-slate-300 mb-3">Dados brutos (raw)</label>
         <textarea name="raw_data" rows={6} defaultValue={initialValues?.raw_data} className={inputClass + ' font-mono text-xs'} placeholder="Dados técnicos do projeto. Será usado pelo Agente de Conteúdo para gerar post." />
         <p className={helpClass}>Dados técnicos para o botão &quot;Transformar Case em Post&quot;.</p>
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">Resumo</label>
+        <label className="block text-sm font-medium text-slate-300 mb-3">Resumo</label>
         <textarea name="summary" rows={3} defaultValue={initialValues?.summary} className={inputClass} placeholder="Resumo executivo do caso." />
       </div>
       {!initialValues && (
@@ -51,7 +52,7 @@ export function CaseForm({ action, initialValues }: Props) {
       )}
       {initialValues && (
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-2">Conteúdo (HTML)</label>
+          <label className="block text-sm font-medium text-slate-300 mb-3">Conteúdo (HTML)</label>
           <textarea name="content_html" rows={10} defaultValue={initialValues?.content_html} className={inputClass + ' font-mono text-xs'} placeholder="<p>Conteúdo da página...</p>" />
         </div>
       )}
@@ -61,7 +62,7 @@ export function CaseForm({ action, initialValues }: Props) {
           <label htmlFor="pub" className="text-sm text-slate-300">Publicar no site</label>
         </div>
       )}
-      <div className="flex gap-4">
+      <div className="flex gap-4 mt-8">
         <button type="submit" className="rounded-md bg-ness px-4 py-2 text-sm font-medium text-white hover:bg-ness-600">Salvar</button>
         <Link href="/app/growth/casos" className="rounded-md border border-slate-600 px-4 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800">Cancelar</Link>
       </div>

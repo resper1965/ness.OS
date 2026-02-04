@@ -162,14 +162,14 @@ Ver [RF-CORE-REQUISITOS.md](RF-CORE-REQUISITOS.md)
 |-------|------|---------------|
 | Contratos: start_date, end_date | Datas críticas automatizadas | **Evoluir** `contracts`: renewal_date, adjustment_index (IGPM | IPCA), adjustment_frequency (anual | semestral). |
 | Sem alertas | Alertas de renovação, reajuste, faturamento | **Construir** `lifecycle_events` ou campos em contracts. Job que gera alertas: "Contrato X vence em 30 dias", "Reajuste IGPM em 15 dias". |
-| Sem cálculo de reajuste | Reajuste IGPM/IPCA automático | **Integrar** API de índices (BCB ou similar) ou input manual. Calcular próximo valor reajustado. |
+| Sem cálculo de reajuste | Reajuste IGPM/IPCA automático | **ness.DATA** coleta índices (BCB ou similar) e expõe consultas; FIN usa para calcular próximo valor reajustado. Ou input manual. Ver `.context/plans/ness-data-modulo-dados.md`. |
 | Sem central de alertas | Central de alertas de faturamento | **Criar** página `/app/fin/ciclo-vida` ou seção no Dashboard: próximas renovações, reajustes pendentes, contratos vencendo. |
 
 **Entregas:**
 - Migration: `contracts` + renewal_date, adjustment_index, adjustment_frequency; ou `lifecycle_events`
 - Job/cron ou página que lista alertas (renovação em X dias, reajuste em Y dias)
 - UI: Gestão de Ciclo de Vida com filtros e ações (renovar, aplicar reajuste)
-- Opcional: integração API índices IGPM/IPCA para cálculo automático
+- Opcional: ness.DATA expõe índices IGPM/IPCA (coleta BCB); FIN consome para cálculo automático
 
 ---
 
@@ -196,3 +196,19 @@ Ver [RF-CORE-REQUISITOS.md](RF-CORE-REQUISITOS.md)
 1. Validar regra de rateio de overhead (proporcional ao MRR, horas, ou fixo).
 2. Definir categorias de custo iniciais (rh, ferramentas, impostos, overhead).
 3. Confirmar credenciais Omie e escopo da API (quais endpoints).
+
+## Plano de integração Omie (ai-context)
+
+Planejamento detalhado da integração Omie (CEP) está em **`.context/plans/integracao-omie-erp.md`**:
+- **Phase 1 (P):** Discovery — confirmar credenciais, mapeamento Omie ↔ clients, regras de reconciliação.
+- **Phase 2 (E):** Implementação — `erp_sync_log`, cliente HTTP Omie, sync clientes e contas a receber, rota/action de sync, UI "Sincronizar ERP", reconciliação MRR.
+- **Phase 3 (V):** Validação — testes, documentação, revisão de segurança.
+- Referência API Omie: https://app.omie.com.br/developer/ (geral/clientes, financas/contareceber).
+
+### Implementado (MVP)
+
+- **Migration:** `supabase/migrations/029_erp_sync_omie.sql` — tabela `erp_sync_log`, coluna `clients.omie_codigo`.
+- **Cliente Omie:** `src/lib/omie/client.ts` — `omiePost`, `listarClientes`; `listarContasReceber` (payload a validar na doc Omie).
+- **Server Actions:** `syncOmieErp()` (roles admin/superadmin/cfo/fin), `getLastErpSync()`, `getReconciliationAlerts()` (stub até integrar contas a receber).
+- **UI:** `/app/fin/contratos` — botão "Sincronizar ERP (Omie)" e status da última sync (data, status, record_count, error_message).
+- **Env:** `OMIE_APP_KEY` e `OMIE_APP_SECRET` em .env.local ou Vercel; nunca no frontend.

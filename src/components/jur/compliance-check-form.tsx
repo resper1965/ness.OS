@@ -1,75 +1,84 @@
 'use client';
 
-import { useFormState } from 'react-dom';
+import { useEffect } from 'react';
+import { useFormState, useFormStatus } from 'react-dom';
+import { toast } from 'sonner';
 import { createComplianceCheckFromForm } from '@/app/actions/jur';
+import { InputField } from '@/components/shared/input-field';
+import { PrimaryButton } from '@/components/shared/primary-button';
 
 type Props = {
-  frameworks: { id: string; name: string; code: string }[];
-  playbooks: { id: string; title: string }[];
+  frameworks: { id: string; name: string; code?: string | null }[];
+  playbooks: { id: string; title: string; slug: string }[];
 };
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <PrimaryButton type="submit" as="button" loading={pending}>
+      Registrar check
+    </PrimaryButton>
+  );
+}
 
 export function ComplianceCheckForm({ frameworks, playbooks }: Props) {
   const [state, formAction] = useFormState(createComplianceCheckFromForm, { success: false });
 
+  useEffect(() => {
+    if (state?.success) toast.success('Check de conformidade registrado.');
+    if (state?.error) toast.error(state.error);
+  }, [state?.success, state?.error]);
+
   return (
     <form action={formAction} className="flex flex-wrap gap-4 items-end max-w-3xl">
-      <div>
-        <label className="block text-sm font-medium text-slate-300 mb-1">Framework</label>
-        <select
-          name="framework_id"
-          required
-          className="rounded-md border border-slate-600 bg-slate-800 px-3 py-2 text-white"
-        >
-          <option value="">Selecione</option>
-          {frameworks.map((f) => (
-            <option key={f.id} value={f.id}>
-              {f.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-slate-300 mb-1">Processo / Playbook</label>
-        <select
-          name="process_ref"
-          required
-          className="rounded-md border border-slate-600 bg-slate-800 px-3 py-2 text-white"
-        >
-          <option value="">Selecione</option>
-          {playbooks.map((p) => (
-            <option key={p.id} value={p.title}>
-              {p.title}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-slate-300 mb-1">Status</label>
-        <select
-          name="status"
-          className="rounded-md border border-slate-600 bg-slate-800 px-3 py-2 text-white"
-        >
-          <option value="pending">Pendente</option>
-          <option value="ok">OK</option>
-          <option value="gap">Gap</option>
-        </select>
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-slate-300 mb-1">Notas</label>
-        <input
-          name="notes"
-          className="rounded-md border border-slate-600 bg-slate-800 px-3 py-2 text-white w-48"
-          placeholder="Opcional"
-        />
-      </div>
-      <button
-        type="submit"
-        className="rounded-md bg-ness px-4 py-2 text-sm font-medium text-white hover:bg-ness-600"
+      <InputField
+        id="compliance-framework"
+        label="Framework"
+        name="framework_id"
+        as="select"
+        required
+        helper="LGPD, Marco Civil, CLT, etc."
       >
-        Registrar
-      </button>
-      {state?.error && <p className="text-red-400 text-sm w-full">{state.error}</p>}
-      {state?.success && <p className="text-green-400 text-sm w-full">Salvo.</p>}
+        <option value="">Selecione</option>
+        {frameworks.map((f) => (
+          <option key={f.id} value={f.id}>
+            {f.name}
+          </option>
+        ))}
+      </InputField>
+      <InputField
+        id="compliance-process"
+        label="Processo (playbook)"
+        name="process_ref"
+        as="select"
+        required
+        helper="Referência = slug do playbook (estável)."
+      >
+        <option value="">Selecione</option>
+        {playbooks.map((p) => (
+          <option key={p.id} value={p.slug}>
+            {p.title}
+          </option>
+        ))}
+      </InputField>
+      <InputField
+        id="compliance-status"
+        label="Status"
+        name="status"
+        as="select"
+        helper="ok = em conformidade; gap = lacuna; pending = pendente."
+      >
+        <option value="pending">Pendente</option>
+        <option value="ok">OK</option>
+        <option value="gap">Gap</option>
+      </InputField>
+      <InputField
+        id="compliance-notes"
+        label="Notas"
+        name="notes"
+        placeholder="Opcional"
+      />
+      <SubmitButton />
     </form>
   );
 }

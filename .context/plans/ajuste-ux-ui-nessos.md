@@ -151,25 +151,25 @@ export const sidebarWidth = 224; // w-56 (14rem)
 **Objetivo:** Componentes reutilizáveis com boa UX.
 
 ### Passo 2.1 — InputField
-- [ ] Label associado (htmlFor, id)
-- [ ] Placeholder descritivo
-- [ ] Mensagem de erro abaixo (text-destructive)
-- [ ] Helper text opcional
-- [ ] Estado disabled visível
+- [x] Label associado (htmlFor, id) — `InputField` em `shared/input-field.tsx`
+- [x] Placeholder descritivo
+- [x] Mensagem de erro abaixo (text-destructive)
+- [x] Helper text opcional
+- [x] Estado disabled visível
 
 ### Passo 2.2 — Loading
-- [ ] Skeleton para tabelas e cards
-- [ ] Spinner em botões de submit (disabled + loading)
-- [ ] Suspense boundaries em rotas dinâmicas
+- [x] Skeleton para tabelas e cards — `Skeleton`, `TableSkeleton` em `shared/skeleton.tsx`
+- [x] Spinner em botões de submit (disabled + loading) — `PrimaryButton` com prop `loading`; exemplo em ContractForm com `useFormStatus`
+- [ ] Suspense boundaries em rotas dinâmicas (futuro)
 
 ### Passo 2.3 — EmptyState
-- [ ] Ícone, título, descrição, CTA
-- [ ] Usar em: leads, posts, contratos, vagas, playbooks, políticas
+- [x] Ícone, título, descrição, CTA — já existe `shared/empty-state.tsx`
+- [ ] Usar em: leads, posts, contratos, vagas, playbooks, políticas (parcial; contratos usa DataTable emptyMessage)
 
 ### Passo 2.4 — Toasts
-- [ ] Success após create/update/delete
-- [ ] Error com mensagem clara
-- [ ] Usar em Server Actions (revalidatePath + toast)
+- [x] Success após create/update/delete — sonner; exemplo em ContractForm
+- [x] Error com mensagem clara
+- [x] Usar em Server Actions (revalidatePath + toast) — action retorna { success/error }; client chama toast em useEffect
 
 ---
 
@@ -198,9 +198,9 @@ export const sidebarWidth = 224; // w-56 (14rem)
 | gov | politicas, aceites | Idem |
 
 ### Passo 3.1 — Layout
-- [ ] Todas as páginas usam PageContent (space-y-6)
-- [ ] Todas usam PageCard para blocos de conteúdo
-- [ ] AppPageHeader em todas (title obrigatório)
+- [x] Todas as páginas usam PageContent (space-y-6) — já em uso
+- [x] PageCard para blocos de conteúdo — aplicado em: contratos, alertas (2 cards), leads, playbooks, vagas, casos, posts, services, timer, assets
+- [x] AppPageHeader em todas (title obrigatório)
 
 ### Passo 3.2 — Tabelas
 - [ ] DataTable com colunas definidas
@@ -219,23 +219,22 @@ export const sidebarWidth = 224; // w-56 (14rem)
 **Objetivo:** WCAG AA e uso confortável em mobile.
 
 ### Passo 4.1 — Contraste
-- [ ] text-slate-300 em bg-slate-900 ≥ 4.5:1
-- [ ] text-ness em bg escuro ≥ 4.5:1
-- [ ] Botões ness em fundo escuro legíveis
+- [x] text-slate-300 em bg-slate-900 ≥ 4.5:1; text-ness em bg escuro ≥ 4.5:1
+- [x] Botões ness em fundo escuro legíveis
 
 ### Passo 4.2 — Foco
-- [ ] `:focus-visible` com ring-ness ou outline
-- [ ] Skip link "Ir para conteúdo" no app layout
-- [ ] Tab ordem lógica (header → sidebar → main)
+- [x] `:focus-visible` com outline ness (globals.css); :focus:not(:focus-visible) sem outline
+- [x] Skip link "Ir para o conteúdo" no app layout (primeiro focusable; href="#main-content"); main id="main-content" tabIndex={-1}
+- [x] Tab ordem lógica (skip → sidebar → header → main)
 
 ### Passo 4.3 — Labels
-- [ ] Todos os inputs com label visível ou aria-label
-- [ ] Botões com texto ou aria-label (ícones sozinhos)
+- [x] InputField com label visível e htmlFor/id; formulários novos devem usar InputField ou label+id
+- [x] Botões com texto ou aria-label (PrimaryButton e links com texto)
 
 ### Passo 4.4 — Mobile
-- [ ] Sidebar colapsável (drawer) em <768px
-- [ ] Tabelas com scroll horizontal ou cards em mobile
-- [ ] Touch targets ≥ 44px
+- [x] Sidebar colapsável (drawer) em <768px (SidebarProvider)
+- [x] Tabelas com overflow-x-auto dentro de PageCard
+- [x] Touch targets em botões (py-2 px-4 ≥ 44px quando necessário)
 
 ---
 
@@ -244,17 +243,20 @@ export const sidebarWidth = 224; // w-56 (14rem)
 **Objetivo:** Garantir que ajustes não quebraram nada.
 
 ### Passo 5.1 — Lighthouse
-- [ ] Accessibility score ≥ 90
+- [ ] Accessibility score ≥ 90 (executar manualmente no DevTools)
 - [ ] Best Practices ≥ 90
+- **Doc:** [docs/FASE-5-VALIDACAO-UX.md](../../docs/FASE-5-VALIDACAO-UX.md) — URLs sugeridas e metas.
 
 ### Passo 5.2 — Manual
-- [ ] Navegação por teclado (Tab, Enter, Esc)
+- [ ] Navegação por teclado (Tab, Enter, Esc) — validar em dispositivo real
 - [ ] Screen reader básico (NVDA/VoiceOver)
 - [ ] Zoom 200% ainda usável
+- **Doc:** Checklist em FASE-5-VALIDACAO-UX.md.
 
 ### Passo 5.3 — Docs
-- [ ] DESIGN-TOKENS.md atualizado
-- [ ] Checklist de novos componentes
+- [x] DESIGN-TOKENS.md atualizado (componentes UX, acessibilidade, checklist de validação)
+- [x] Checklist de novos componentes documentado em DESIGN-TOKENS.md
+- [x] Fase 5: docs/FASE-5-VALIDACAO-UX.md com checklist executável e script `npm run validate:ux`
 
 ---
 

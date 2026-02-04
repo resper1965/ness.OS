@@ -4,25 +4,45 @@ import { JobForm } from '@/components/people/job-form';
 import { DataTable } from '@/components/shared/data-table';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
+import { PageCard } from '@/components/shared/page-card';
 import { StatusBadge } from '@/components/shared/status-badge';
+import { VagasContractFilter } from '@/components/people/vagas-contract-filter';
 
-type Job = { id: string; title: string; department: string | null; is_open: boolean };
+type Job = { id: string; title: string; department: string | null; is_open: boolean; contract_id?: string | null };
 
-export default async function VagasPage() {
+export default async function VagasPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ contract_id?: string }>;
+}) {
   const supabase = await createClient();
-  const { data: jobs } = await supabase
+  const { contract_id: contractId } = await searchParams;
+
+  let jobsQuery = supabase
     .from('public_jobs')
-    .select('id, title, department, is_open')
+    .select('id, title, department, is_open, contract_id')
     .order('created_at', { ascending: false });
+  if (contractId) jobsQuery = jobsQuery.eq('contract_id', contractId);
+
+  const [jobsRes, contractsRes] = await Promise.all([
+    jobsQuery,
+    supabase.from('contracts').select('id, clients(name)').order('created_at', { ascending: false }),
+  ]);
+
+  const jobs = jobsRes.data ?? [];
+  const contracts = contractsRes.data ?? [];
 
   return (
     <PageContent>
       <AppPageHeader
         title="Vagas"
-        subtitle="Vagas abertas aparecem em /carreiras. Candidaturas vão para Candidatos."
+        subtitle="Vagas abertas aparecem em /carreiras. Candidaturas vão para Candidatos. Filtre por contrato (ATS)."
       />
-      <JobForm />
-      <div>
+      <JobForm contracts={contracts} />
+      <PageCard title="Vagas">
+        <div className="px-5 py-3 border-b border-slate-700/50 flex flex-wrap items-center gap-2">
+          <VagasContractFilter contracts={contracts} currentContractId={contractId} />
+        </div>
         <DataTable<Job>
           data={jobs ?? []}
           keyExtractor={(j) => j.id}
@@ -42,7 +62,7 @@ export default async function VagasPage() {
             </Link>
           )}
         />
-      </div>
+      </PageCard>
     </PageContent>
   );
 }

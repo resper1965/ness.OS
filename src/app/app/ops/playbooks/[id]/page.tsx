@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { updatePlaybook } from '@/app/actions/ops';
+import { updatePlaybookFromForm } from '@/app/actions/ops';
 import { PlaybookEditorForm } from '@/components/ops/playbook-editor-form';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
@@ -19,8 +19,6 @@ export default async function EditarPlaybookPage({ params }: Props) {
 
   if (error || !playbook) notFound();
 
-  const updateAction = (prev: unknown, fd: FormData) => updatePlaybook(id, prev, fd);
-
   return (
     <PageContent>
       <AppPageHeader
@@ -31,7 +29,7 @@ export default async function EditarPlaybookPage({ params }: Props) {
           </Link>
         }
       />
-      <PlaybookEditorForm action={updateAction} initialValues={playbook} />
+      <PlaybookEditorForm action={updatePlaybookFromForm} initialValues={{ ...playbook, id: playbook.id }} />
     </PageContent>
   );
 }

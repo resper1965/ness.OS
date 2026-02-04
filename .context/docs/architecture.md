@@ -28,9 +28,9 @@ scaffoldVersion: "2.0.0"
 ## Camadas
 
 1. **Pages** — Server Components, fetch via createClient
-2. **Actions** — Server Actions em growth, ops, fin, people, jur, gov, ai
+2. **Actions** — Server Actions em **data** (sync Omie, consultas ERP), growth, ops, fin, people, jur, gov, ai
 3. **Components** — Client/Server, shared (DataTable, StatusBadge), módulos
-4. **Lib** — supabase (server, client, queries/base), validators/schemas, ai/embedding
+4. **Lib** — supabase (server, client, queries/base), validators/schemas, ai/embedding, **data/omie** (cliente Omie, server-only)
 
 ## Padrões
 

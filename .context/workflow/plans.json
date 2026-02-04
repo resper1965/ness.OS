@@ -1,14 +1,14 @@
 {
   "active": [
     {
-      "slug": "integracao-omie-erp",
-      "path": "plans/integracao-omie-erp.md",
-      "title": "Integração Omie ERP — ness.FIN (CEP)",
-      "summary": "Planejar e implementar integração com Omie ERP: sync clientes, contratos e contas a receber; reconciliar MRR com faturamento; mapear despesas por contrato. Usar OMIE_APP_KEY e OMIE_APP_SECRET.",
-      "linkedAt": "2026-02-03T20:43:38.005Z",
+      "slug": "pendencias-abertas-nessos",
+      "path": "plans/pendencias-abertas-nessos.md",
+      "title": "Pendências abertas ness.OS — resumo consolidado",
+      "summary": "Resumo de todos os itens em aberto para priorização e execução via ai-context/workflows. Atualizado após conclusão da adaptação de layout (Fase C) e incorporação do dólar em ness.DATA.",
+      "linkedAt": "2026-02-04T11:26:12.096Z",
       "status": "active"
     }
   ],
   "completed": [],
-  "primary": "integracao-omie-erp"
+  "primary": "pendencias-abertas-nessos"
 }

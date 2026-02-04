@@ -14,6 +14,8 @@
 | **Linguagem** | TypeScript (obrigatório) |
 | **UI** | Tailwind CSS + shadcn/ui |
 
+**Layout do app:** Sidebar fixa + header da página fixo (não some ao rolar). Ver [LAYOUT-APP-HEADERS.md](./LAYOUT-APP-HEADERS.md) e [DESIGN-TOKENS.md](./DESIGN-TOKENS.md).
+
 ---
 
 ## 2. Estrutura do Banco de Dados (Supabase PostgreSQL)

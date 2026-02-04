@@ -11,6 +11,7 @@ import {
 const footerLinks = {
   company: [
     { name: "Sobre", href: "/sobre" },
+    { name: "ness.OS", href: "/nessos" },
     { name: "Carreiras", href: "/carreiras" },
     { name: "Contato", href: "/contato" },
     { name: "Blog", href: "/blog" },
@@ -20,6 +21,18 @@ const footerLinks = {
     { name: "n.infraops", href: "/solucoes/ninfraops" },
     { name: "n.devarch", href: "/solucoes/ndevarch" },
     { name: "n.autoops", href: "/solucoes/nautoops" },
+    { name: "n.cirt", href: "/solucoes/ncirt" },
+    { name: "DPOaaS", href: "/solucoes/trustness-dpo" },
+  ],
+  products: [
+    { name: "n.privacy", href: "/solucoes/nprivacy" },
+    { name: "n.faturasONS", href: "/solucoes/nfaturasons" },
+    { name: "n.flow", href: "/solucoes/nflow" },
+    { name: "n.discovery", href: "/solucoes/ndiscovery" },
+  ],
+  verticals: [
+    { name: "forense.io", href: "/solucoes/forense" },
+    { name: "trustness.", href: "/solucoes/trustness" },
   ],
   legal: [
     { name: "Privacidade", href: "/legal/privacidade" },
@@ -34,12 +47,12 @@ export function SiteFooter() {
     <footer className="bg-slate-900 border-t border-slate-800">
       <div className="container mx-auto px-4">
         <div className="py-16">
-          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-7 gap-8">
             {/* Logo e descrição */}
             <div className="lg:col-span-2">
               <Logo variant="light" size="default" href="/" className="mb-6" />
               <p className="text-slate-300 leading-relaxed mb-6 max-w-md font-normal">
-                ness. — Tecnologia e segurança para sua empresa.
+                Soluções tecnológicas inovadoras para impulsionar o crescimento e a transformação digital da sua empresa.
               </p>
               {contactData.socialMedia.linkedin && (
                 <a
@@ -83,6 +96,40 @@ export function SiteFooter() {
               <h3 className="text-white font-medium mb-4">Serviços</h3>
               <ul className="space-y-3">
                 {footerLinks.services.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-slate-300 hover:text-ness transition-colors duration-300 font-montserrat"
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Produtos */}
+            <div>
+              <h3 className="text-white font-medium mb-4">Produtos</h3>
+              <ul className="space-y-3">
+                {footerLinks.products.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-slate-300 hover:text-ness transition-colors duration-300 font-montserrat"
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Verticais */}
+            <div>
+              <h3 className="text-white font-medium mb-4">Verticais</h3>
+              <ul className="space-y-3">
+                {footerLinks.verticals.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}

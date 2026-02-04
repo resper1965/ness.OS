@@ -1,0 +1,15 @@
+{
+  "decisions": [
+    {
+      "title": "Ordem de execução das pendências",
+      "description": "Omie payload → IGPM/IPCA → UX/UI fases 2–3 → Timesheet job + doc → Ingestão indicadores → UX/UI fases 4–5.",
+      "alternatives": [
+        "Timesheet antes de UX/UI",
+        "Ingestão indicadores antes de IGPM"
+      ],
+      "status": "accepted",
+      "id": "dec-1770204811224",
+      "decidedAt": "2026-02-04T11:33:31.224Z"
+    }
+  ]
+}

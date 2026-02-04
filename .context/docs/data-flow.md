@@ -56,8 +56,9 @@ O ness.OS é uma base única Next.js que expõe duas frentes: **site público (n
 
 ## External Integrations
 
+- **ness.DATA (coletas centralizadas):** Toda coleta de dados de fontes externas é responsabilidade do ness.DATA. Módulos consomem via consultas/actions expostas por DATA; não chamam APIs externas diretamente. Ver [ness-data-modulo-dados](../plans/ness-data-modulo-dados.md) — inventário: Omie (ERP), BCB (índices IGPM/IPCA), ingestão de indicadores (Hub OPS), futuras fontes.
 - **Supabase:** PostgreSQL, Auth, Storage; conexão via `createClient` e env `NEXT_PUBLIC_SUPABASE_*`.
-- **OpenAI:** `generateText` e `embed` via Vercel AI SDK; env `OPENAI_API_KEY`.
+- **OpenAI:** `generateText` e `embed` via Vercel AI SDK; env `OPENAI_API_KEY` (inferência IA; não é coleta de dados de negócio).
 - **Vercel:** deploy; variáveis de ambiente para Supabase e OpenAI.
 
 ## Related Resources

@@ -6,7 +6,7 @@ type: vision
 trigger: "ness.OS definição", "visão módulos", "sistema nervoso digital"
 scope:
   - "Definição canônica do ness.OS"
-  - "6 módulos: GROWTH, OPS, FIN, JUR, GOV, PEOPLE"
+  - "6 módulos de negócio: GROWTH, OPS, FIN, JUR, GOV, PEOPLE + ness.DATA (camada de dados)"
   - "OPS focado em Engenharia de Processos — sem verticais (InfraOps, SecOps, DataOps)"
 docs:
   - "project-overview.md"
@@ -26,7 +26,7 @@ O **ness.OS** é a plataforma central que atua como o "Sistema Nervoso Digital" 
 
 ## Escopo e Limitações
 
-- **Incluído:** Definição dos 6 módulos; capacidades de cada módulo; integrações entre módulos.
+- **Incluído:** Definição dos 6 módulos de negócio e da camada ness.DATA; capacidades de cada módulo; integrações entre módulos.
 - **Excluído:** Detalhamento de verticais operacionais (InfraOps, SecOps, DataOps) dentro do ness.OPS — o módulo Operacional mantém foco em **Engenharia de Processos e Padronização**.
 
 ---
@@ -67,13 +67,29 @@ Motor que garante a entrega do que foi vendido. Organiza o "caos operacional", t
 
 *Foco: Rentabilidade Real e Ciclo de Vida.*
 
-Guardião da margem, cruzando dados do ERP financeiro com a realidade operacional.
+Guardião da margem, cruzando dados do ERP (fornecidos por ness.DATA) com a realidade operacional.
 
 | Capabilidade | Descrição |
 |--------------|-----------|
-| **CFO Digital** | Conecta-se ao ERP para cruzar Receita x Despesa em tempo real; previsibilidade e apoio à decisão. |
+| **CFO Digital** | Cruza Receita x Despesa em tempo real usando dados do ERP disponibilizados por ness.DATA; previsibilidade e apoio à decisão. |
 | **Gestão de Custos e Rentabilidade** | Apura custo real por contrato: RH + Ferramentas + Impostos + Rateio de Overhead. Define rentabilidade líquida real por cliente. |
 | **Ciclo de Vida do Contrato** | Gestão de datas críticas; alertas de renovação, reajustes anuais (IGPM/IPCA), vencimento e cobrança. |
+
+---
+
+## 3.1 ness.DATA (Camada de Dados)
+
+*Foco: Ingestão e exposição de dados de fontes externas.*
+
+Camada única que colhe, normaliza e disponibiliza dados de ERPs e outras fontes (Omie primeiro). Os módulos de negócio **consomem** via consultas/actions; não integram diretamente com o Omie.
+
+| Capabilidade | Descrição |
+|--------------|-----------|
+| **Ingestão ERP (Omie)** | Sync centralizado: clientes, contas a receber, contas a pagar, produtos etc. Credenciais e rate limit em um só lugar; log de sync (erp_sync_log). |
+| **Consultas e exposição** | Server Actions / funções que expõem dados tratados para FIN, OPS, GROWTH, PEOPLE. Ex.: clientes Omie, contas a receber por período. |
+| **Evolução** | Novas fontes (outro ERP, BI, planilhas) entram em ness.DATA; módulos não precisam saber da origem. |
+
+> **Ownership:** ness.DATA não é dono das entidades de negócio (ex.: FIN é dono de `contracts`, `clients`). DATA popula ou entrega dados para que cada módulo use como quiser.
 
 ---
 
@@ -115,6 +131,7 @@ Guardião da margem, cruzando dados do ERP financeiro com a realidade operaciona
 
 | Módulo | Plano ai-context |
 |--------|------------------|
+| ness.DATA | [ness-data-modulo-dados](./ness-data-modulo-dados.md) |
 | ness.GROWTH | [ness-growth-inteligencia-comercial](./ness-growth-inteligencia-comercial.md) |
 | ness.OPS | [ness-ops-engenharia-processos](./ness-ops-engenharia-processos.md) |
 | ness.FIN | [ness-fin-cfo-digital](./ness-fin-cfo-digital.md) |

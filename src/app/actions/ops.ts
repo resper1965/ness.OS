@@ -47,6 +47,16 @@ export async function createPlaybook(
   return { success: true };
 }
 
+/** Wrapper para useFormState: lê id do formData e chama updatePlaybook. */
+export async function updatePlaybookFromForm(
+  _prev: unknown,
+  formData: FormData
+): Promise<{ success?: boolean; error?: string }> {
+  const id = formData.get('_id') as string;
+  if (!id) return { error: 'ID do playbook não encontrado.' };
+  return updatePlaybook(id, _prev, formData);
+}
+
 export async function updatePlaybook(
   id: string,
   _prev: unknown,

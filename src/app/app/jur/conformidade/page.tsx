@@ -3,34 +3,32 @@ import { createClient } from '@/lib/supabase/server';
 import { ComplianceCheckForm } from '@/components/jur/compliance-check-form';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
+import { PageCard } from '@/components/shared/page-card';
 
 export default async function JurConformidadePage() {
   const frameworks = await getFrameworks();
   const supabase = await createClient();
   const { data: playbooks } = await supabase
     .from('playbooks')
-    .select('id, title')
+    .select('id, title, slug')
     .order('title');
 
   return (
     <PageContent>
       <AppPageHeader
         title="Conformidade"
-        subtitle="Verificação de aderência à LGPD, Marco Civil e leis trabalhistas."
+        subtitle="Verificação de aderência à LGPD, Marco Civil e leis trabalhistas. Vincule processos (playbooks) a cada framework."
       />
-      <div className="space-y-6">
-        <div>
-          <h2 className="mb-4 text-lg font-semibold text-white">Novo check</h2>
-          <ComplianceCheckForm
-            frameworks={frameworks}
-            playbooks={playbooks ?? []}
-          />
-        </div>
+      <PageCard title="Novo check de conformidade" className="mb-6">
+        <ComplianceCheckForm
+          frameworks={frameworks}
+          playbooks={playbooks ?? []}
+        />
+      </PageCard>
 
-        {frameworks.map((fw) => (
-          <FrameworkChecks key={fw.id} frameworkId={fw.id} name={fw.name} />
-        ))}
-      </div>
+      {frameworks.map((fw) => (
+        <FrameworkChecks key={fw.id} frameworkId={fw.id} name={fw.name} />
+      ))}
     </PageContent>
   );
 }
@@ -39,12 +37,11 @@ async function FrameworkChecks({ frameworkId, name }: { frameworkId: string; nam
   const checks = await getChecksByFramework(frameworkId);
 
   return (
-    <div>
-      <h2 className="mb-3 text-lg font-semibold text-white">{name}</h2>
-      <div className="overflow-hidden rounded-lg border border-slate-700">
+    <PageCard title={name}>
+      <div className="overflow-x-auto">
         <table className="w-full text-left text-sm">
           <thead className="bg-slate-800/50 text-slate-300">
-            <tr>
+            <tr className="h-[52px]">
               <th className="px-4 py-2 font-medium">Processo</th>
               <th className="px-4 py-2 font-medium">Status</th>
               <th className="px-4 py-2 font-medium">Notas</th>
@@ -76,6 +73,6 @@ async function FrameworkChecks({ frameworkId, name }: { frameworkId: string; nam
           <p className="px-4 py-6 text-slate-500 text-center">Nenhum check registrado.</p>
         )}
       </div>
-    </div>
+    </PageCard>
   );
 }

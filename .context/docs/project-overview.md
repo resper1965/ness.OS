@@ -12,7 +12,7 @@ scaffoldVersion: "2.0.0"
 
 Ecossistema unificado: site institucional público (ness.WEB) + plataforma de gestão interna (ness.OS). O ness.OS atua como **Sistema Nervoso Digital** da NESS — orquestrador de negócios com foco em conhecimento padronizado, rentabilidade real e gestão ativa.
 
-**Definição canônica:** [ness-os-definicao-visao](../plans/ness-os-definicao-visao.md) — 6 módulos (GROWTH, OPS, FIN, JUR, GOV, PEOPLE).
+**Definição canônica:** [ness-os-definicao-visao](../plans/ness-os-definicao-visao.md) — 6 módulos de negócio (GROWTH, OPS, FIN, JUR, GOV, PEOPLE) + ness.DATA (camada de dados).
 
 ## Stack
 
@@ -22,9 +22,10 @@ Next.js 14 (App Router), Supabase, Tailwind, shadcn/ui, Vercel AI SDK, pgvector
 
 | Arquivo | Domínio | Funções |
 |---------|---------|---------|
+| data.ts | ness.DATA | sync Omie, consultas ERP (clientes, contas a receber) |
 | growth.ts | ness.GROWTH | leads, posts, services, success-cases |
 | ops.ts | ness.OPS | playbooks, assets, metricas |
-| fin.ts | ness.FIN | clients, contracts |
+| fin.ts | ness.FIN | clients, contracts (consome dados via DATA) |
 | people.ts | ness.PEOPLE | jobs, job-application, gaps |
 | jur.ts | ness.JUR | compliance (frameworks, checks) |
 | gov.ts | ness.GOV | policies, acceptances |
@@ -40,9 +41,15 @@ Next.js 14 (App Router), Supabase, Tailwind, shadcn/ui, Vercel AI SDK, pgvector
 
 ## Layout do app (/app/*)
 
-- **Sidebar:** `AppSidebar` (w-56, 224px); header "ness.OS" 64px, uma linha (`border-b`).
-- **Header da página:** `AppPageHeader` — fixo (`position: fixed`), 64px, não some ao rolar; alinhado à direita da sidebar.
+- **Shell:** `SidebarProvider` → `AppSidebar` + `SidebarInset`. Layout inspirado no Bundui (sidebar colapsável, header global).
+- **Sidebar:** `AppSidebar` — colapsável (224px expandida, 48px recolhida; mobile = drawer). Header "ness.OS" 64px + `SidebarTrigger`; nav via `nav-config`.
+- **Header global:** `AppHeader` — `SidebarTrigger` + breadcrumb (Módulo / Página). 64px.
+- **Header da página:** `AppPageHeader` — fixo, 64px; títulos de seção dentro do conteúdo.
 - **Docs:** [docs/LAYOUT-APP-HEADERS.md](../../docs/LAYOUT-APP-HEADERS.md), [docs/DESIGN-TOKENS.md](../../docs/DESIGN-TOKENS.md).
+
+## Página de explicação completa do ness.OS
+
+**Plano ai-context:** [pagina-explicacao-nessos-completa](../plans/pagina-explicacao-nessos-completa.md) — página única (site `/nessos` ou app `/app/sobre`) que explica o ness.OS por completo (definição, 6 módulos + ness.DATA, fluxos de valor/dados, stack, detalhamento) usando .context/docs e .context/plans como fonte. **Spec:** docs/PLANO-PAGINA-EXPLICACAO-NESSOS.md.
 
 ## Plano Mestre
 

@@ -1,0 +1,27 @@
+{
+  "planSlug": "adaptacao-layout-bundui-nessos",
+  "progress": 0,
+  "phases": {
+    "phase-r": {
+      "phaseId": "phase-r",
+      "status": "completed",
+      "startedAt": "2026-02-03T21:59:58.821Z",
+      "steps": [
+        {
+          "stepIndex": 3,
+          "description": "Step 3",
+          "status": "completed",
+          "completedAt": "2026-02-03T21:59:58.821Z",
+          "notes": "Lista de componentes aprovada: sidebar, sheet, tooltip, skeleton, use-mobile; Next 14 compatível."
+        }
+      ],
+      "completedAt": "2026-02-03T21:59:58.821Z"
+    },
+    "phase-p": {
+      "status": "completed",
+      "updatedAt": "2026-02-03T22:00:00.798Z"
+    }
+  },
+  "decisions": [],
+  "lastUpdated": "2026-02-03T21:59:58.821Z"
+}

@@ -1,9 +1,13 @@
 import { createClient } from '@/lib/supabase/server';
 import { ContractForm } from '@/components/fin/contract-form';
 import { ClientForm } from '@/components/fin/client-form';
+import { ErpSyncButton } from '@/components/fin/erp-sync-button';
 import { DataTable } from '@/components/shared/data-table';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
+import { PageCard } from '@/components/shared/page-card';
+import { IndicesCard } from '@/components/fin/indices-card';
+import { getLastErpSync, getIndices } from '@/app/actions/data';
 
 type Contract = {
   id: string;
@@ -15,21 +19,26 @@ type Contract = {
 
 export default async function ContratosPage() {
   const supabase = await createClient();
-  const { data: contracts } = await supabase
-    .from('contracts')
-    .select('id, mrr, start_date, end_date, clients(name)')
-    .order('start_date', { ascending: false });
-  const { data: clients } = await supabase.from('clients').select('id, name').order('name');
+  const [contractsRes, clientsRes, lastSync, indices] = await Promise.all([
+    supabase.from('contracts').select('id, mrr, start_date, end_date, clients(name)').order('start_date', { ascending: false }),
+    supabase.from('clients').select('id, name').order('name'),
+    getLastErpSync(),
+    getIndices().catch(() => null),
+  ]);
+  const contracts = contractsRes.data;
+  const clients = clientsRes.data;
 
   return (
     <PageContent>
       <AppPageHeader
         title="Contratos"
         subtitle="MRR e vigência por cliente. Base para cálculo de rentabilidade e métricas."
+        actions={<ErpSyncButton lastSync={lastSync} />}
       />
+      {indices != null && <IndicesCard indices={indices} />}
       <ClientForm />
       <ContractForm clients={clients ?? []} />
-      <div>
+      <PageCard title="Contratos">
         <DataTable<Contract>
           data={(contracts ?? []) as Contract[]}
           keyExtractor={(c) => c.id}
@@ -63,7 +72,7 @@ export default async function ContratosPage() {
             },
           ]}
         />
-      </div>
+      </PageCard>
     </PageContent>
   );
 }

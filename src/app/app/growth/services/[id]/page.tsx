@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { updateService } from '@/app/actions/growth';
+import { updateServiceFromForm } from '@/app/actions/growth';
 import { ServiceEditForm } from '@/components/growth/service-edit-form';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
@@ -11,12 +11,18 @@ type Props = { params: Promise<{ id: string }> };
 export default async function EditServicePage({ params }: Props) {
   const { id } = await params;
   const supabase = await createClient();
-  const { data: service, error } = await supabase.from("services_catalog").select("*").eq("id", id).single();
+  const { data: service, error } = await supabase
+    .from("services_catalog")
+    .select("*, services_playbooks(playbook_id)")
+    .eq("id", id)
+    .single();
   const { data: playbooks } = await supabase.from("playbooks").select("id, title");
 
   if (error || !service) notFound();
 
-  const updateAction = (prev: unknown, fd: FormData) => updateService(id, prev, fd);
+  const playbookIds = Array.isArray(service?.services_playbooks)
+    ? (service.services_playbooks as { playbook_id: string }[]).map((sp) => sp.playbook_id)
+    : [];
 
   return (
     <PageContent>
@@ -28,7 +34,7 @@ export default async function EditServicePage({ params }: Props) {
           </Link>
         }
       />
-      <ServiceEditForm action={updateAction} service={service} playbooks={playbooks ?? []} />
+      <ServiceEditForm action={updateServiceFromForm} service={{ ...service, id: service.id, playbook_ids: playbookIds }} playbooks={playbooks ?? []} />
     </PageContent>
   );
 }

@@ -24,4 +24,5 @@
 ## AI Context References
 - Documentation index: `.context/docs/README.md`
 - Agent playbooks: `.context/agents/README.md`
+- Layout do app e headers fixos: `docs/LAYOUT-APP-HEADERS.md`, `.context/docs/architecture.md`
 - Contributor guide: `CONTRIBUTING.md`

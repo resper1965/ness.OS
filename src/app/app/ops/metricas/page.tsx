@@ -1,7 +1,9 @@
 import { createClient } from '@/lib/supabase/server';
 import { MetricasForm } from '@/components/ops/metricas-form';
+import { SyncTimerMetricsButton } from '@/components/ops/sync-timer-metrics-button';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
+import { PageCard } from '@/components/shared/page-card';
 
 export default async function MetricasPage() {
   const supabase = await createClient();
@@ -17,8 +19,11 @@ export default async function MetricasPage() {
       <AppPageHeader
         title="Métricas de Performance"
         subtitle="Horas trabalhadas, custo cloud e SLA por contrato/mês. Alimenta o cálculo de rentabilidade."
+        actions={<SyncTimerMetricsButton />}
       />
-      <MetricasForm contracts={contracts ?? []} recentMetrics={metrics ?? []} />
+      <PageCard>
+        <MetricasForm contracts={contracts ?? []} recentMetrics={metrics ?? []} />
+      </PageCard>
     </PageContent>
   );
 }

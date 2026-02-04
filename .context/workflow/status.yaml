@@ -1,21 +1,21 @@
 project:
-  name: "integracao-omie-erp"
+  name: "pendencias-abertas-nessos"
   scale: LARGE
-  started: "2026-02-03T20:43:33.144Z"
+  started: "2026-02-04T11:26:03.238Z"
   current_phase: E
 
 phases:
   P:
     status: filled
-    started_at: "2026-02-03T20:43:33.144Z"
-    completed_at: "2026-02-03T20:48:16.548Z"
+    started_at: "2026-02-04T11:26:03.238Z"
+    completed_at: "2026-02-04T11:33:33.184Z"
   R:
     status: filled
-    started_at: "2026-02-03T20:48:16.550Z"
-    completed_at: "2026-02-03T20:48:56.488Z"
+    started_at: "2026-02-04T11:33:33.185Z"
+    completed_at: "2026-02-04T11:34:47.501Z"
   E:
     status: in_progress
-    started_at: "2026-02-03T20:48:56.490Z"
+    started_at: "2026-02-04T11:34:47.502Z"
   V:
     status: pending
   C:
@@ -23,21 +23,16 @@ phases:
 
 execution:
   history:
-    - timestamp: "2026-02-03T20:52:42.060Z"
+    - timestamp: "2026-02-04T11:34:47.502Z"
       phase: E
-      action: step_completed
-      plan: "integracao-omie-erp"
-      planPhase: "phase-2"
-      stepIndex: 3
-      stepDescription: "Step 3"
-      notes: "Sync clientes: upsert por omie_codigo/document"
-  last_activity: "2026-02-03T20:52:42.060Z"
-  resume_context: "Concluído: Step 3"
+      action: started
+  last_activity: "2026-02-04T11:34:47.502Z"
+  resume_context: "Fase E (Execução) em progresso"
 
 approval:
   plan_created: true
   plan_approved: true
   approved_by: "reviewer"
-  approved_at: "2026-02-03T20:48:50.611Z"
-  approval_notes: "Design e segurança revisados; artefato phase-r-review.md. Aprovado para Phase E."
+  approved_at: "2026-02-04T11:34:42.976Z"
+  approval_notes: "Fase R concluída: escopo e sequência aprovados; artefato phase-r-review.md"
 

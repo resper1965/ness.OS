@@ -1,0 +1,31 @@
+project:
+  name: ""
+  scale: MEDIUM
+  started: "2026-02-03T21:59:58.833Z"
+  current_phase: P
+
+phases:
+  P:
+    status: pending
+  R:
+    status: pending
+  E:
+    status: pending
+  V:
+    status: pending
+  C:
+    status: pending
+
+execution:
+  history:
+    - timestamp: "2026-02-04T11:24:11.331Z"
+      phase: P
+      action: plan_linked
+      plan: "pendencias-abertas-nessos"
+  last_activity: "2026-02-04T11:24:11.331Z"
+  resume_context: "Plano vinculado - aguardando revisão"
+
+approval:
+  plan_created: true
+  plan_approved: false
+

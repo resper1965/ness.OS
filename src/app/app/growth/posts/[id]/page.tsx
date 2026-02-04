@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { updatePost } from '@/app/actions/growth';
+import { updatePostFromForm } from '@/app/actions/growth';
 import { PostEditorForm } from '@/components/growth/post-editor-form';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
@@ -19,12 +19,10 @@ export default async function EditarPostPage({ params }: Props) {
 
   if (error || !post) notFound();
 
-  const updateAction = (prev: unknown, formData: FormData) => updatePost(id, prev, formData);
-
   return (
     <div>
       <h1 className="text-2xl font-bold text-white mb-8">Editar: {post.title}</h1>
-      <PostEditorForm action={updateAction} initialValues={post} />
+      <PostEditorForm action={updatePostFromForm} initialValues={{ ...post, id: post.id }} />
     </div>
   );
 }

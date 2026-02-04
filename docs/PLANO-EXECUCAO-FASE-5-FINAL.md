@@ -4,6 +4,8 @@
 
 > **Pré-requisito:** Fases 0–4 concluídas (BOOOM executado).
 
+> **Status (Fases 5–10):** Concluído. Qualidade (ESLint, testes baseline, rate limit chatbot), GOV (CRUD políticas + aceites), JUR (conformidade + process_ref slug), GROWTH (Brand Guardian + Upsell listagem), FIN (alertas renovação + Omie doc), PEOPLE (ATS contract_id + 360º formulário e relatório). Docs de status por fase em docs/*-FASE-*-STATUS.md.
+
 ---
 
 ## Visão Geral

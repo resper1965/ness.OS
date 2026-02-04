@@ -15,6 +15,7 @@ export async function createJob(
   const description = (formData.get('description_html') as string) || null;
   if (!title || !slug) return { error: 'Título e slug obrigatórios.' };
 
+  const contractId = (formData.get('contract_id') as string)?.trim() || null;
   const supabase = await createClient();
   const { error } = await supabase.from('public_jobs').insert({
     title,
@@ -22,11 +23,22 @@ export async function createJob(
     department,
     description_html: description,
     is_open: true,
+    contract_id: contractId || null,
   });
   if (error) return { error: error.message };
   revalidatePath('/app/people/vagas');
   revalidatePath('/carreiras');
   return { success: true };
+}
+
+/** Wrapper para useFormState: lê id do formData e chama updateJob. */
+export async function updateJobFromForm(
+  _prev: unknown,
+  formData: FormData
+): Promise<{ success?: boolean; error?: string }> {
+  const id = formData.get('_id') as string;
+  if (!id) return { error: 'ID da vaga não encontrado.' };
+  return updateJob(id, _prev, formData);
 }
 
 export async function updateJob(
@@ -41,6 +53,7 @@ export async function updateJob(
   const isOpen = formData.get('is_open') === 'on';
   if (!title || !slug) return { error: 'Título e slug obrigatórios.' };
 
+  const contractId = (formData.get('contract_id') as string)?.trim() || null;
   const supabase = await createClient();
   const { error } = await supabase
     .from('public_jobs')
@@ -50,6 +63,7 @@ export async function updateJob(
       department,
       description_html: description,
       is_open: isOpen,
+      contract_id: contractId,
       updated_at: new Date().toISOString(),
     })
     .eq('id', id);
@@ -108,4 +122,62 @@ export async function createGap(
   if (error) return { error: error.message };
   revalidatePath('/app/people/gaps');
   return { success: true };
+}
+
+// === FEEDBACK 360º ===
+
+export async function createFeedback360FromForm(
+  _prev: unknown,
+  formData: FormData
+): Promise<{ success?: boolean; error?: string }> {
+  const subjectId = (formData.get('subject_id') as string)?.trim();
+  const criteria = (formData.get('criteria') as string)?.trim();
+  const scoreStr = formData.get('score') as string;
+  const score = scoreStr ? parseInt(scoreStr, 10) : null;
+  const comment = (formData.get('comment') as string)?.trim() || null;
+
+  if (!subjectId) return { error: 'Colaborador avaliado obrigatório.' };
+  if (score == null || Number.isNaN(score) || score < 1 || score > 5) return { error: 'Score deve ser entre 1 e 5.' };
+
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { error: 'Não autenticado.' };
+
+  const { error } = await supabase.from('feedback_360').insert({
+    subject_id: subjectId,
+    rater_id: user.id,
+    criteria: criteria || null,
+    score,
+    comment,
+  });
+
+  if (error) return { error: error.message };
+  revalidatePath('/app/people/avaliacao');
+  return { success: true };
+}
+
+export async function getFeedback360ScoresBySubject(): Promise<{ subject_id: string; full_name: string | null; avg_score: number; count: number }[]> {
+  const supabase = await createClient();
+  const { data: rows } = await supabase
+    .from('feedback_360')
+    .select('subject_id, score');
+  if (!rows?.length) return [];
+
+  const bySubject: Record<string, { sum: number; count: number }> = {};
+  for (const r of rows) {
+    if (!r.subject_id) continue;
+    if (!bySubject[r.subject_id]) bySubject[r.subject_id] = { sum: 0, count: 0 };
+    bySubject[r.subject_id].sum += r.score ?? 0;
+    bySubject[r.subject_id].count += 1;
+  }
+
+  const { data: profiles } = await supabase.from('profiles').select('id, full_name');
+  const nameMap = new Map((profiles ?? []).map((p) => [p.id, p.full_name]));
+
+  return Object.entries(bySubject).map(([subject_id, { sum, count }]) => ({
+    subject_id,
+    full_name: nameMap.get(subject_id) ?? null,
+    avg_score: count > 0 ? Math.round((sum / count) * 100) / 100 : 0,
+    count,
+  }));
 }

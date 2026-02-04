@@ -6,6 +6,7 @@ import Link from 'next/link';
 type PostEditorFormProps = {
   action: (prev: unknown, formData: FormData) => Promise<{ success?: boolean; error?: string }>;
   initialValues?: {
+    id?: string;
     title?: string;
     slug?: string;
     seo_description?: string;
@@ -30,7 +31,8 @@ export function PostEditorForm({ action, initialValues }: PostEditorFormProps) {
   const helpClass = 'text-xs text-slate-500 mt-1';
 
   return (
-    <form action={formAction} className="max-w-2xl space-y-6">
+    <form action={formAction} className="max-w-4xl space-y-8">
+      {initialValues?.id && <input type="hidden" name="_id" value={initialValues.id} />}
       {state?.error && (
         <p className="text-sm text-red-400">{state.error}</p>
       )}
@@ -93,7 +95,7 @@ export function PostEditorForm({ action, initialValues }: PostEditorFormProps) {
         </label>
       </div>
       <p className={helpClass}>Se marcado, aparece em /blog.</p>
-      <div className="flex gap-4">
+      <div className="flex gap-4 mt-8">
         <button
           type="submit"
           className="rounded-md bg-ness px-4 py-2 text-sm font-medium text-white hover:bg-ness-600"

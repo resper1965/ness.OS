@@ -7,6 +7,55 @@ import { revalidatePath } from 'next/cache';
 
 export type ProposalMinuta = { escopo: string; termos: string };
 
+/** Formato retornado pelo Gerar com IA para catálogo de serviços */
+export type ServiceCatalogAIPayload = {
+  slug: string;
+  titulo_site: string;
+  pitch: string;
+  corpo_site: string;
+};
+
+/** Agente de Catálogo: Gera slug, título, pitch e corpo (Markdown) para serviço */
+export async function generateServiceCatalogWithAI(
+  name: string,
+  playbookTitles: string[]
+): Promise<{ success: true; data: ServiceCatalogAIPayload } | { success: false; error: string }> {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { success: false, error: 'Não autenticado.' };
+
+  const nameTrimmed = name?.trim();
+  if (!nameTrimmed) return { success: false, error: 'Informe o nome do serviço.' };
+
+  const playbooksContext = playbookTitles.length > 0
+    ? `Playbooks vinculados: ${playbookTitles.join(', ')}. Redija o corpo_site conectando as atividades desses playbooks.`
+    : '';
+
+  const { text } = await generateText({
+    model: openai('gpt-4o-mini'),
+    system: `Você é um especialista em DevSecOps da empresa ness. Gere um JSON com slug, titulo_site, pitch e corpo_site (Markdown) baseado no Nome do serviço e nos Playbooks selecionados.
+Retorne APENAS um JSON válido com as chaves: slug, titulo_site, pitch, corpo_site.
+- slug: minúsculo, hífens, sem acentos (ex: n-secops)
+- titulo_site: título para a página do serviço no site
+- pitch: 1-2 frases para cards de soluções
+- corpo_site: conteúdo em Markdown para a página do serviço, com seções ##, conectando as atividades dos playbooks quando houver`,
+    prompt: `Nome do serviço: ${nameTrimmed}
+${playbooksContext}
+
+Gere o JSON.`,
+  });
+
+  try {
+    const json = JSON.parse(text.trim()) as ServiceCatalogAIPayload;
+    if (typeof json.slug !== 'string' || typeof json.titulo_site !== 'string' || typeof json.pitch !== 'string' || typeof json.corpo_site !== 'string') {
+      return { success: false, error: 'Resposta da IA em formato inválido.' };
+    }
+    return { success: true, data: json };
+  } catch {
+    return { success: false, error: 'Não foi possível interpretar a resposta da IA.' };
+  }
+}
+
 /** Agente de Conteúdo: Transforma case em post de blog */
 export async function generatePostFromCase(
   caseId: string
@@ -78,21 +127,27 @@ export async function generateProposalWithAI(
   const { data: client } = await supabase.from('clients').select('name').eq('id', clientId).single();
   const { data: service } = await supabase
     .from('services_catalog')
-    .select('name, marketing_title, marketing_body, playbook_id')
+    .select('name, marketing_title, marketing_body, services_playbooks(playbook_id)')
     .eq('id', serviceId)
     .single();
 
   if (!client || !service) return { success: false, error: 'Cliente ou serviço não encontrado.' };
 
   let playbookContent = '';
-  if (service.playbook_id) {
-    const { data: playbook } = await supabase
+  const playbookIds = Array.isArray(service?.services_playbooks)
+    ? (service.services_playbooks as { playbook_id: string }[]).map((sp) => sp.playbook_id)
+    : [];
+  if (playbookIds.length > 0) {
+    const { data: playbooks } = await supabase
       .from('playbooks')
       .select('content_markdown, title')
-      .eq('id', service.playbook_id)
-      .single();
-    if (playbook?.content_markdown) {
-      playbookContent = `\n\nPLAYBOOK "${playbook.title}":\n${playbook.content_markdown}`;
+      .in('id', playbookIds)
+      .order('title');
+    if (playbooks?.length) {
+      playbookContent = playbooks
+        .map((p) => (p?.content_markdown ? `\n\nPLAYBOOK "${p.title}":\n${p.content_markdown}` : ''))
+        .filter(Boolean)
+        .join('\n');
     }
   }
 

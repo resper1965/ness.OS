@@ -1,29 +1,37 @@
 # Auditoria SIMPLIFICA — ness.OS
 
-> Gerado em 2026-02-02 | Fase 1 do plano de redução de complexidade
+> Gerado em 2026-02-02 | Fase 1 do plano de redução de complexidade | Atualizado 2026-02
 
-## 1. Server Actions — Duplicações
+## Estado atual (2026-02)
 
-**Total:** 23 arquivos, 64 chamadas a `createClient` / `createServerClient`
+- **Actions:** 12 arquivos em `src/app/actions/` (growth, ops, fin, people, jur, gov, ai, data, auth, timesheet, static-pages, cases-public, jobs-public). Todos usam `createClient` de `@/lib/supabase/server` (sem createServerClient).
+- **Schemas Zod:** Centralizados em `src/lib/validators/schemas.ts` (leadSchema, postSchema). riskSchema local em `api/jur/risk/analyze/route.ts`.
+- **ts-prune:** Exports não referenciados incluem getPolicies, getStaticPageSlugs, TableSkeleton, SECTION_HEADER_HEIGHT_PX, FORM_WIDTH, SPACING_CLASSES, LeadInput, PostInput — candidatos a uso futuro ou remoção após confirmação.
 
-### Mapeamento por domínio
+---
 
-| Domínio | Arquivos atuais | Ação proposta |
-|---------|-----------------|---------------|
-| **growth** | leads, admin-leads, posts, admin-posts, services, admin-services, success-cases, proposals-ai | Consolidar em `growth.ts` |
-| **ops** | playbooks, assets, metricas | Consolidar em `ops.ts` |
-| **fin** | contracts, clients | Consolidar em `fin.ts` |
-| **people** | jobs, job-application, gaps | Consolidar em `people.ts` |
-| **jur** | compliance | Consolidar em `jur.ts` |
-| **gov** | policies | Consolidar em `gov.ts` |
-| **ai** | content-ai, proposals-ai | Consolidar em `ai.ts` |
-| **site** | cases-public, jobs-public, static-pages | Manter ou mover para `site.ts` |
-| **auth** | auth | Manter separado |
+## 1. Server Actions — Duplicações (histórico)
 
-### Candidatos a consolidação imediata
-- `leads.ts` + `admin-leads.ts` → mesmo domínio (leads)
-- `posts.ts` + `admin-posts.ts` → mesmo domínio (posts)
-- `services.ts` + `admin-services.ts` → mesmo domínio (serviços)
+**Total atual:** 12 arquivos, dezenas de chamadas a `createClient` (uma por função que acessa DB).
+
+### Mapeamento por domínio (já consolidado)
+
+| Domínio | Arquivo | Conteúdo |
+|---------|---------|----------|
+| **growth** | growth.ts | Leads, posts, services, success-cases, brand_assets |
+| **ops** | ops.ts | Playbooks, assets, métricas |
+| **fin** | fin.ts | Clients, contracts, reconciliation |
+| **people** | people.ts | Jobs, applications, gaps, feedback_360 |
+| **jur** | jur.ts | Compliance frameworks, checks |
+| **gov** | gov.ts | Policies, versions, acceptances |
+| **ai** | ai.ts | Content AI, proposals AI |
+| **data** | data.ts | ERP sync, Omie, BCB, indicators |
+| **auth** | auth.ts | Login, callback |
+| **site** | cases-public, jobs-public, static-pages | Conteúdo público |
+
+### Candidatos a consolidação imediata (já feitos)
+- Leads, posts, services, cases consolidados em growth.ts
+- Playbooks, assets, métricas em ops.ts; contracts/clients em fin.ts; jobs/gaps em people.ts
 
 ---
 

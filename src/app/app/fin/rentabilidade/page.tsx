@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
+import { PageCard } from '@/components/shared/page-card';
 
 export default async function RentabilidadePage() {
   const supabase = await createClient();
@@ -12,23 +13,24 @@ export default async function RentabilidadePage() {
         title="Rentabilidade"
         subtitle="Receita (MRR) menos custos operacionais por contrato. Margem negativa em vermelho."
       />
-      <div className="overflow-hidden rounded-lg border border-slate-700">
-        <table className="w-full text-sm">
+      <PageCard title="Rentabilidade">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
           <thead className="bg-slate-800/50 text-slate-300">
-            <tr>
-              <th className="px-4 py-3 font-medium">Cliente</th>
-              <th className="px-4 py-3 font-medium">Receita (MRR)</th>
-              <th className="px-4 py-3 font-medium">Custo</th>
-              <th className="px-4 py-3 font-medium">Rentabilidade</th>
+            <tr className="h-[52px]">
+              <th className="px-5 py-4 font-medium">Cliente</th>
+              <th className="px-5 py-4 font-medium">Receita (MRR)</th>
+              <th className="px-5 py-4 font-medium">Custo</th>
+              <th className="px-5 py-4 font-medium">Rentabilidade</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-700">
             {(rows ?? []).map((r: { contract_id: string; client_name: string; revenue: number; total_cost: number; rentability: number }) => (
               <tr key={r.contract_id} className="text-slate-300">
-                <td className="px-4 py-3">{r.client_name}</td>
-                <td className="px-4 py-3">R$ {Number(r.revenue).toLocaleString("pt-BR")}</td>
-                <td className="px-4 py-3">R$ {Number(r.total_cost).toLocaleString("pt-BR")}</td>
-                <td className={`px-4 py-3 font-medium ${Number(r.rentability) >= 0 ? "text-green-400" : "text-red-400"}`}>
+                <td className="px-5 py-4">{r.client_name}</td>
+                <td className="px-5 py-4">R$ {Number(r.revenue).toLocaleString("pt-BR")}</td>
+                <td className="px-5 py-4">R$ {Number(r.total_cost).toLocaleString("pt-BR")}</td>
+                <td className={`px-5 py-4 font-medium ${Number(r.rentability) >= 0 ? "text-green-400" : "text-red-400"}`}>
                   R$ {Number(r.rentability).toLocaleString("pt-BR")}
                 </td>
               </tr>
@@ -43,10 +45,10 @@ export default async function RentabilidadePage() {
             </p>
           </div>
         )}
-      </div>
+        </div>
+      </PageCard>
       {rows && rows.length > 0 && (
-        <div>
-          <h2 className="mb-4 text-lg font-semibold text-white">Rentabilidade por contrato</h2>
+        <PageCard title="Rentabilidade por contrato">
           <div className="space-y-3">
             {(rows as { contract_id: string; client_name: string; rentability: number; revenue: number }[]).map((r) => {
               const pct = Number(r.revenue) > 0 ? (Number(r.rentability) / Number(r.revenue)) * 100 : 0;
@@ -67,7 +69,7 @@ export default async function RentabilidadePage() {
               );
             })}
           </div>
-        </div>
+        </PageCard>
       )}
     </PageContent>
   );

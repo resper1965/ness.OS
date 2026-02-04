@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 type Props = {
   action: (prev: unknown, fd: FormData) => Promise<{ success?: boolean; error?: string }>;
-  initialValues?: { title?: string; slug?: string; content_markdown?: string; tags?: string[] | null; last_reviewed_at?: string | null };
+  initialValues?: { id?: string; title?: string; slug?: string; content_markdown?: string; tags?: string[] | null; last_reviewed_at?: string | null };
 };
 
 export function PlaybookEditorForm({ action, initialValues }: Props) {
@@ -23,34 +23,35 @@ export function PlaybookEditorForm({ action, initialValues }: Props) {
   }
 
   return (
-    <form action={formAction} className="max-w-2xl space-y-6">
+    <form action={formAction} className="max-w-4xl space-y-8">
+      {initialValues?.id && <input type="hidden" name="_id" value={initialValues.id} />}
       {state?.error && <p className="text-sm text-red-400">{state.error}</p>}
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">Título</label>
+        <label className="block text-sm font-medium text-slate-300 mb-3">Título</label>
         <input name="title" type="text" required defaultValue={initialValues?.title} className={inputClass} placeholder="Manual de SecOps — Checklist de Deploy" />
         <p className={helpClass}>Nome legível. Aparece no catálogo e no Knowledge Bot.</p>
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">Slug</label>
+        <label className="block text-sm font-medium text-slate-300 mb-3">Slug</label>
         <input name="slug" type="text" required defaultValue={initialValues?.slug} className={inputClass} placeholder="manual-secops-checklist" />
         <p className={helpClass}>Sem espaços ou acentos. Ex.: manual-secops-checklist</p>
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">Tags</label>
+        <label className="block text-sm font-medium text-slate-300 mb-3">Tags</label>
         <input name="tags" type="text" defaultValue={Array.isArray(initialValues?.tags) ? initialValues.tags.join(', ') : ''} className={inputClass} placeholder="deploy, backup, secops" />
         <p className={helpClass}>Separadas por vírgula. Ex.: deploy, backup, secops</p>
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">Data de Revisão</label>
+        <label className="block text-sm font-medium text-slate-300 mb-3">Data de Revisão</label>
         <input name="last_reviewed_at" type="date" defaultValue={initialValues?.last_reviewed_at ?? ''} className={inputClass} />
         <p className={helpClass}>Última vez que o manual foi revisado.</p>
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">Conteúdo (Markdown)</label>
+        <label className="block text-sm font-medium text-slate-300 mb-3">Conteúdo (Markdown)</label>
         <textarea name="content_markdown" rows={16} defaultValue={initialValues?.content_markdown} className={inputClass + ' font-mono'} placeholder="## Pré-requisitos&#10;- Acesso ao ambiente&#10;&#10;## Passo 1&#10;..." />
         <p className={helpClass}>Procedimentos passo a passo. O Knowledge Bot usa esse texto para responder dúvidas.</p>
       </div>
-      <div className="flex gap-4">
+      <div className="flex gap-4 mt-8">
         <button type="submit" className="rounded-md bg-ness px-4 py-2 text-sm font-medium text-white hover:bg-ness-600">
           Salvar
         </button>

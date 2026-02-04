@@ -34,6 +34,28 @@ Todo input deve ter:
 ```
 
 ## Próximos passos
-1. Criar componente `FormField` reutilizável (opcional)
-2. Aplicar help texts e placeholders em cada formulário
-3. Adicionar legenda nas colunas do Kanban de leads
+1. ~~Criar componente FormField reutilizável~~ — já existe `InputField` em `shared/input-field.tsx` (label, helper, error).
+2. Aplicar help texts e placeholders em cada formulário (em andamento: ContractForm, PolicyForm, ComplianceCheckForm, BrandAssetForm, JobForm, Feedback360Form já usam InputField + helper).
+3. Adicionar legenda nas colunas do Kanban de leads (opcional).
+
+## Checklist de validação manual (fluxo inputs)
+
+Validar que cada formulário listado acima tem:
+
+| Formulário | Label | Help text | Placeholder | Observação |
+|------------|-------|-----------|-------------|------------|
+| Contato | ✓ | ✓ | ✓ | contact-form |
+| Candidatura | ✓ | — | ✓ | carreiras/[slug]/candidatar |
+| Playbook | ✓ | ✓ | ✓ | playbook-editor-form |
+| Métricas | ✓ | ✓ | ✓ | metricas-form |
+| Serviço | ✓ | ✓ | ✓ | service-form / service-edit-form |
+| Post | ✓ | ✓ | ✓ | post-editor-form |
+| Cliente | ✓ | ✓ | — | client-form |
+| Contrato | ✓ | ✓ | ✓ | contract-form (InputField) |
+| Vaga | ✓ | ✓ | ✓ | job-form, job-edit-form (InputField) |
+| Política | ✓ | ✓ | ✓ | policy-form (InputField) |
+| Compliance check | ✓ | ✓ | — | compliance-check-form (InputField) |
+| Brand asset | ✓ | ✓ | ✓ | brand-asset-form (InputField) |
+| Feedback 360º | ✓ | ✓ | — | feedback-360-form (InputField) |
+
+Execução: abrir cada rota no browser e conferir se todo input tem label associado (id/htmlFor), texto de ajuda quando fizer sentido e placeholder com exemplo real.

@@ -21,6 +21,7 @@ export default async function HomePage() {
           </>
         }
         subtitle="Operamos hoje. Melhoramos agora. Medimos sempre."
+        countries="brasil · portugal · estados unidos · colômbia · peru · chile"
         primaryCta={{ label: "Fale com um especialista", href: "/contato" }}
         secondaryCta={{ label: "Ver soluções", href: "/solucoes" }}
       />

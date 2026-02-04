@@ -3,6 +3,7 @@ import Link from "next/link";
 type HeroSectionProps = {
   title: string | React.ReactNode;
   subtitle?: string;
+  countries?: string;
   description?: string;
   primaryCta?: { label: string; href: string };
   secondaryCta?: { label: string; href: string };
@@ -16,6 +17,7 @@ const bgPattern =
 export function HeroSection({
   title,
   subtitle,
+  countries,
   description,
   primaryCta,
   secondaryCta,
@@ -45,6 +47,11 @@ export function HeroSection({
           {subtitle && (
             <p className="text-2xl md:text-3xl text-slate-300 font-light leading-relaxed max-w-4xl mx-auto">
               {subtitle}
+            </p>
+          )}
+          {countries && (
+            <p className="text-sm md:text-base text-slate-500 font-medium tracking-wide uppercase">
+              {countries}
             </p>
           )}
           {description && (

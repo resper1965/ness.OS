@@ -1,6 +1,6 @@
 {
   "planSlug": "integracao-omie-erp",
-  "progress": 100,
+  "progress": 88,
   "phases": {
     "phase-1": {
       "phaseId": "phase-1",
@@ -33,7 +33,7 @@
     },
     "phase-2": {
       "phaseId": "phase-2",
-      "status": "completed",
+      "status": "in_progress",
       "startedAt": "2026-02-03T20:52:41.905Z",
       "steps": [
         {
@@ -49,9 +49,29 @@
           "status": "completed",
           "completedAt": "2026-02-03T20:52:42.007Z",
           "notes": "Sync clientes: upsert por omie_codigo/document"
+        },
+        {
+          "stepIndex": 6,
+          "description": "Step 6",
+          "status": "completed",
+          "completedAt": "2026-02-03T20:52:44.054Z",
+          "notes": "UI ErpSyncButton em /app/fin/contratos"
+        },
+        {
+          "stepIndex": 7,
+          "description": "Step 7",
+          "status": "pending",
+          "notes": "Reconciliação MRR: getReconciliationAlerts() stub; listarContasReceber depois"
+        },
+        {
+          "stepIndex": 1,
+          "description": "Step 1",
+          "status": "completed",
+          "completedAt": "2026-02-03T20:52:46.076Z",
+          "notes": "Migration 029_erp_sync_omie.sql: erp_sync_log + clients.omie_codigo"
         }
       ],
-      "completedAt": "2026-02-03T20:52:42.007Z"
+      "completedAt": "2026-02-03T20:52:44.054Z"
     }
   },
   "decisions": [
@@ -64,5 +84,5 @@
       "decidedAt": "2026-02-03T20:47:33.017Z"
     }
   ],
-  "lastUpdated": "2026-02-03T20:52:42.007Z"
+  "lastUpdated": "2026-02-03T20:52:46.076Z"
 }

@@ -3,30 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { NessBrand } from '@/components/shared/ness-brand';
 import { PageContent } from '@/components/shared/page-content';
-
-const ALL_WIDGETS = [
-  { key: 'leads', href: '/app/growth/leads', title: 'Leads', desc: 'Leads do site em Kanban. Qualifique e acompanhe conversões.' },
-  { key: 'playbooks', href: '/app/ops/playbooks', title: 'Playbooks', desc: 'Manuais técnicos. Tudo que vendemos tem um playbook.' },
-  { key: 'knowledge-bot', href: '/app/ops/playbooks/chat', title: 'Knowledge Bot', desc: 'Tire dúvidas sobre procedimentos usando IA.' },
-  { key: 'services', href: '/app/growth/services', title: 'Serviços', desc: 'Catálogo de soluções. Vinculado aos playbooks.' },
-  { key: 'propostas', href: '/app/growth/propostas', title: 'Propostas', desc: 'Propostas comerciais para clientes.' },
-  { key: 'metricas', href: '/app/ops/metricas', title: 'Métricas', desc: 'Horas, custo cloud e SLA por contrato.' },
-  { key: 'assets', href: '/app/ops/assets', title: 'Assets', desc: 'Arquivos e ativos de marca.' },
-  { key: 'contratos', href: '/app/fin/contratos', title: 'Contratos', desc: 'Contratos e clientes.' },
-  { key: 'rentabilidade', href: '/app/fin/rentabilidade', title: 'Rentabilidade', desc: 'Receita menos custos por contrato.' },
-  { key: 'vagas', href: '/app/people/vagas', title: 'Vagas', desc: 'Vagas abertas aparecem em /carreiras.' },
-  { key: 'gaps', href: '/app/people/gaps', title: 'Gaps', desc: 'Registro de gaps de treinamento.' },
-] as const;
-
-const ROLE_WIDGETS: Record<string, readonly (typeof ALL_WIDGETS)[number]['key'][]> = {
-  admin: ALL_WIDGETS.map((w) => w.key),
-  superadmin: ALL_WIDGETS.map((w) => w.key),
-  sales: ['leads', 'services', 'propostas', 'knowledge-bot'],
-  ops: ['playbooks', 'metricas', 'knowledge-bot', 'assets'],
-  fin: ['contratos', 'rentabilidade'],
-  employee: ['knowledge-bot', 'gaps'],
-  legal: ['leads', 'knowledge-bot'], // JUR: acesso básico
-};
+import { getWidgetsForRole } from '@/lib/dashboard-widgets';
 
 export default async function AppDashboardPage() {
   const supabase = await createClient();
@@ -40,8 +17,7 @@ export default async function AppDashboardPage() {
     .single();
 
   const role = (profile?.role as string) || 'employee';
-  const allowedKeys = ROLE_WIDGETS[role] ?? ROLE_WIDGETS.admin;
-  const widgets = ALL_WIDGETS.filter((w) => allowedKeys.includes(w.key));
+  const widgets = getWidgetsForRole(role);
 
   return (
     <PageContent>
@@ -58,15 +34,17 @@ export default async function AppDashboardPage() {
         }
       />
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid min-w-0 grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {widgets.map((w) => (
           <Link
             key={w.key}
             href={w.href}
-            className="block rounded-lg border border-slate-700 p-4 hover:bg-slate-800/50 hover:border-ness/50"
+            className="block min-w-0 rounded-lg border border-slate-700 p-4 hover:bg-slate-800/50 hover:border-ness/50"
           >
-            <h2 className="font-semibold text-white mb-1">{w.title}</h2>
-            <p className="text-sm text-slate-400">{w.desc}</p>
+            <div className="min-h-[52px] flex flex-col justify-center">
+              <h2 className="font-semibold text-white mb-1">{w.title}</h2>
+              <p className="text-sm text-slate-400">{w.desc}</p>
+            </div>
           </Link>
         ))}
       </div>

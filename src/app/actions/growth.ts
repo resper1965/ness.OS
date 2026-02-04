@@ -118,6 +118,16 @@ export async function createPost(
   return { success: true };
 }
 
+/** Wrapper para useFormState: lê id do formData e chama updatePost. */
+export async function updatePostFromForm(
+  _prevState: unknown,
+  formData: FormData
+): Promise<PostFormState> {
+  const id = formData.get('_id') as string;
+  if (!id) return { error: 'ID do post não encontrado.' };
+  return updatePost(id, _prevState, formData);
+}
+
 export async function updatePost(
   id: string,
   _prevState: unknown,
@@ -157,7 +167,7 @@ export async function getActiveServices() {
   const supabase = await createClient();
   const { data } = await supabase
     .from('services_catalog')
-    .select('id, name, slug, marketing_pitch')
+    .select('id, name, slug, marketing_pitch, delivery_type')
     .eq('is_active', true)
     .order('name');
   return data ?? [];
@@ -191,22 +201,36 @@ export async function createService(
 ): Promise<{ success?: boolean; error?: string }> {
   const name = (formData.get('name') as string)?.trim();
   const slug = (formData.get('slug') as string)?.trim().toLowerCase().replace(/\s+/g, '-');
-  const playbookId = (formData.get('playbook_id') as string) || null;
+  const playbookIds = (formData.getAll('playbook_ids') as string[]).filter(Boolean);
   const pitch = (formData.get('marketing_pitch') as string) || null;
   const marketingTitle = (formData.get('marketing_title') as string)?.trim() || null;
   const marketingBody = (formData.get('marketing_body') as string)?.trim() || null;
   if (!name || !slug) return { error: 'Nome e slug obrigatórios.' };
-  if (!playbookId) return { error: 'Serviço precisa estar vinculado a um playbook.' };
+  if (playbookIds.length === 0) return { error: 'Adicione pelo menos um playbook.' };
 
   const supabase = await createClient();
-  const { error } = await supabase.from('services_catalog').insert({
-    name, slug, playbook_id: playbookId, marketing_pitch: pitch,
+  const { data: service, error: insertErr } = await supabase.from('services_catalog').insert({
+    name, slug, marketing_pitch: pitch,
     marketing_title: marketingTitle, marketing_body: marketingBody, is_active: false,
-  });
-  if (error) return { error: error.message };
+  }).select('id').single();
+  if (insertErr || !service) return { error: insertErr?.message ?? 'Erro ao criar serviço.' };
+
+  const rows = playbookIds.map((pid, i) => ({ service_id: service.id, playbook_id: pid, sort_order: i }));
+  const { error: spErr } = await supabase.from('services_playbooks').insert(rows);
+  if (spErr) return { error: spErr.message };
   revalidatePath('/app/growth/services');
   revalidatePath('/solucoes');
   return { success: true };
+}
+
+/** Wrapper para useFormState: lê id do formData e chama updateService. */
+export async function updateServiceFromForm(
+  _prev: unknown,
+  formData: FormData
+): Promise<{ success?: boolean; error?: string }> {
+  const id = formData.get('_id') as string;
+  if (!id) return { error: 'ID do serviço não encontrado.' };
+  return updateService(id, _prev, formData);
 }
 
 export async function updateService(
@@ -216,20 +240,28 @@ export async function updateService(
 ): Promise<{ success?: boolean; error?: string }> {
   const name = (formData.get('name') as string)?.trim();
   const slug = (formData.get('slug') as string)?.trim().toLowerCase().replace(/\s+/g, '-');
-  const playbookId = (formData.get('playbook_id') as string) || null;
+  const playbookIds = (formData.getAll('playbook_ids') as string[]).filter(Boolean);
+  const deliveryTypeRaw = (formData.get('delivery_type') as string) || 'service';
+  const deliveryType = ['service', 'product', 'vertical'].includes(deliveryTypeRaw) ? deliveryTypeRaw : 'service';
   const pitch = (formData.get('marketing_pitch') as string) || null;
   const marketingTitle = (formData.get('marketing_title') as string)?.trim() || null;
   const marketingBody = (formData.get('marketing_body') as string)?.trim() || null;
   const isActive = formData.get('is_active') === 'on';
   if (!name || !slug) return { error: 'Nome e slug obrigatórios.' };
-  if (!playbookId) return { error: 'Serviço precisa estar vinculado a um playbook.' };
+  if (playbookIds.length === 0) return { error: 'Adicione pelo menos um playbook.' };
 
   const supabase = await createClient();
   const { error } = await supabase.from('services_catalog').update({
-    name, slug, playbook_id: playbookId, marketing_pitch: pitch,
+    name, slug, delivery_type: deliveryType,
+    marketing_pitch: pitch,
     marketing_title: marketingTitle, marketing_body: marketingBody, is_active: isActive,
   }).eq('id', id);
   if (error) return { error: error.message };
+
+  await supabase.from('services_playbooks').delete().eq('service_id', id);
+  const rows = playbookIds.map((pid, i) => ({ service_id: id, playbook_id: pid, sort_order: i }));
+  const { error: spErr } = await supabase.from('services_playbooks').insert(rows);
+  if (spErr) return { error: spErr.message };
   revalidatePath('/app/growth/services');
   revalidatePath('/solucoes');
   return { success: true };
@@ -258,6 +290,16 @@ export async function createSuccessCase(
   return { success: true };
 }
 
+/** Wrapper para useFormState: lê id do formData e chama updateSuccessCase. */
+export async function updateSuccessCaseFromForm(
+  _prev: unknown,
+  formData: FormData
+): Promise<{ success?: boolean; error?: string }> {
+  const id = formData.get('_id') as string;
+  if (!id) return { error: 'ID do caso não encontrado.' };
+  return updateSuccessCase(id, _prev, formData);
+}
+
 export async function updateSuccessCase(
   id: string,
   _prev: unknown,
@@ -280,5 +322,26 @@ export async function updateSuccessCase(
   revalidatePath('/app/growth/casos');
   revalidatePath(`/app/growth/casos/${id}`);
   revalidatePath('/casos');
+  return { success: true };
+}
+
+// === BRAND ASSETS (ness.GROWTH — Brand Guardian) ===
+
+export async function createBrandAssetFromForm(
+  _prev: unknown,
+  formData: FormData
+): Promise<{ success?: boolean; error?: string }> {
+  const name = (formData.get('name') as string)?.trim();
+  if (!name) return { error: 'Nome obrigatório.' };
+
+  const supabase = await createClient();
+  const { error } = await supabase.from('brand_assets').insert({
+    name,
+    asset_type: (formData.get('asset_type') as string)?.trim() || null,
+    url: (formData.get('url') as string)?.trim() || null,
+  });
+
+  if (error) return { error: error.message };
+  revalidatePath('/app/growth/brand');
   return { success: true };
 }

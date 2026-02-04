@@ -39,7 +39,7 @@ export function LeadKanban({ columns, leadsByStatus }: LeadKanbanProps) {
           key={col.key}
           className="rounded-lg border border-slate-700 bg-slate-800/30 min-h-[200px]"
         >
-          <div className="px-4 py-3 border-b border-slate-700">
+          <div className="flex min-h-[52px] flex-col justify-center border-b border-slate-700 px-5 py-4">
             <h2 className="font-semibold text-slate-200">{col.label}</h2>
             <span className="text-xs text-slate-400">
               {(leadsByStatus[col.key] ?? []).length} leads

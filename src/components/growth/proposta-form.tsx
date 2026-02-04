@@ -55,7 +55,7 @@ export function PropostaForm({ clients, services }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-2xl space-y-4 rounded-lg border border-slate-700 p-6">
+    <form onSubmit={handleSubmit} className="max-w-4xl space-y-4 rounded-lg border border-slate-700 p-6">
       <div>
         <label className="block text-sm text-slate-300 mb-2">Cliente</label>
         <select

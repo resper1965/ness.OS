@@ -196,3 +196,5 @@ When to initiate rollback:
 ## Evidence & Follow-up
 
 List artifacts to collect (logs, PR links, test runs, design notes). Record follow-up actions or owners.
+
+**Plano relacionado — MR (captura de horas):** [mobile-timesheet-timer](./mobile-timesheet-timer.md) — frontend mobile (PWA) para timesheet em formato timer: colaborador escolhe cliente/contrato/playbook, inicia e para o timer; registros em `time_entries` alimentam Mapeamento de Recursos e rentabilidade.

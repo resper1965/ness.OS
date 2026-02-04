@@ -15,7 +15,7 @@ export function GapForm({ profiles = [], playbooks = [] }: Props) {
   const inputClass = 'w-full rounded-md border border-slate-600 bg-slate-800 px-3 py-2 text-sm text-white';
 
   return (
-    <form action={formAction} className="max-w-md space-y-4 rounded-lg border border-slate-700 p-6 mb-8">
+    <form action={formAction} className="max-w-xl space-y-4 rounded-lg border border-slate-700 p-6 mb-8">
       <h2 className="font-semibold text-slate-200">Registrar gap</h2>
       {state?.error && <p className="text-sm text-red-400">{state.error}</p>}
       {state?.success && <p className="text-sm text-green-400">Gap registrado.</p>}

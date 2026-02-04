@@ -45,8 +45,8 @@
 
 | Rota | Sigla | Função |
 |------|-------|--------|
-| `POST /api/ops/indicators/ingest` | HI | Ingestão de métricas de ferramentas externas |
-| `GET /api/ops/indicators/dashboard` | HI | Dashboards unificados |
+| `POST /api/data/indicators/ingest` (ness.DATA) | HI | Ingestão de métricas de ferramentas externas; OPS consome dados via DATA |
+| `GET /api/ops/indicators/dashboard` | HI | Dashboards unificados (dados vindos de DATA) |
 
 ### Fases de implementação
 
@@ -191,14 +191,13 @@ Ver [RF-CORE-REQUISITOS.md](RF-CORE-REQUISITOS.md)
 
 | Atual | Alvo | Transformação |
 |-------|------|---------------|
-| `performance_metrics`: form manual, contrato + mês + horas + custo + SLA | Métricas de qualquer ferramenta via API | **Construir** API de ingestão: `POST /api/ops/indicators/ingest` com payload `{ source, contract_id?, metric_type, value, metadata }`. Source = Infra | Sec | Data | Custom. |
+| `performance_metrics`: form manual, contrato + mês + horas + custo + SLA | Métricas de qualquer ferramenta via API | **ness.DATA** expõe API de ingestão (ex.: `POST /api/data/indicators/ingest` ou Server Action); OPS consome dados já persistidos para dashboards. Payload: `{ source, contract_id?, metric_type, value, metadata }`. Source = Infra \| Sec \| Data \| Custom. |
 | Sem dashboards unificados | Dashboards de performance unificados | **Construir** página de dashboards que agrega métricas por contrato, fonte, período. Gráficos (SLA, uptime, incidentes, etc.). |
-| Dados só via form | Dados de ferramentas externas | **Definir** contrato da API: auth por API key, schema flexível (JSON). Webhooks ou polling das ferramentas. |
+| Dados só via form | Dados de ferramentas externas | **ness.DATA** define contrato da API: auth por API key, schema flexível (JSON). OPS não chama ferramentas externas diretamente. |
 
 **Entregas:**
-- Migration: `indicator_sources` (nome, tipo, api_key_hash), `indicator_metrics` (source_id, contract_id?, metric_type, value, timestamp, metadata jsonb)
-- API `POST /api/ops/indicators/ingest` (api key no header)
-- Página `/app/ops/indicators` com dashboards (charts)
+- **ness.DATA:** API/action de ingestão de indicadores; tabela de indicadores (ou integração com performance_metrics conforme schema). Ver `.context/plans/ness-data-modulo-dados.md`.
+- **ness.OPS:** Migration se necessário; página `/app/ops/indicators` com dashboards (charts); consumo dos dados via DATA.
 - Doc da API para integradores (Infra, Sec, Data)
 
 ---

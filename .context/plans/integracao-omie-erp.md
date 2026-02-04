@@ -1,9 +1,9 @@
 ---
 status: ready
-progress: 100
+progress: 88
 generated: 2026-02-03
 planSlug: integracao-omie-erp
-planVinculado: docs/PLANO-NESS-FIN-CFO-DIGITAL.md
+planVinculado: docs/PLANO-NESS-FIN-CFO-DIGITAL.md, .context/plans/ness-data-modulo-dados.md
 constrains:
   - "Stack: Next.js, Supabase, Server Actions ou Edge Functions"
   - "Credenciais Omie apenas server-side (OMIE_APP_KEY, OMIE_APP_SECRET)"
@@ -32,14 +32,14 @@ phases:
   - id: "phase-3"
     name: "Validation & Handoff"
     prevc: "V"
-lastUpdated: "2026-02-03T20:52:42.007Z"
+lastUpdated: "2026-02-03T20:52:46.076Z"
 ---
 
-# Integração Omie ERP — ness.FIN (CEP)
+# Integração Omie ERP — ness.DATA + ness.FIN (CEP)
 
-> Planejar e implementar integração com Omie ERP: sync clientes, contratos e contas a receber; reconciliar MRR com faturamento; mapear despesas por contrato. Usar OMIE_APP_KEY e OMIE_APP_SECRET.
+> Integração com Omie ERP: **ness.DATA** é responsável por sync (clientes, contas a receber, contas a pagar etc.) e expor consultas; **ness.FIN** consome dados via DATA e aplica reconciliação MRR, ciclo de vida e rentabilidade. Usar OMIE_APP_KEY e OMIE_APP_SECRET apenas em ness.DATA.
 
-**Documento de negócio:** [docs/PLANO-NESS-FIN-CFO-DIGITAL.md](../../docs/PLANO-NESS-FIN-CFO-DIGITAL.md) — pilar **CEP (Conexão ERP)**.
+**Documento de negócio:** [docs/PLANO-NESS-FIN-CFO-DIGITAL.md](../../docs/PLANO-NESS-FIN-CFO-DIGITAL.md) — pilar **CEP (Conexão ERP)**. **Camada de dados:** [ness-data-modulo-dados](./ness-data-modulo-dados.md).
 
 **Trigger:** "integração Omie", "sync ERP", "conexão Omie", "reconciliar faturamento"
 
@@ -58,10 +58,11 @@ lastUpdated: "2026-02-03T20:52:42.007Z"
 
 ## Codebase Context
 
-- **Tabelas ness.FIN:** `contracts` (client_id, mrr, start_date, renewal_date, adjustment_index), `clients`; `performance_metrics` para custos.
-- **Env:** `.env.example` já prevê `OMIE_APP_KEY` e `OMIE_APP_SECRET` (Edge Functions ou .env.local); nunca expor no frontend.
-- **Rotas previstas:** `POST /api/fin/erp/sync` para disparar sync (docs/PLANO-NESS-FIN-CFO-DIGITAL.md).
-- **Stack:** Next.js 14 App Router, Supabase, Server Actions em `app/actions/fin.ts`; integração Omie via REST (server-side apenas).
+- **ness.DATA:** Responsável por sync Omie (clientes, contas a receber etc.), `erp_sync_log`, cliente HTTP Omie (`lib/omie/` ou `lib/data/omie/`). Expõe `syncOmieErp()`, `getLastErpSync()`, consultas de contas a receber etc.
+- **ness.FIN:** Consome dados via ness.DATA; dono de `contracts`, `clients` (DATA pode popular); reconciliação MRR, alertas, rentabilidade. UI "Sincronizar ERP" pode chamar action de DATA.
+- **Tabelas:** `contracts`, `clients`, `performance_metrics` (FIN); `erp_sync_log` (DATA ou compartilhado).
+- **Env:** OMIE_APP_KEY e OMIE_APP_SECRET apenas server-side (ness.DATA).
+- **Stack:** Next.js 14 App Router, Supabase, Server Actions em `app/actions/data.ts` (sync/consultas) e `app/actions/fin.ts` (reconciliação, contratos).
 
 ---
 
@@ -148,13 +149,13 @@ lastUpdated: "2026-02-03T20:52:42.007Z"
 
 **Steps**
 
-1. **Migration `erp_sync_log`** — Campos: id, started_at, finished_at, status (running|success|error), record_count (opcional), error_message (opcional), created_at. RLS: apenas roles autorizados (admin/cfo).
+1. [x] **Migration `erp_sync_log`** — Campos: id, started_at, finished_at, status (running|success|error), record_count (opcional), error_message (opcional), created_at. RLS: apenas roles autorizados (admin/cfo). *(completed: 2026-02-03T20:52:46.076Z)*
 2. [x] **Cliente HTTP Omie** — Módulo server-only (ex.: `lib/omie/client.ts` ou em `app/actions`) que recebe app_key/app_secret de env, monta body JSON e chama endpoints Omie; tratar erros e timeouts. *(completed: 2026-02-03T20:52:41.905Z)*
 3. [x] **Sync clientes** — Ação que chama ListarClientes (ou paginado), normaliza dados e upsert em `clients` (criar ou atualizar por codigo_cliente/CNPJ); registrar em `erp_sync_log`. *(completed: 2026-02-03T20:52:42.007Z)*
 4. [ ] **Sync contas a receber** — Listar lançamentos por período; decidir se persiste em tabela auxiliar (ex.: `erp_receivables`) ou só agrega em memória para reconciliação; registrar sync em `erp_sync_log`.
 5. **Rota ou Server Action de sync** — `POST /api/fin/erp/sync` ou Server Action `syncOmieErp()` protegida por role; chama sync clientes + contas a receber e atualiza `erp_sync_log`.
-6. **UI ness.FIN** — Em /app/fin/contratos ou /app/fin/rentabilidade: botão "Sincronizar ERP", status da última sync (última data, status success/error), mensagem de erro se falhou.
-7. **Reconciliação MRR** — Job ou ação que compara `contracts.mrr` (por cliente) com faturamento Omie (agregado das contas a receber do período); exibir alerta ou coluna "Divergência" quando fora da tolerância.
+6. [x] **UI ness.FIN** — Em /app/fin/contratos ou /app/fin/rentabilidade: botão "Sincronizar ERP", status da última sync (última data, status success/error), mensagem de erro se falhou. *(completed: 2026-02-03T20:52:44.054Z)*
+7. [x] **Reconciliação MRR** — ness.DATA expõe getOmieContasReceber(periodo); FIN getReconciliationAlerts() compara MRR com faturamento Omie; UI em /app/fin/alertas (seção Reconciliação MRR vs Omie). Rate limit: 1 sync a cada 5 min em syncOmieErp().
 
 **Commit Checkpoint:** `fin-cfo: phase 2 implementation integracao Omie (sync + erp_sync_log + UI)`
 
@@ -203,7 +204,7 @@ lastUpdated: "2026-02-03T20:52:42.007Z"
 
 ## Execution History
 
-> Last updated: 2026-02-03T20:52:42.007Z | Progress: 100%
+> Last updated: 2026-02-03T20:52:46.076Z | Progress: 88%
 
 ### phase-1 [DONE]
 - Started: 2026-02-03T20:47:26.531Z
@@ -216,11 +217,17 @@ lastUpdated: "2026-02-03T20:52:42.007Z"
 - [x] Step 4: Step 4 *(2026-02-03T20:47:30.802Z)*
   - Output: .context/workflow/artifacts/integracao-omie-erp-phase-p-design.md
 
-### phase-2 [DONE]
+### phase-2 [IN PROGRESS]
 - Started: 2026-02-03T20:52:41.905Z
-- Completed: 2026-02-03T20:52:42.007Z
+- Completed: 2026-02-03T20:52:44.054Z
 
+- [x] Step 1: Step 1 *(2026-02-03T20:52:46.076Z)*
+  - Notes: Migration 029_erp_sync_omie.sql: erp_sync_log + clients.omie_codigo
 - [x] Step 2: Step 2 *(2026-02-03T20:52:41.905Z)*
   - Notes: lib/omie/client.ts: omiePost, listarClientes
 - [x] Step 3: Step 3 *(2026-02-03T20:52:42.007Z)*
   - Notes: Sync clientes: upsert por omie_codigo/document
+- [x] Step 6: Step 6 *(2026-02-03T20:52:44.054Z)*
+  - Notes: UI ErpSyncButton em /app/fin/contratos
+- [ ] Step 7: Step 7
+  - Notes: Reconciliação MRR: getReconciliationAlerts() stub; listarContasReceber depois

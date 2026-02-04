@@ -6,10 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "seed:generate": "node scripts/seed-from-corp-site.js > supabase/seed/002_corp_site_content.sql",
-    "seed:complete": "cd supabase/seed && cat 000_playbooks_seed.sql 002_corp_site_content.sql 003_blog_posts_seed.sql 004_verify_seed.sql > complete_seed.sql",
+    "seed:complete": "cd supabase/seed && cat 000_playbooks_seed.sql 002_corp_site_content.sql 002b_delivery_type.sql 002c_services_playbooks.sql 003_blog_posts_seed.sql 004_verify_seed.sql > complete_seed.sql",
     "start": "next start",
     "lint": "next lint",
-    "test": "vitest run"
+    "test": "vitest run",
+    "validate:ux": "npm run lint && npm run build"
   },
   "dependencies": {
     "@ai-sdk/openai": "^3.0.23",
@@ -25,6 +26,7 @@
     "next": "14.2.18",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "sonner": "^2.0.7",
     "tailwind-merge": "^2.5.4",
     "zod": "^3.23.8"
   },

@@ -23,9 +23,10 @@ scaffoldVersion: "2.0.0"
 
 | Módulo | Foco |
 |--------|------|
+| **ness.DATA** | Camada de dados — ingestão e exposição de dados de fontes externas (Omie primeiro). Sync centralizado; consultas para FIN, OPS, GROWTH, PEOPLE. |
 | **ness.GROWTH** | Inteligência comercial, marketing, DXP — Smart Proposals, Motor de Conteúdo, Chatbot RAG, Branding |
 | **ness.OPS** | Gestão do conhecimento e operação — Engenharia de Processos (Playbooks), Ingestão de Indicadores, Mapeamento de Recursos |
-| **ness.FIN** | CFO Digital — rentabilidade real, ciclo de vida de contratos, custos |
+| **ness.FIN** | CFO Digital — rentabilidade real, ciclo de vida de contratos, custos (consome dados ERP via ness.DATA) |
 | **ness.JUR** | Jurídico e compliance — análise de contratos, conformidade legal (LGPD, Marco Civil) |
 | **ness.GOV** | Governança corporativa — políticas internas, rastreabilidade de aceite |
 | **ness.PEOPLE** | Talentos e ATS — recrutamento integrado, avaliação 360º, treinamento orientado por gaps |

@@ -18,7 +18,7 @@ export function MetricasForm({ contracts, recentMetrics }: Props) {
 
   return (
     <div className="space-y-8">
-      <form action={formAction} className="max-w-md space-y-4 rounded-lg border border-slate-700 p-6">
+      <form action={formAction} className="max-w-xl space-y-4 rounded-lg border border-slate-700 p-6">
         <h2 className="font-semibold text-slate-200">Registrar métrica</h2>
         {state?.error && <p className="text-sm text-red-400">{state.error}</p>}
         {state?.success && <p className="text-sm text-green-400">Salvo.</p>}
