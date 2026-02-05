@@ -1,29 +1,25 @@
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
+import { withSupabase } from '@/lib/supabase/queries/base';
 
 export async function getStaticPageBySlug(slug: string) {
-  try {
-    const supabase = await createClient();
-    const { data, error } = await supabase
+  const { data, error } = await withSupabase(async (sb) => {
+    const { data: d, error: e } = await sb
       .from('static_pages')
       .select('id, slug, title, seo_description, content_json, last_updated')
       .eq('slug', slug)
       .single();
-
-    if (error || !data) return null;
-    return data;
-  } catch {
-    return null;
-  }
+    if (e || !d) return null;
+    return d;
+  });
+  return error ? null : data ?? null;
 }
 
 export async function getStaticPageSlugs() {
-  try {
-    const supabase = await createClient();
-    const { data } = await supabase.from('static_pages').select('slug');
-    return (data ?? []).map((r) => r.slug);
-  } catch {
-    return [];
-  }
+  const { data, error } = await withSupabase(async (sb) => {
+    const { data: d, error: e } = await sb.from('static_pages').select('slug');
+    if (e) throw new Error(e.message);
+    return (d ?? []).map((r) => r.slug);
+  });
+  return error ? [] : data ?? [];
 }

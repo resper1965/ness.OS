@@ -1,6 +1,6 @@
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
+import { getServerClient } from '@/lib/supabase/queries/base';
 import { redirect } from 'next/navigation';
 
 export type AuthState = { error?: string; redirect?: string };
@@ -22,7 +22,7 @@ export async function signIn(_prevState: AuthState, formData: FormData): Promise
   }
 
   try {
-    const supabase = await createClient();
+    const supabase = await getServerClient();
     const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
 
     if (error) {
@@ -41,7 +41,7 @@ export async function signIn(_prevState: AuthState, formData: FormData): Promise
 }
 
 export async function signOut() {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   await supabase.auth.signOut();
   redirect('/login');
 }

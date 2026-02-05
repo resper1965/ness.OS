@@ -1,6 +1,6 @@
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
+import { getServerClient, withSupabase } from '@/lib/supabase/queries/base';
 import { revalidatePath } from 'next/cache';
 import { leadSchema, postSchema } from '@/lib/validators/schemas';
 import { emitModuleEvent } from '@/lib/events/emit';
@@ -32,7 +32,7 @@ export async function submitLead(
     return { error: msg };
   }
 
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: inserted, error } = await supabase
     .from('inbound_leads')
     .insert({
@@ -66,7 +66,7 @@ export async function updateLeadStatus(id: string, status: string) {
     return { error: 'Status inválido.' };
   }
 
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { error } = await supabase
     .from('inbound_leads')
     .update({ status })
@@ -80,26 +80,31 @@ export async function updateLeadStatus(id: string, status: string) {
 // === POSTS ===
 
 export async function getPosts(limit = 10) {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from('public_posts')
-    .select('id, slug, title, seo_description, published_at')
-    .eq('is_published', true)
-    .order('published_at', { ascending: false })
-    .limit(limit);
-  return data ?? [];
+  const { data, error } = await withSupabase(async (sb) => {
+    const { data: d, error: e } = await sb
+      .from('public_posts')
+      .select('id, slug, title, seo_description, published_at')
+      .eq('is_published', true)
+      .order('published_at', { ascending: false })
+      .limit(limit);
+    if (e) throw new Error(e.message);
+    return d ?? [];
+  });
+  return error ? [] : data ?? [];
 }
 
 export async function getPostBySlug(slug: string) {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from('public_posts')
-    .select('id, slug, title, content_markdown, seo_description, published_at, author_id')
-    .eq('slug', slug)
-    .eq('is_published', true)
-    .single();
-  if (error || !data) return null;
-  return data;
+  const { data, error } = await withSupabase(async (sb) => {
+    const { data: d, error: e } = await sb
+      .from('public_posts')
+      .select('id, slug, title, content_markdown, seo_description, published_at, author_id')
+      .eq('slug', slug)
+      .eq('is_published', true)
+      .single();
+    if (e || !d) return null;
+    return d;
+  });
+  return error ? null : data ?? null;
 }
 
 export async function createPost(
@@ -115,7 +120,7 @@ export async function createPost(
   });
   if (!parsed.success) return { error: parsed.error.errors[0]?.message ?? 'Dados inválidos' };
 
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: 'Não autenticado.' };
 
@@ -158,7 +163,7 @@ export async function updatePost(
   });
   if (!parsed.success) return { error: parsed.error.errors[0]?.message ?? 'Dados inválidos' };
 
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const payload: Record<string, unknown> = {
     title: parsed.data.title,
     slug: parsed.data.slug,
@@ -180,35 +185,40 @@ export async function updatePost(
 
 /** Serviços ativos para home e listagens (id, name, slug, marketing_pitch) */
 export async function getActiveServices() {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from('services_catalog')
-    .select('id, name, slug, marketing_pitch, delivery_type')
-    .eq('is_active', true)
-    .order('name');
-  return data ?? [];
+  const { data, error } = await withSupabase(async (sb) => {
+    const { data: d, error: e } = await sb
+      .from('services_catalog')
+      .select('id, name, slug, marketing_pitch, delivery_type')
+      .eq('is_active', true)
+      .order('name');
+    if (e) throw new Error(e.message);
+    return d ?? [];
+  });
+  return error ? [] : data ?? [];
 }
 
 export async function getServiceBySlug(slug: string) {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from('services_catalog')
-    .select('id, name, slug, marketing_title, marketing_body, marketing_pitch, marketing_features, cover_image_url, content_json')
-    .eq('slug', slug)
-    .eq('is_active', true)
-    .single();
-  if (error || !data) return null;
-  return {
-    id: data.id,
-    name: data.name,
-    slug: data.slug,
-    marketing_title: data.marketing_title ?? null,
-    marketing_body: data.marketing_body ?? null,
-    marketing_pitch: data.marketing_pitch,
-    marketing_features: data.marketing_features,
-    cover_image_url: data.cover_image_url,
-    content_json: data.content_json ?? null,
-  };
+  const { data, error } = await withSupabase(async (sb) => {
+    const { data: d, error: e } = await sb
+      .from('services_catalog')
+      .select('id, name, slug, marketing_title, marketing_body, marketing_pitch, marketing_features, cover_image_url, content_json')
+      .eq('slug', slug)
+      .eq('is_active', true)
+      .single();
+    if (e || !d) return null;
+    return {
+      id: d.id,
+      name: d.name,
+      slug: d.slug,
+      marketing_title: d.marketing_title ?? null,
+      marketing_body: d.marketing_body ?? null,
+      marketing_pitch: d.marketing_pitch,
+      marketing_features: d.marketing_features,
+      cover_image_url: d.cover_image_url,
+      content_json: d.content_json ?? null,
+    };
+  });
+  return error ? null : data ?? null;
 }
 
 export async function createService(
@@ -224,7 +234,7 @@ export async function createService(
   if (!name || !slug) return { error: 'Nome e slug obrigatórios.' };
   if (playbookIds.length === 0) return { error: 'Adicione pelo menos um playbook.' };
 
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: service, error: insertErr } = await supabase.from('services_catalog').insert({
     name, slug, marketing_pitch: pitch,
     marketing_title: marketingTitle, marketing_body: marketingBody, is_active: false,
@@ -266,7 +276,7 @@ export async function updateService(
   if (!name || !slug) return { error: 'Nome e slug obrigatórios.' };
   if (playbookIds.length === 0) return { error: 'Adicione pelo menos um playbook.' };
 
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { error } = await supabase.from('services_catalog').update({
     name, slug, delivery_type: deliveryType,
     marketing_pitch: pitch,
@@ -296,7 +306,7 @@ export async function createSuccessCase(
   const isPublished = formData.get('is_published') === 'on';
   if (!title || !slug) return { error: 'Título e slug obrigatórios.' };
 
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { error } = await supabase.from('success_cases').insert({
     title, slug, raw_data: rawData, summary, is_published: isPublished,
   });
@@ -329,7 +339,7 @@ export async function updateSuccessCase(
   const isPublished = formData.get('is_published') === 'on';
   if (!title || !slug) return { error: 'Título e slug obrigatórios.' };
 
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { error } = await supabase
     .from('success_cases')
     .update({ title, slug, raw_data: rawData, summary, content_html: contentHtml, is_published: isPublished, updated_at: new Date().toISOString() })
@@ -350,7 +360,7 @@ export async function createBrandAssetFromForm(
   const name = (formData.get('name') as string)?.trim();
   if (!name) return { error: 'Nome obrigatório.' };
 
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { error } = await supabase.from('brand_assets').insert({
     name,
     asset_type: (formData.get('asset_type') as string)?.trim() || null,

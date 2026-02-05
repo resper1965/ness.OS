@@ -1,6 +1,6 @@
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
+import { getServerClient } from '@/lib/supabase/queries/base';
 import { revalidatePath } from 'next/cache';
 
 /**
@@ -13,7 +13,7 @@ const today = new Date().toISOString().slice(0, 10);
 
 /** Clientes com pelo menos um contrato ativo (vigente hoje). */
 export async function getClientsForTimer(): Promise<{ id: string; name: string }[]> {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: clients } = await supabase.from('clients').select('id, name').order('name');
   const { data: contracts } = await supabase.from('contracts').select('client_id, start_date, end_date');
   if (!clients?.length) return [];
@@ -29,7 +29,7 @@ export async function getClientsForTimer(): Promise<{ id: string; name: string }
 
 /** Contratos ativos do cliente (vigência hoje). */
 export async function getContractsByClient(clientId: string): Promise<{ id: string; mrr: number; start_date: string | null; end_date: string | null }[]> {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data } = await supabase
     .from('contracts')
     .select('id, mrr, start_date, end_date')
@@ -45,14 +45,14 @@ export async function getContractsByClient(clientId: string): Promise<{ id: stri
 
 /** Playbooks para dropdown (id, title). */
 export async function getPlaybooksForTimer(): Promise<{ id: string; title: string }[]> {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data } = await supabase.from('playbooks').select('id, title').order('title');
   return (data ?? []) as { id: string; title: string }[];
 }
 
 /** Inicia o timer: cria time_entry com ended_at null. Retorna id e started_at. */
 export async function startTimer(contractId: string, playbookId?: string | null): Promise<{ id?: string; started_at?: string; error?: string }> {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: 'Não autenticado.' };
 
@@ -78,7 +78,7 @@ export async function updateTimeEntry(
   entryId: string,
   payload: { ended_at?: string | null; notes?: string | null }
 ): Promise<{ success?: boolean; error?: string }> {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: 'Não autenticado.' };
 
@@ -99,7 +99,7 @@ export async function updateTimeEntry(
 
 /** Para o timer: atualiza ended_at. duration_minutes é calculado pela coluna generated. */
 export async function stopTimer(entryId: string): Promise<{ success?: boolean; duration_minutes?: number; error?: string }> {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: 'Não autenticado.' };
 
@@ -125,7 +125,7 @@ export async function getActiveTimer(): Promise<{
   contracts?: { clients?: { name: string } | null } | null;
   playbooks?: { title: string } | null;
 } | null> {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
 
@@ -158,7 +158,7 @@ export async function getTimeEntriesToday(): Promise<{
   contracts?: { clients?: { name: string } | null } | null;
   playbooks?: { title: string } | null;
 }[]> {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return [];
 
@@ -196,7 +196,7 @@ export async function getTimeEntriesSummaryThisMonth(): Promise<{
   total_minutes: number;
   total_hours: number;
 }[]> {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return [];
 
@@ -225,7 +225,7 @@ export async function syncPerformanceMetricsFromTimer(): Promise<{
   updated?: number;
   error?: string;
 }> {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: 'Não autenticado.' };
 

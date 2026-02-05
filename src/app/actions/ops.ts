@@ -1,7 +1,7 @@
 'use server';
 
 import { generateEmbeddings } from '@/lib/ai/embedding';
-import { createClient } from '@/lib/supabase/server';
+import { getServerClient, withSupabase } from '@/lib/supabase/queries/base';
 import { revalidatePath } from 'next/cache';
 
 const BUCKET = 'os-assets';
@@ -22,7 +22,7 @@ export async function createPlaybook(
 
   if (!title?.trim() || !slug?.trim()) return { error: 'Título e slug obrigatórios.' };
 
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: 'Não autenticado.' };
 
@@ -71,7 +71,7 @@ export async function updatePlaybook(
 
   if (!title?.trim() || !slug?.trim()) return { error: 'Título e slug obrigatórios.' };
 
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { error } = await supabase
     .from('playbooks')
     .update({
@@ -109,7 +109,7 @@ export async function uploadAsset(
   if (!file || file.size === 0) return { error: 'Selecione um arquivo.' };
   if (file.size > MAX_SIZE) return { error: 'Arquivo muito grande (máx. 10MB).' };
 
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: 'Não autenticado.' };
 
@@ -128,7 +128,7 @@ export async function uploadAsset(
 
 export async function listAssets(folder = ''): Promise<{ name: string; path: string }[]> {
   try {
-    const supabase = await createClient();
+    const supabase = await getServerClient();
     const { data, error } = await supabase.storage.from(BUCKET).list(folder || undefined, { limit: 100 });
 
     if (error) return [];
@@ -158,7 +158,7 @@ export async function saveMetric(
 
   if (!contractId || !month) return { error: 'Contrato e mês obrigatórios.' };
 
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const monthDate = `${month}-01`;
   const { error } = await supabase.from('performance_metrics').upsert(
     { contract_id: contractId, month: monthDate, hours_worked: hours, hourly_rate: hourlyRate, cost_input: cost, sla_achieved: sla },
@@ -179,7 +179,7 @@ export async function resolveWorkflowApproval(
   status: 'approved' | 'rejected',
   resolutionPayload?: Record<string, unknown>
 ): Promise<{ success?: boolean; error?: string }> {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: 'Não autenticado.' };
 

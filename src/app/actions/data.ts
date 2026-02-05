@@ -1,6 +1,6 @@
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
+import { getServerClient } from '@/lib/supabase/queries/base';
 import { revalidatePath } from 'next/cache';
 import { listarClientes, listarContasReceber } from '@/lib/omie/client';
 
@@ -17,7 +17,7 @@ const ERP_SYNC_COOLDOWN_MS = 5 * 60 * 1000; // 5 minutos
 export type ErpSyncResult = { success?: boolean; error?: string; logId?: string };
 
 export async function syncOmieErp(): Promise<ErpSyncResult> {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: 'Não autenticado.' };
 
@@ -126,7 +126,7 @@ export async function syncOmieErp(): Promise<ErpSyncResult> {
 }
 
 export async function getLastErpSync() {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data } = await supabase
     .from('erp_sync_log')
     .select('id, started_at, finished_at, status, record_count, error_message')
@@ -315,7 +315,7 @@ export async function getIndicators(options?: {
   period?: string;
   limit?: number;
 }): Promise<IndicatorRow[]> {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   let q = supabase
     .from('indicators')
     .select('id, source, contract_id, metric_type, value, metadata, period, created_at')
@@ -341,7 +341,7 @@ export async function ingestIndicator(payload: {
   metadata?: Record<string, unknown> | null;
   period?: string | null;
 }): Promise<{ success?: boolean; id?: string; error?: string }> {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: 'Não autenticado.' };
 

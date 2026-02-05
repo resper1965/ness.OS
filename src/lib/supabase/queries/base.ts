@@ -1,10 +1,15 @@
 import { createClient } from '@/lib/supabase/server';
 
-type SupabaseClient = Awaited<ReturnType<typeof createClient>>;
+export type SupabaseClient = Awaited<ReturnType<typeof createClient>>;
+
+/** Retorna o client Supabase do server. Use em actions que fazem várias operações ou precisam de auth.getUser(). */
+export async function getServerClient(): Promise<SupabaseClient> {
+  return createClient();
+}
 
 /**
  * Executa uma função com o client Supabase. Centraliza criação do client e tratamento de erro.
- * Uso: withSupabase(sb => sb.from('tabela').select('*'))
+ * Uso: withSupabase(sb => { const { data, error } = await sb.from('tabela').select(); if (error) throw new Error(error.message); return data; })
  */
 export async function withSupabase<T>(
   fn: (supabase: SupabaseClient) => Promise<T>

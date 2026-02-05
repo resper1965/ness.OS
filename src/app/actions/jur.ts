@@ -1,25 +1,31 @@
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
+import { getServerClient, withSupabase } from '@/lib/supabase/queries/base';
 import { revalidatePath } from 'next/cache';
 
 export async function getFrameworks() {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from('compliance_frameworks')
-    .select('id, name, code')
-    .order('name');
-  return data ?? [];
+  const { data, error } = await withSupabase(async (sb) => {
+    const { data: d, error: e } = await sb
+      .from('compliance_frameworks')
+      .select('id, name, code')
+      .order('name');
+    if (e) throw new Error(e.message);
+    return d ?? [];
+  });
+  return error ? [] : data ?? [];
 }
 
 export async function getChecksByFramework(frameworkId: string) {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from('compliance_checks')
-    .select('id, process_ref, status, notes, created_at')
-    .eq('framework_id', frameworkId)
-    .order('created_at', { ascending: false });
-  return data ?? [];
+  const { data, error } = await withSupabase(async (sb) => {
+    const { data: d, error: e } = await sb
+      .from('compliance_checks')
+      .select('id, process_ref, status, notes, created_at')
+      .eq('framework_id', frameworkId)
+      .order('created_at', { ascending: false });
+    if (e) throw new Error(e.message);
+    return d ?? [];
+  });
+  return error ? [] : data ?? [];
 }
 
 export async function createComplianceCheckFromForm(_prev: unknown, formData: FormData) {
@@ -33,7 +39,7 @@ export async function createComplianceCheck(formData: FormData) {
 
   if (!frameworkId || !processRef) return { error: 'Framework e processo obrigatórios.' };
 
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { error } = await supabase.from('compliance_checks').insert({
     framework_id: frameworkId,
     process_ref: processRef.trim(),

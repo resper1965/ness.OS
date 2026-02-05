@@ -1,9 +1,9 @@
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
+import { getServerClient } from '@/lib/supabase/queries/base';
 
 export async function getOpenJobs() {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data } = await supabase
     .from('public_jobs')
     .select('id, slug, title, department')
@@ -13,7 +13,7 @@ export async function getOpenJobs() {
 }
 
 export async function getJobBySlug(slug: string) {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data } = await supabase
     .from('public_jobs')
     .select('id, slug, title, description_html, department')

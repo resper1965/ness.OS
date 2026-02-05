@@ -1,10 +1,10 @@
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
+import { getServerClient } from '@/lib/supabase/queries/base';
 import { revalidatePath } from 'next/cache';
 
 export async function getPolicies() {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data } = await supabase
     .from('policies')
     .select(`
@@ -19,7 +19,7 @@ export async function getPolicies() {
 }
 
 export async function getPolicyById(id: string) {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data } = await supabase
     .from('policies')
     .select(`
@@ -53,7 +53,7 @@ async function createPolicyImpl(formData: FormData) {
 
   if (!title?.trim()) return { error: 'Título obrigatório.' };
 
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const finalSlug = (slug || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')).trim() || undefined;
 
   const { data: policy, error: errPolicy } = await supabase
@@ -86,7 +86,7 @@ export async function updatePolicy(id: string, formData: FormData) {
 
   if (!title?.trim()) return { error: 'Título obrigatório.' };
 
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const finalSlug = (slug || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')).trim() || null;
 
   const { error: errPolicy } = await supabase
@@ -122,7 +122,7 @@ export async function updatePolicy(id: string, formData: FormData) {
 }
 
 export async function getPendingAcceptances() {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return [];
 
@@ -145,7 +145,7 @@ export async function getPendingAcceptances() {
 }
 
 export async function acceptPolicyVersion(policyVersionId: string) {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: 'Não autenticado.' };
 

@@ -1,6 +1,6 @@
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
+import { getServerClient } from '@/lib/supabase/queries/base';
 import { openai } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 import { revalidatePath } from 'next/cache';
@@ -20,7 +20,7 @@ export async function generateServiceCatalogWithAI(
   name: string,
   playbookTitles: string[]
 ): Promise<{ success: true; data: ServiceCatalogAIPayload } | { success: false; error: string }> {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { success: false, error: 'Não autenticado.' };
 
@@ -60,7 +60,7 @@ Gere o JSON.`,
 export async function generatePostFromCase(
   caseId: string
 ): Promise<{ success: true; postId: string } | { success: false; error: string }> {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { success: false, error: 'Não autenticado.' };
 
@@ -120,7 +120,7 @@ export async function generateProposalWithAI(
   clientId: string,
   serviceId: string
 ): Promise<{ success: true; minuta: ProposalMinuta } | { success: false; error: string }> {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { success: false, error: 'Não autenticado.' };
 

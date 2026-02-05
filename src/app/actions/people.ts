@@ -1,6 +1,6 @@
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
+import { getServerClient } from '@/lib/supabase/queries/base';
 import { revalidatePath } from 'next/cache';
 
 // === JOBS ===
@@ -16,7 +16,7 @@ export async function createJob(
   if (!title || !slug) return { error: 'Título e slug obrigatórios.' };
 
   const contractId = (formData.get('contract_id') as string)?.trim() || null;
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { error } = await supabase.from('public_jobs').insert({
     title,
     slug,
@@ -54,7 +54,7 @@ export async function updateJob(
   if (!title || !slug) return { error: 'Título e slug obrigatórios.' };
 
   const contractId = (formData.get('contract_id') as string)?.trim() || null;
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { error } = await supabase
     .from('public_jobs')
     .update({
@@ -86,7 +86,7 @@ export async function submitApplication(
   const message = (formData.get('message') as string) || null;
   if (!jobId || !name || !email) return { error: 'Nome e e-mail obrigatórios.' };
 
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { error } = await supabase.from('job_applications').insert({
     job_id: jobId,
     candidate_name: name,
@@ -112,7 +112,7 @@ export async function createGap(
   if (!employeeId || !description) return { error: 'Colaborador e correção obrigatórios.' };
   if (!playbookId) return { error: 'Playbook violado obrigatório.' };
 
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { error } = await supabase.from('training_gaps').insert({
     employee_id: employeeId,
     playbook_id: playbookId,
@@ -139,7 +139,7 @@ export async function createFeedback360FromForm(
   if (!subjectId) return { error: 'Colaborador avaliado obrigatório.' };
   if (score == null || Number.isNaN(score) || score < 1 || score > 5) return { error: 'Score deve ser entre 1 e 5.' };
 
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: 'Não autenticado.' };
 
@@ -157,7 +157,7 @@ export async function createFeedback360FromForm(
 }
 
 export async function getFeedback360ScoresBySubject(): Promise<{ subject_id: string; full_name: string | null; avg_score: number; count: number }[]> {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: rows } = await supabase
     .from('feedback_360')
     .select('subject_id, score');

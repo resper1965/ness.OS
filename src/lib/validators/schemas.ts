@@ -21,3 +21,15 @@ export const postSchema = z.object({
 });
 
 export type PostInput = z.infer<typeof postSchema>;
+
+/** Schema para análise de risco JUR (cláusulas identificadas pela IA) */
+export const riskSchema = z.object({
+  clauses: z.array(z.object({
+    type: z.string(),
+    excerpt: z.string(),
+    severity: z.enum(['low', 'medium', 'high']),
+    suggestion: z.string(),
+  })),
+});
+
+export type RiskAnalysisResult = z.infer<typeof riskSchema>;

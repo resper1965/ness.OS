@@ -1,9 +1,9 @@
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
+import { getServerClient } from '@/lib/supabase/queries/base';
 
 export async function getPublishedCases() {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data } = await supabase
     .from('success_cases')
     .select('id, title, slug, summary, created_at')
@@ -13,7 +13,7 @@ export async function getPublishedCases() {
 }
 
 export async function getCaseBySlug(slug: string) {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data, error } = await supabase
     .from('success_cases')
     .select('id, title, slug, summary, content_html, created_at')

@@ -1,19 +1,10 @@
 import { openai } from '@ai-sdk/openai';
 import { generateObject } from 'ai';
-import { z } from 'zod';
-import { createClient } from '@/lib/supabase/server';
-
-const riskSchema = z.object({
-  clauses: z.array(z.object({
-    type: z.string(),
-    excerpt: z.string(),
-    severity: z.enum(['low', 'medium', 'high']),
-    suggestion: z.string(),
-  })),
-});
+import { riskSchema } from '@/lib/validators/schemas';
+import { getServerClient } from '@/lib/supabase/queries/base';
 
 export async function POST(req: Request) {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return new Response('Não autenticado', { status: 401 });
 

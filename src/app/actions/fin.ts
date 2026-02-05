@@ -1,6 +1,6 @@
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
+import { getServerClient } from '@/lib/supabase/queries/base';
 import { revalidatePath } from 'next/cache';
 import { getOmieContasReceber } from '@/app/actions/data';
 
@@ -36,7 +36,7 @@ export async function getReconciliationAlerts(): Promise<ReconciliationAlert[]> 
     return [];
   }
 
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: contracts } = await supabase
     .from('contracts')
     .select('client_id, mrr');
@@ -84,7 +84,7 @@ export async function addClient(
   const name = (formData.get('name') as string)?.trim();
   if (!name) return { error: 'Nome obrigatório.' };
 
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { error } = await supabase.from('clients').insert({ name });
   if (error) return { error: error.message };
   revalidatePath('/app/fin/contratos');
@@ -106,7 +106,7 @@ export async function createContract(
 
   if (!clientId) return { error: 'Cliente obrigatório.' };
 
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { error } = await supabase.from('contracts').insert({
     client_id: clientId,
     mrr,
