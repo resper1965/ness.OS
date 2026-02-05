@@ -1,7 +1,9 @@
+import { AlertCircle, Calendar, CalendarClock } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
 import { PageCard } from '@/components/shared/page-card';
+import { EmptyState } from '@/components/shared/empty-state';
 import { getReconciliationAlerts } from '@/app/actions/fin';
 
 export default async function FinAlertasPage() {
@@ -65,9 +67,12 @@ export default async function FinAlertasPage() {
             </tbody>
           </table>
           {reconciliationAlerts.length === 0 && (
-            <div className="px-4 py-12 text-center text-slate-500">
-              Nenhum alerta de reconciliação. MRR e faturamento Omie estão dentro da tolerância ou Omie indisponível.
-            </div>
+            <EmptyState
+              icon={AlertCircle}
+              title="Nenhum alerta de reconciliação"
+              message="MRR e faturamento Omie estão dentro da tolerância ou Omie indisponível."
+              description="Período: mês corrente. Tolerância: 5% do MRR ou R$ 50."
+            />
           )}
         </div>
       </PageCard>
@@ -98,7 +103,11 @@ export default async function FinAlertasPage() {
             </tbody>
           </table>
           {(!data || data.length === 0) && (
-            <div className="px-4 py-12 text-center text-slate-500">Nenhum contrato com renovação nos próximos 30 dias.</div>
+            <EmptyState
+              icon={Calendar}
+              title="Nenhuma renovação nos próximos 30 dias"
+              message="Nenhum contrato com data de renovação neste período."
+            />
           )}
         </div>
       </PageCard>
@@ -129,7 +138,11 @@ export default async function FinAlertasPage() {
             </tbody>
           </table>
           {(!endDateData || endDateData.length === 0) && (
-            <div className="px-4 py-12 text-center text-slate-500">Nenhum contrato com vencimento nos próximos 30 dias.</div>
+            <EmptyState
+              icon={CalendarClock}
+              title="Nenhum vencimento nos próximos 30 dias"
+              message="Nenhum contrato com data de vencimento neste período."
+            />
           )}
         </div>
       </PageCard>

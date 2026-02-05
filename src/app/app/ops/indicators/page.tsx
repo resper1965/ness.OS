@@ -1,3 +1,4 @@
+import { BarChart3 } from 'lucide-react';
 import { getIndicators } from '@/app/actions/data';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
@@ -16,8 +17,10 @@ export default async function IndicatorsPage() {
       <PageCard title="Indicadores recentes">
         {indicators.length === 0 ? (
           <EmptyState
-            message="Nenhum indicador ingerido."
-            description="Configure INGEST_INDICATORS_API_KEY e envie métricas via POST /api/data/indicators/ingest (source: Infra | Sec | Data | Custom, metric_type, value)."
+            icon={BarChart3}
+            title="Nenhum indicador ingerido"
+            message="Configure INGEST_INDICATORS_API_KEY e envie métricas via POST /api/data/indicators/ingest."
+            description="Source: Infra | Sec | Data | Custom; metric_type e value."
           />
         ) : (
           <div className="overflow-x-auto">

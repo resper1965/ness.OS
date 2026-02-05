@@ -3,8 +3,9 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ChevronDown, ChevronRight, PanelLeft, X } from 'lucide-react';
-import { signOut } from '@/app/actions/auth';
 import { NessBrand } from '@/components/shared/ness-brand';
+import { ThemeToggle } from '@/components/app/theme-toggle';
+import { UserMenu, type AppUser } from '@/components/app/user-menu';
 import { useState } from 'react';
 import { useSidebar, SidebarTrigger, SIDEBAR_COLLAPSED_PX } from '@/components/app/sidebar-context';
 import { APP_HEADER_HEIGHT_PX, SIDEBAR_WIDTH_PX } from '@/lib/header-constants';
@@ -158,7 +159,7 @@ function SidebarNavContent({ pathname, onNavigate }: { pathname: string; onNavig
   );
 }
 
-export function AppSidebar() {
+export function AppSidebar({ user }: { user: AppUser }) {
   const pathname = usePathname();
   const { open, setOpen, isMobile } = useSidebar();
 
@@ -194,14 +195,12 @@ export function AppSidebar() {
                 </button>
               </header>
               <SidebarNavContent pathname={pathname ?? ''} onNavigate={() => setOpen(false)} />
-              <form action={signOut} className="mt-auto shrink-0 p-5 pt-4">
-                <button
-                  type="submit"
-                  className={cn('w-full rounded-md text-left text-sm font-medium transition-colors', MENU_ITEM_PADDING, 'text-slate-400 hover:bg-slate-700/50 hover:text-red-400')}
-                >
-                  Sair
-                </button>
-              </form>
+              <div className="mt-auto shrink-0 flex items-center gap-2 p-3 border-t border-slate-700">
+                <ThemeToggle />
+                <div className="flex-1 min-w-0">
+                  <UserMenu user={user} variant="sidebar" />
+                </div>
+              </div>
             </aside>
           </>
         )}
@@ -246,14 +245,12 @@ export function AppSidebar() {
         <SidebarTrigger />
       </header>
       <SidebarNavContent pathname={pathname ?? ''} />
-      <form action={signOut} className="mt-auto shrink-0 p-5 pt-4">
-        <button
-          type="submit"
-          className={cn('w-full rounded-md text-left text-sm font-medium transition-colors', MENU_ITEM_PADDING, 'text-slate-400 hover:bg-slate-700/50 hover:text-red-400')}
-        >
-          Sair
-        </button>
-      </form>
+      <div className="mt-auto shrink-0 flex items-center gap-2 p-3 border-t border-slate-700">
+        <ThemeToggle />
+        <div className="flex-1 min-w-0">
+          <UserMenu user={user} variant="sidebar" />
+        </div>
+      </div>
     </aside>
   );
 }

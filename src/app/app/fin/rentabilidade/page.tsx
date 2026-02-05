@@ -1,7 +1,9 @@
+import { TrendingUp } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
 import { PageCard } from '@/components/shared/page-card';
+import { EmptyState } from '@/components/shared/empty-state';
 
 export default async function RentabilidadePage() {
   const supabase = await createClient();
@@ -38,12 +40,12 @@ export default async function RentabilidadePage() {
           </tbody>
         </table>
         {(!rows || rows.length === 0) && (
-          <div className="px-4 py-12 text-center">
-            <p className="text-slate-400">Nenhum dado de rentabilidade.</p>
-            <p className="mt-2 text-sm text-slate-500">
-              Cadastre contratos e insira métricas (horas, custo cloud) em OPS → Métricas.
-            </p>
-          </div>
+          <EmptyState
+            icon={TrendingUp}
+            title="Nenhum dado de rentabilidade"
+            message="Cadastre contratos e insira métricas (horas, custo cloud) em ness.OPS → Métricas."
+            description="A rentabilidade é calculada a partir de MRR e custos operacionais por contrato."
+          />
         )}
         </div>
       </PageCard>

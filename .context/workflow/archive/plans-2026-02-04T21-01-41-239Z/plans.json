@@ -1,0 +1,14 @@
+{
+  "active": [
+    {
+      "slug": "pendentes-detalhado-gemini",
+      "path": "plans/pendentes-detalhado-gemini.md",
+      "title": "Pendências ness.OS — planejamento detalhado (agente Gemini)",
+      "summary": "Lista detalhada do que falta ser feito, priorizada por P0–P3 e por módulo, para execução com **agente LLM Gemini** via ai-context/workflows.",
+      "linkedAt": "2026-02-04T21:00:37.589Z",
+      "status": "active"
+    }
+  ],
+  "completed": [],
+  "primary": "pendentes-detalhado-gemini"
+}

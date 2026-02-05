@@ -1,7 +1,9 @@
+import { TrendingUp } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
 import { PageCard } from '@/components/shared/page-card';
+import { EmptyState } from '@/components/shared/empty-state';
 
 export default async function GrowthUpsellPage() {
   const supabase = await createClient();
@@ -53,9 +55,12 @@ export default async function GrowthUpsellPage() {
           </tbody>
         </table>
         {(!alerts || alerts.length === 0) && (
-          <div className="px-4 py-12 text-center text-slate-500">
-            Nenhum alerta de upsell. Integre com métricas de consumo para disparar alertas automaticamente.
-          </div>
+          <EmptyState
+            icon={TrendingUp}
+            title="Nenhum upsell configurado"
+            message="Alertas de consumo e oportunidades de upsell. Integre com métricas para disparar quando consumption > threshold."
+            description="Alertas são disparados automaticamente pela integração com métricas."
+          />
         )}
         </div>
       </PageCard>

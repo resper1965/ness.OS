@@ -1,8 +1,10 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
+import { FileText } from 'lucide-react';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
 import { PageCard } from '@/components/shared/page-card';
+import { EmptyState } from '@/components/shared/empty-state';
 import { PrimaryButton } from '@/components/shared/primary-button';
 
 export default async function GrowthPostsPage() {
@@ -65,13 +67,12 @@ export default async function GrowthPostsPage() {
           </tbody>
         </table>
         {(!posts || posts.length === 0) && (
-          <div className="px-4 py-12 text-center">
-            <p className="text-slate-400">Nenhum post cadastrado.</p>
-            <p className="mt-2 text-sm text-slate-500">Crie o primeiro para publicar no blog do site.</p>
-            <div className="mt-4">
-              <PrimaryButton href="/app/growth/posts/novo">Novo post</PrimaryButton>
-            </div>
-          </div>
+          <EmptyState
+            icon={FileText}
+            title="Nenhum post cadastrado"
+            message="Crie o primeiro para publicar no blog do site. Ative &quot;Publicar no Site&quot; para exibir em /blog."
+            action={<PrimaryButton href="/app/growth/posts/novo">Novo post</PrimaryButton>}
+          />
         )}
         </div>
       </PageCard>

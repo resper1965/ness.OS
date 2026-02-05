@@ -1,9 +1,11 @@
+import { CheckCircle } from 'lucide-react';
 import { getPendingAcceptances } from '@/app/actions/gov';
 import { AcceptPolicyButton } from '@/components/gov/accept-policy-button';
 import Link from 'next/link';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
 import { PageCard } from '@/components/shared/page-card';
+import { EmptyState } from '@/components/shared/empty-state';
 
 export default async function GovAceitesPage() {
   const pending = await getPendingAcceptances();
@@ -49,10 +51,12 @@ export default async function GovAceitesPage() {
           </tbody>
         </table>
         {pending.length === 0 && (
-          <div className="px-4 py-12 text-center">
-            <p className="text-slate-400">Nenhuma política pendente de aceite.</p>
-            <p className="mt-2 text-sm text-slate-500">Todas as versões de políticas já foram aceitas por você.</p>
-          </div>
+          <EmptyState
+            icon={CheckCircle}
+            title="Nenhuma política pendente de aceite"
+            message="Todas as versões de políticas já foram aceitas por você."
+            description="Controle digital de assinaturas de NDAs, termos e políticas desde o onboarding."
+          />
         )}
         </div>
       </PageCard>

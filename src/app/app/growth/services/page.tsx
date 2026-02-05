@@ -1,9 +1,11 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
+import { Package } from 'lucide-react';
 import { ServiceForm } from '@/components/growth/service-form';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
 import { PageCard } from '@/components/shared/page-card';
+import { EmptyState } from '@/components/shared/empty-state';
 
 export default async function GrowthServicesPage() {
   const supabase = await createClient();
@@ -19,9 +21,22 @@ export default async function GrowthServicesPage() {
         title="Catálogo de Serviços"
         subtitle="Serviços vendáveis. Só podem ficar ativos se tiverem playbook vinculado (Trava Growth×OPS)."
       />
-      <ServiceForm playbooks={playbooks ?? []} />
+      <div id="service-form"><ServiceForm playbooks={playbooks ?? []} /></div>
       <PageCard title="Catálogo de Serviços">
-        <div className="overflow-x-auto">
+        {(!services || services.length === 0) ? (
+          <EmptyState
+            icon={Package}
+            title="Nenhum serviço cadastrado"
+            message="Serviços vendáveis. Use o formulário acima para criar. Só podem ficar ativos com playbook vinculado (Trava Growth×OPS)."
+            description="Catálogo de serviços para propostas e vendas."
+            action={
+              <Link href="#service-form" className="text-ness hover:underline font-medium">
+                Criar serviço →
+              </Link>
+            }
+          />
+        ) : (
+          <div className="overflow-x-auto">
           <table className="w-full text-sm">
           <thead className="bg-slate-800/50 text-slate-300">
             <tr className="h-[52px]">
@@ -33,7 +48,7 @@ export default async function GrowthServicesPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-700 text-slate-400">
-            {(services ?? []).map((s) => (
+            {services.map((s) => (
               <tr key={s.id}>
                 <td className="px-5 py-4">{s.name}</td>
                 <td className="px-5 py-4">{s.slug}</td>
@@ -51,6 +66,7 @@ export default async function GrowthServicesPage() {
           </tbody>
         </table>
         </div>
+        )}
       </PageCard>
     </PageContent>
   );

@@ -1,7 +1,9 @@
+import { GitBranch } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
 import { PageCard } from '@/components/shared/page-card';
+import { EmptyState } from '@/components/shared/empty-state';
 import { WorkflowApprovalActions } from '@/components/ops/workflow-approval-actions';
 
 export default async function WorkflowsPage() {
@@ -75,10 +77,12 @@ export default async function WorkflowsPage() {
             </tbody>
           </table>
           {(!workflows || workflows.length === 0) && (
-            <div className="px-5 py-16 text-center">
-              <p className="text-slate-400">Nenhum workflow cadastrado.</p>
-              <p className="mt-3 text-sm text-slate-500">Workflows são definidos via banco (tabela workflows) e reagem a eventos de module_events.</p>
-            </div>
+            <EmptyState
+              icon={GitBranch}
+              title="Nenhum workflow cadastrado"
+              message="Workflows são definidos via banco (tabela workflows) e reagem a eventos de module_events."
+              description="Steps: db_query, ai_agent, condition, delay, human_review (HITL)."
+            />
           )}
         </div>
       </PageCard>

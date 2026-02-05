@@ -1,7 +1,9 @@
 import Link from 'next/link';
+import { Wallet } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
+import { EmptyState } from '@/components/shared/empty-state';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { getReconciliationAlerts } from '@/app/actions/fin';
 
@@ -90,9 +92,24 @@ export default async function FinDashboardPage() {
         ))}
       </div>
 
-      <p className="mt-4 text-sm text-slate-500">
-        Fluxo: Contratos (MRR e vigência) → Métricas (ness.OPS) → Rentabilidade (margem) e Alertas (renovação e Omie).
-      </p>
+      {contracts.length === 0 && (
+        <EmptyState
+          icon={Wallet}
+          title="Nenhum contrato cadastrado"
+          message="Cadastre contratos para ver MRR, renovação e alertas de reconciliação."
+          description="Fluxo: Contratos → Métricas (ness.OPS) → Rentabilidade e Alertas."
+          action={
+            <Link href="/app/fin/contratos" className="text-ness hover:underline font-medium">
+              Ir para Contratos →
+            </Link>
+          }
+        />
+      )}
+      {contracts.length > 0 && (
+        <p className="mt-4 text-sm text-slate-500">
+          Fluxo: Contratos (MRR e vigência) → Métricas (ness.OPS) → Rentabilidade (margem) e Alertas (renovação e Omie).
+        </p>
+      )}
     </PageContent>
   );
 }

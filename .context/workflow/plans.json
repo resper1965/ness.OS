@@ -1,14 +1,14 @@
 {
   "active": [
     {
-      "slug": "pendentes-detalhado-gemini",
-      "path": "plans/pendentes-detalhado-gemini.md",
-      "title": "Pendências ness.OS — planejamento detalhado (agente Gemini)",
-      "summary": "Lista detalhada do que falta ser feito, priorizada por P0–P3 e por módulo, para execução com **agente LLM Gemini** via ai-context/workflows.",
-      "linkedAt": "2026-02-04T21:05:46.252Z",
+      "slug": "refatoracao-ux-ui-todas-paginas",
+      "path": "plans/refatoracao-ux-ui-todas-paginas.md",
+      "title": "Refatoração UX/UI — Todas as Páginas por Tema",
+      "summary": "Plano detalhado passando por **todas as páginas existentes** do ness.OS: refatoração inspirada nas melhores referências do repositório (clone, ajuste-ux-ui, design-tokens), com **ligação temática** (financeiro, usuário, comercial, operação, jurídico, governança) e foco em **melhorar em muito o UX/UI** da aplicação.",
+      "linkedAt": "2026-02-05T08:19:26.882Z",
       "status": "active"
     }
   ],
   "completed": [],
-  "primary": "pendentes-detalhado-gemini"
+  "primary": "refatoracao-ux-ui-todas-paginas"
 }

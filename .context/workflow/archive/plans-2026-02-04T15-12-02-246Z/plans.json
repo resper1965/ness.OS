@@ -1,0 +1,14 @@
+{
+  "active": [
+    {
+      "slug": "pendencias-abertas-nessos",
+      "path": "plans/pendencias-abertas-nessos.md",
+      "title": "Pendências abertas ness.OS — resumo consolidado",
+      "summary": "Resumo de todos os itens em aberto para priorização e execução via ai-context/workflows. Atualizado após conclusão da adaptação de layout (Fase C) e incorporação do dólar em ness.DATA.",
+      "linkedAt": "2026-02-04T11:26:12.096Z",
+      "status": "active"
+    }
+  ],
+  "completed": [],
+  "primary": "pendencias-abertas-nessos"
+}

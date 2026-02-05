@@ -1,0 +1,14 @@
+{
+  "active": [
+    {
+      "slug": "workflow-unico-etapas-abertas-nessos",
+      "path": "plans/workflow-unico-etapas-abertas-nessos.md",
+      "title": "Workflow único — Todas as etapas em aberto (ness.OS)",
+      "summary": "Um único workflow ai-context que consolida **todas as etapas em aberto** em uma lista ordenada. Execução fase a fase (P→R→E→V→C); em E, cada item da lista é uma etapa com DoD e plano vinculado.",
+      "linkedAt": "2026-02-04T20:23:52.916Z",
+      "status": "active"
+    }
+  ],
+  "completed": [],
+  "primary": "workflow-unico-etapas-abertas-nessos"
+}

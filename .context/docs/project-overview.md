@@ -46,6 +46,8 @@ Next.js 14 (App Router), Supabase, Tailwind, shadcn/ui, Vercel AI SDK, pgvector
 - **Header global:** `AppHeader` — `SidebarTrigger` + breadcrumb (Módulo / Página). 64px.
 - **Header da página:** `AppPageHeader` — fixo, 64px; títulos de seção dentro do conteúdo.
 - **Docs:** [docs/LAYOUT-APP-HEADERS.md](../../docs/LAYOUT-APP-HEADERS.md), [docs/DESIGN-TOKENS.md](../../docs/DESIGN-TOKENS.md).
+- **Plano components/layout Bundui:** [bundui-layout-components-nessos](../plans/bundui-layout-components-nessos.md) — adoção de [components/layout](https://github.com/bundui/shadcn-ui-kit-dashboard/tree/main/components/layout) do Bundui (sidebar shell, header, breadcrumb, page shell) no ness.OS.
+- **Plano theme-customizer Bundui:** [bundui-theme-customizer-nessos](../plans/bundui-theme-customizer-nessos.md) — adequação do [theme-customizer](https://github.com/bundui/shadcn-ui-kit-dashboard/tree/main/components/theme-customizer) do Bundui ao ness.OS (light/dark, persistência, DESIGN-TOKENS).
 
 ## Página de explicação completa do ness.OS
 

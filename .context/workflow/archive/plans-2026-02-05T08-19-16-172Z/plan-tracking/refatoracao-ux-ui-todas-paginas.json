@@ -1,0 +1,36 @@
+{
+  "planSlug": "refatoracao-ux-ui-todas-paginas",
+  "progress": 100,
+  "phases": {
+    "phase-2-financeiro": {
+      "phaseId": "phase-2-financeiro",
+      "status": "completed",
+      "startedAt": "2026-02-05T00:22:50.180Z",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "description": "Step 1",
+          "status": "completed",
+          "completedAt": "2026-02-05T00:22:50.180Z",
+          "output": "src/app/app/fin/*.tsx"
+        }
+      ],
+      "completedAt": "2026-02-05T00:22:50.180Z"
+    }
+  },
+  "decisions": [
+    {
+      "title": "Ciclos futuros — estrutura de aprofundamento",
+      "description": "Para cada ciclo futuro, usar: (1) lista explícita de páginas pendentes com status feito/pendente; (2) ação concreta por página (EmptyState com ícone sugerido, ou form/DataTable); (3) critério de aceite (DoD) por ciclo; (4) priorização por dependência (listagens antes de detalhes). Ciclos A–D definidos no plano e no artefato refatoracao-ux-ui-ciclos-futuros.md.",
+      "phase": "E",
+      "alternatives": [
+        "Um único ciclo com todas as páginas restantes",
+        "Ciclos por módulo sem ordem fixa"
+      ],
+      "status": "accepted",
+      "id": "dec-1770251073736",
+      "decidedAt": "2026-02-05T00:24:33.736Z"
+    }
+  ],
+  "lastUpdated": "2026-02-05T00:22:50.180Z"
+}

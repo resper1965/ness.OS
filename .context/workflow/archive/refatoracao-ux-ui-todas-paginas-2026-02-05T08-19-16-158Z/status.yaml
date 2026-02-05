@@ -1,0 +1,42 @@
+project:
+  name: "refatoracao-ux-ui-todas-paginas"
+  scale: LARGE
+  started: "2026-02-05T00:16:56.217Z"
+  current_phase: C
+
+phases:
+  P:
+    status: filled
+    started_at: "2026-02-05T00:16:56.217Z"
+    completed_at: "2026-02-05T00:17:33.939Z"
+  R:
+    status: filled
+    started_at: "2026-02-05T00:17:33.940Z"
+    completed_at: "2026-02-05T00:17:46.877Z"
+  E:
+    status: filled
+    started_at: "2026-02-05T00:17:46.878Z"
+    completed_at: "2026-02-05T00:22:41.818Z"
+  V:
+    status: filled
+    started_at: "2026-02-05T00:22:41.820Z"
+    completed_at: "2026-02-05T00:22:53.033Z"
+  C:
+    status: filled
+    started_at: "2026-02-05T00:22:53.041Z"
+    completed_at: "2026-02-05T00:22:59.170Z"
+
+execution:
+  history:
+    - timestamp: "2026-02-05T00:24:33.737Z"
+      phase: E
+      action: decision_recorded
+      plan: "refatoracao-ux-ui-todas-paginas"
+      description: "Decision recorded: Ciclos futuros — estrutura de aprofundamento"
+  last_activity: "2026-02-05T00:24:33.737Z"
+  resume_context: "Decisão registrada"
+
+approval:
+  plan_created: true
+  plan_approved: false
+

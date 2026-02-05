@@ -1,8 +1,10 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
+import { FolderOpen } from 'lucide-react';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
 import { PageCard } from '@/components/shared/page-card';
+import { EmptyState } from '@/components/shared/empty-state';
 import { PrimaryButton } from '@/components/shared/primary-button';
 
 export default async function GrowthCasosPage() {
@@ -60,13 +62,13 @@ export default async function GrowthCasosPage() {
           </tbody>
         </table>
         {(!cases || cases.length === 0) && (
-          <div className="px-5 py-16 text-center">
-            <p className="text-slate-400">Nenhum caso cadastrado.</p>
-            <p className="mt-3 text-sm text-slate-500">Crie o primeiro para publicar em /casos.</p>
-            <div className="mt-6">
-              <PrimaryButton href="/app/growth/casos/novo">Novo caso</PrimaryButton>
-            </div>
-          </div>
+          <EmptyState
+            icon={FolderOpen}
+            title="Nenhum caso de sucesso"
+            message="Crie o primeiro para publicar em /casos. Ative &quot;Publicar no Site&quot; para exibir."
+            description="Casos de sucesso fortalecem a presença da marca."
+            action={<PrimaryButton href="/app/growth/casos/novo">Novo caso</PrimaryButton>}
+          />
         )}
         </div>
       </PageCard>

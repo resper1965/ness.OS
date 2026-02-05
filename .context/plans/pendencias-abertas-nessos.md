@@ -47,9 +47,11 @@ phases:
 
 # Pendências abertas ness.OS — resumo consolidado
 
-> Resumo de todos os itens em aberto para priorização e execução via ai-context/workflows. Atualizado após conclusão da adaptação de layout (Fase C) e incorporação do dólar em ness.DATA.
+> Resumo de todos os itens em aberto para priorização e execução via ai-context/workflows. Atualizado após conclusão da adaptação de layout (Fase C), incorporação do dólar em ness.DATA, workflow único (etapas 1–8) e Ciclo 2 (etapas 9–10). Itens concluídos constam em **Concluído nesta rodada** e **Concluído (Fases 5–10)**.
 
 **Trigger:** "pendências abertas", "o que falta", "resumo do que está em aberto"
+
+**Workflow único:** Para executar todas as etapas em aberto em um único fluxo (P→R→E→V→C), usar o plano [workflow-unico-etapas-abertas-nessos](./workflow-unico-etapas-abertas-nessos.md) e o artefato [workflow-unico-phase-p-etapas.md](../workflow/artifacts/workflow-unico-phase-p-etapas.md) (lista consolidada).
 
 ---
 
@@ -64,6 +66,11 @@ phases:
 | ness.DATA — ingestão indicadores | [ness-data-modulo-dados](./ness-data-modulo-dados.md) | **Implementado:** tabela `indicators`, POST `/api/data/indicators/ingest` (API key), `getIndicators()`/`ingestIndicator()` em data.ts, página `/app/ops/indicators`. Doc: API-INGESTAO-INDICADORES.md. |
 | Integração Omie — ListarContasReceber | [integracao-omie-erp](./integracao-omie-erp.md) | **Validado:** parâmetros `filtrar_por_data_de` e `filtrar_por_data_ate` (dd/mm/yyyy); resposta `conta_receber_cadastro`; `getOmieContasReceber(periodo)` em data.ts usa payload correto. Doc: INTEGRACAO-OMIE-CONTAS-RECEBER.md. |
 | Página explicacao ness.OS | [pagina-explicacao-nessos-completa](./pagina-explicacao-nessos-completa.md) | **Fases 1 e 2 concluídas:** spec em docs/PLANO-PAGINA-EXPLICACAO-NESSOS.md; página em src/app/(site)/nessos/page.tsx (rota /nessos); link no header e footer. Fase 3: manutenção/sync com ai-context. |
+| Theme-customizer Fase 3 | [bundui-theme-customizer-nessos](./bundui-theme-customizer-nessos.md) | **Concluído:** DESIGN-TOKENS.md seção "Tema (light/dark)"; VALIDACAO-MANUAL item tema; next-themes + ThemeToggle no AppHeader; plano status filled. |
+| Bundui Breadcrumb (opcional) | [bundui-layout-components-nessos](./bundui-layout-components-nessos.md) | **Decisão:** manter texto atual no AppHeader; ver workflow-unico-etapa4-breadcrumb-decisao.md. |
+| Bundui ui-primitivos (parcial) | [bundui-ui-primitivos-nessos](./bundui-ui-primitivos-nessos.md) | **Sheet, Input, Label** em src/components/ui/; README ui/ atualizado. Table, Dialog, Select etc. na fila. |
+| Workflow único — Etapas 1–8 | [workflow-unico-etapas-abertas-nessos](./workflow-unico-etapas-abertas-nessos.md) | **Fase C concluída:** Etapas 1–8 executadas e com evidência em workflow-unico-phase-v-evidence.md. |
+| Ciclo 2 — Etapas 9–10 | [workflow-ciclo-2-etapas-9-10-nessos] | **PREVC concluído:** Etapa 9 — docs/AUDITORIA-SIMPLIFICA.md (Fase 1 auditoria). Etapa 10 — planos por módulo documentados. Evidência: workflow-ciclo-2-phase-e-evidence.md. |
 
 ### Em aberto — prioridade alta
 | Item | Plano | Pendência |
@@ -73,8 +80,8 @@ phases:
 ### Em aberto — prioridade média
 | Item | Plano | Pendência |
 |------|--------|-----------|
-| Mobile Timesheet | [mobile-timesheet-timer](./mobile-timesheet-timer.md) | **Job implementado:** função `sync_performance_metrics_from_time_entries`, API `/api/cron/sync-performance-metrics`, botão em /app/ops/metricas; doc em CRON-SYNC-PERFORMANCE-METRICS.md e FLUXO-TIMER-OPS-FIN.md. Pendente: PWA instalável opcional. |
-| Ajuste UX/UI | [ajuste-ux-ui-nessos](./ajuste-ux-ui-nessos.md) | **Fases 2–4 concluídas:** InputField, toasts (sonner), loading (PrimaryButton, Skeleton), PageCard em todas as listagens, skip link, :focus-visible, DESIGN-TOKENS.md. Fase 5: Lighthouse e teste manual (executar localmente). |
+| Mobile Timesheet | [mobile-timesheet-timer](./mobile-timesheet-timer.md) | **PWA:** Manifest existe; service worker/offline adiado (docs/PWA-STATUS.md). Job performance_metrics e doc já implementados. |
+| Ajuste UX/UI | [ajuste-ux-ui-nessos](./ajuste-ux-ui-nessos.md) | **Fase 5:** VALIDACAO-MANUAL atualizado (tema); validate:ux passou. Lighthouse e teste manual: executar localmente conforme FASE-5-VALIDACAO-UX.md. |
 
 ### Concluído (Fases 5–10 / Execução fase 5 final)
 - **Execução fase 5 final** ([PLANO-EXECUCAO-FASE-5-FINAL](../../docs/PLANO-EXECUCAO-FASE-5-FINAL.md)): Fases 5 (Qualidade), 6 (GOV), 7 (JUR), 8 (GROWTH), 9 (FIN), 10 (PEOPLE) implementadas. Docs: QUALIDADE-FASE-5, RATE-LIMIT-CHATBOT, GOV-FASE-6-STATUS, JUR-FASE-7-STATUS, GROWTH-FASE-8-STATUS, FIN-FASE-9-STATUS, PEOPLE-FASE-10-STATUS.
@@ -82,10 +89,10 @@ phases:
 
 ### Em aberto — planos na fila (não iniciados)
 - [Execução autônoma pendências](./execucao-autonoma-pendencias.md) (Fases 0–4 já concluídas; 5–10 concluídas via plano acima)
-- [Fluxo explicativo inputs](./fluxo-explicativo-inputs.md), [Fluxos integração IA/automação](./fluxos-integracao-ia-automacao.md)
-- [Migração corp site ness](./migracao-corp-site-ness.md), [Migração site legacy](./migracao-site-legacy.md)
-- Planos por módulo (ness-fin-cfo-digital, ness-gov, ness-growth, ness-jur, ness-ops, ness-people)
-- [Redução complexidade codebase](./reducao-complexidade-codebase.md)
+- [Fluxo explicativo inputs](./fluxo-explicativo-inputs.md), [Fluxos integração IA/automação](./fluxos-integracao-ia-automacao.md) — **concluídos no workflow único (etapas 6–7).**
+- [Migração corp site ness](./migracao-corp-site-ness.md), [Migração site legacy](./migracao-site-legacy.md) — **concluída no workflow único (etapa 8).**
+- [Redução complexidade codebase](./reducao-complexidade-codebase.md) — **Ciclo 2:** Fase 1 auditoria concluída (docs/AUDITORIA-SIMPLIFICA.md). Fases 2–6 na fila.
+- Planos por módulo (ness-fin-cfo-digital, ness-gov, ness-growth, ness-jur, ness-ops, ness-people) — **Ciclo 2:** status/milestone documentado; próximos passos conforme prioridade.
 
 ### Verificação manual recomendada
 - Layout: teste responsivo (drawer &lt;768px) e acessibilidade (foco, contraste) em dispositivo real.

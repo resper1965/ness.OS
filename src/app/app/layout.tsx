@@ -27,6 +27,12 @@ export default async function AppLayout({
 
   const role = (profile?.role as string) ?? null;
 
+  const appUser = {
+    email: user.email ?? '',
+    name: (user.user_metadata?.full_name as string) ?? user.email?.split('@')[0] ?? 'Usuário',
+    avatarUrl: (user.user_metadata?.avatar_url as string) ?? null,
+  };
+
   return (
     <RoleProvider role={role}>
       <TooltipProvider delayDuration={200} skipDelayDuration={0}>
@@ -38,9 +44,9 @@ export default async function AppLayout({
             Ir para o conteúdo
           </a>
           <div className="flex min-h-screen bg-slate-900">
-            <AppSidebar />
+            <AppSidebar user={appUser} />
             <SidebarInset className="flex flex-col">
-              <AppHeader />
+              <AppHeader user={appUser} />
               <main id="main-content" className="min-w-0 flex-1 p-8" tabIndex={-1}>
                 {children}
               </main>

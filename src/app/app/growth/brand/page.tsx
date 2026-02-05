@@ -1,7 +1,9 @@
+import { Palette } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
 import { PageCard } from '@/components/shared/page-card';
+import { EmptyState } from '@/components/shared/empty-state';
 import { BrandAssetForm } from '@/components/growth/brand-asset-form';
 
 export default async function GrowthBrandPage() {
@@ -51,7 +53,12 @@ export default async function GrowthBrandPage() {
             </tbody>
           </table>
           {(!assets || assets.length === 0) && (
-            <div className="px-4 py-12 text-center text-slate-500">Nenhum asset. Adicione acima.</div>
+            <EmptyState
+              icon={Palette}
+              title="Nenhum ativo de marca"
+              message="Centraliza assets e consistência visual. Adicione acima. Serviços e propostas podem referenciar estes assets."
+              description="Brand Guardian: logos, cores, tipografia."
+            />
           )}
         </div>
       </PageCard>

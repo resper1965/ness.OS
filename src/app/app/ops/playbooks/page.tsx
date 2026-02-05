@@ -1,8 +1,10 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
+import { BookOpen } from 'lucide-react';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
 import { PageCard } from '@/components/shared/page-card';
+import { EmptyState } from '@/components/shared/empty-state';
 import { PrimaryButton } from '@/components/shared/primary-button';
 
 export default async function PlaybooksPage() {
@@ -44,13 +46,13 @@ export default async function PlaybooksPage() {
           </tbody>
         </table>
         {(!playbooks || playbooks.length === 0) && (
-          <div className="px-5 py-16 text-center">
-            <p className="text-slate-400">Nenhum playbook cadastrado.</p>
-            <p className="mt-3 text-sm text-slate-500">Crie o primeiro para documentar procedimentos e habilitar o Knowledge Bot.</p>
-            <div className="mt-6">
-              <PrimaryButton href="/app/ops/playbooks/novo">Novo playbook</PrimaryButton>
-            </div>
-          </div>
+          <EmptyState
+            icon={BookOpen}
+            title="Nenhum playbook cadastrado"
+            message="Crie o primeiro para documentar procedimentos e habilitar o Knowledge Bot."
+            description="Todo serviço vendido deve ter um playbook vinculado."
+            action={<PrimaryButton href="/app/ops/playbooks/novo">Novo playbook</PrimaryButton>}
+          />
         )}
         </div>
       </PageCard>

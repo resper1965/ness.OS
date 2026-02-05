@@ -1,3 +1,5 @@
+import Link from 'next/link';
+import { FileText } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { ContractForm } from '@/components/fin/contract-form';
 import { ClientForm } from '@/components/fin/client-form';
@@ -6,6 +8,7 @@ import { DataTable } from '@/components/shared/data-table';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
 import { PageCard } from '@/components/shared/page-card';
+import { EmptyState } from '@/components/shared/empty-state';
 import { IndicesCard } from '@/components/fin/indices-card';
 import { getLastErpSync, getIndices } from '@/app/actions/data';
 
@@ -36,13 +39,26 @@ export default async function ContratosPage() {
         actions={<ErpSyncButton lastSync={lastSync} />}
       />
       {indices != null && <IndicesCard indices={indices} />}
-      <ClientForm />
+      <div id="client-form"><ClientForm /></div>
       <ContractForm clients={clients ?? []} />
       <PageCard title="Contratos">
-        <DataTable<Contract>
-          data={(contracts ?? []) as Contract[]}
+        {(!contracts || contracts.length === 0) ? (
+          <EmptyState
+            icon={FileText}
+            title="Nenhum contrato cadastrado"
+            message="Adicione um cliente e use o formulário acima para criar um contrato com MRR e vigência."
+            description="Contratos são a base para rentabilidade e alertas de renovação."
+            action={
+              <Link href="#client-form" className="text-ness hover:underline font-medium">
+                Adicionar cliente →
+              </Link>
+            }
+          />
+        ) : (
+          <DataTable<Contract>
+          data={contracts as Contract[]}
           keyExtractor={(c) => c.id}
-          emptyMessage="Nenhum contrato cadastrado. Adicione um cliente e depois crie o contrato."
+          emptyMessage="Nenhum contrato cadastrado."
           columns={[
             {
               key: 'clients',
@@ -72,6 +88,7 @@ export default async function ContratosPage() {
             },
           ]}
         />
+        )}
       </PageCard>
     </PageContent>
   );

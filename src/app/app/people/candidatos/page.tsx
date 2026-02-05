@@ -1,7 +1,9 @@
+import { UserPlus } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
 import { PageCard } from '@/components/shared/page-card';
+import { EmptyState } from '@/components/shared/empty-state';
 
 export default async function CandidatosPage() {
   const supabase = await createClient();
@@ -39,7 +41,12 @@ export default async function CandidatosPage() {
           </tbody>
         </table>
         {(!apps || apps.length === 0) && (
-          <div className="px-4 py-12 text-center text-slate-400">Nenhuma candidatura.</div>
+          <EmptyState
+            icon={UserPlus}
+            title="Nenhuma candidatura"
+            message="Candidaturas aparecem aqui quando alguém se inscreve em uma vaga em /carreiras."
+            description="Publique vagas abertas em Vagas para receber candidatos."
+          />
         )}
         </div>
       </PageCard>

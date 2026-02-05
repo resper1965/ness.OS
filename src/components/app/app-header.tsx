@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation';
 import { SidebarTrigger } from '@/components/app/sidebar-context';
 import { ThemeToggle } from '@/components/app/theme-toggle';
+import { UserMenu, type AppUser } from '@/components/app/user-menu';
 import { APP_HEADER_HEIGHT_PX } from '@/lib/header-constants';
 import { navModules, getAllItems } from '@/lib/nav-config';
 
@@ -21,9 +22,9 @@ function getBreadcrumb(pathname: string): { module: string; label: string } | nu
 }
 
 /**
- * Header global da app (estilo Bundui): SidebarTrigger + breadcrumb/título da área.
+ * Header global da app (estilo Bundui): SidebarTrigger + breadcrumb + ThemeToggle + UserMenu (avatar).
  */
-export function AppHeader() {
+export function AppHeader({ user }: { user: AppUser }) {
   const pathname = usePathname();
   const breadcrumb = getBreadcrumb(pathname ?? '');
 
@@ -40,8 +41,9 @@ export function AppHeader() {
           <span className="font-medium text-slate-200">{breadcrumb.label}</span>
         </div>
       )}
-      <div className="ml-auto">
+      <div className="ml-auto flex items-center gap-3">
         <ThemeToggle />
+        <UserMenu user={user} />
       </div>
     </header>
   );

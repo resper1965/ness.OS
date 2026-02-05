@@ -1,8 +1,10 @@
+import { Users } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { LeadKanban } from '@/components/growth/lead-kanban';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
 import { PageCard } from '@/components/shared/page-card';
+import { EmptyState } from '@/components/shared/empty-state';
 
 const COLUMNS = [
   { key: 'new', label: 'Novo', help: 'Lead recém-chegado. Aguardando primeiro contato.' },
@@ -34,7 +36,16 @@ export default async function GrowthLeadsPage() {
         subtitle="Leads capturados no formulário de contato. Arraste os cards para alterar o status."
       />
       <PageCard>
-        <LeadKanban columns={COLUMNS} leadsByStatus={byStatus} />
+        {(leads ?? []).length === 0 ? (
+          <EmptyState
+            icon={Users}
+            title="Nenhum lead ainda"
+            message="Leads capturados no formulário de contato aparecerão aqui. Arraste os cards para alterar o status."
+            description="Novo → Qualificado → Proposta → Ganho / Perdido"
+          />
+        ) : (
+          <LeadKanban columns={COLUMNS} leadsByStatus={byStatus} />
+        )}
       </PageCard>
     </PageContent>
   );

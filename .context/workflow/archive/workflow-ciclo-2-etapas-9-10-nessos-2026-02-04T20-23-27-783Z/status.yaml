@@ -1,0 +1,48 @@
+project:
+  name: "workflow-ciclo-2-etapas-9-10-nessos"
+  scale: LARGE
+  started: "2026-02-04T20:08:37.433Z"
+  current_phase: C
+
+phases:
+  P:
+    status: filled
+    started_at: "2026-02-04T20:08:37.433Z"
+    completed_at: "2026-02-04T20:08:57.382Z"
+  R:
+    status: completed
+    started_at: "2026-02-04T20:08:57.382Z"
+    completed_at: "2026-02-04T20:09:04.742Z"
+  E:
+    status: filled
+    started_at: "2026-02-04T20:09:04.744Z"
+    completed_at: "2026-02-04T20:09:51.654Z"
+  V:
+    status: filled
+    started_at: "2026-02-04T20:09:51.656Z"
+    completed_at: "2026-02-04T20:10:32.691Z"
+  C:
+    status: completed
+    started_at: "2026-02-04T20:10:32.692Z"
+    completed_at: "2026-02-04T20:22:43.504Z"
+    outputs:
+      - path: "artifacts/workflow-unico-phase-v-evidence.md"
+        status: filled
+
+execution:
+  history:
+    - timestamp: "2026-02-04T20:22:43.504Z"
+      phase: C
+      action: completed
+  last_activity: "2026-02-04T20:22:43.504Z"
+  resume_context: "Fase C (Confirmação) concluída"
+
+settings:
+  autonomous_mode: false
+  require_plan: true
+  require_approval: false
+
+approval:
+  plan_created: true
+  plan_approved: false
+

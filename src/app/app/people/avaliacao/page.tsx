@@ -1,7 +1,9 @@
+import { Users } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
 import { PageCard } from '@/components/shared/page-card';
+import { EmptyState } from '@/components/shared/empty-state';
 import { Feedback360Form } from '@/components/people/feedback-360-form';
 import { getFeedback360ScoresBySubject } from '@/app/actions/people';
 
@@ -53,7 +55,12 @@ export default async function PeopleAvaliacaoPage() {
             </tbody>
           </table>
           {scoresBySubject.length === 0 && (
-            <div className="px-4 py-8 text-center text-slate-500">Nenhum score agregado ainda.</div>
+            <EmptyState
+              icon={Users}
+              title="Nenhum score agregado ainda"
+              message="Registre feedbacks no formulário acima. A média por colaborador aparecerá aqui."
+              description="Avaliação 360º: feedback contínuo e scores por colaborador."
+            />
           )}
         </div>
       </PageCard>
@@ -83,7 +90,12 @@ export default async function PeopleAvaliacaoPage() {
             </tbody>
           </table>
           {feedbacks.length === 0 && (
-            <div className="px-4 py-12 text-center text-slate-500">Nenhum feedback registrado.</div>
+            <EmptyState
+              icon={Users}
+              title="Nenhum feedback registrado"
+              message="Use o formulário &quot;Novo feedback&quot; para registrar avaliações 360º."
+              description="Últimos feedbacks aparecerão nesta tabela."
+            />
           )}
         </div>
       </PageCard>

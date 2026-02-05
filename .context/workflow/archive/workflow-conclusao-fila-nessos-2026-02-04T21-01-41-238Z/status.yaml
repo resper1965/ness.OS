@@ -1,0 +1,45 @@
+project:
+  name: "workflow-conclusao-fila-nessos"
+  scale: LARGE
+  started: "2026-02-04T20:44:43.680Z"
+  current_phase: V
+
+phases:
+  P:
+    status: completed
+    started_at: "2026-02-04T20:44:43.680Z"
+    completed_at: "2026-02-04T20:44:58.453Z"
+  R:
+    status: completed
+    started_at: "2026-02-04T20:44:58.454Z"
+    completed_at: "2026-02-04T20:45:01.003Z"
+  E:
+    status: completed
+    started_at: "2026-02-04T20:45:01.004Z"
+    completed_at: "2026-02-04T20:45:11.119Z"
+  V:
+    status: in_progress
+    started_at: "2026-02-04T20:45:11.120Z"
+  C:
+    status: pending
+
+execution:
+  history:
+    - timestamp: "2026-02-04T21:00:37.591Z"
+      phase: V
+      action: plan_linked
+      plan: "pendentes-detalhado-gemini"
+  last_activity: "2026-02-04T21:00:37.591Z"
+  resume_context: "Plano vinculado - aguardando revisão"
+
+settings:
+  autonomous_mode: false
+  require_plan: false
+  require_approval: true
+
+approval:
+  plan_created: true
+  plan_approved: true
+  approved_by: "system-migration"
+  approved_at: "2026-02-04T20:45:01.004Z"
+

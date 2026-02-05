@@ -1,0 +1,48 @@
+project:
+  name: "workflow-nessos"
+  scale: LARGE
+  started: "2026-02-04T20:23:27.788Z"
+  current_phase: C
+
+phases:
+  P:
+    status: filled
+    started_at: "2026-02-04T20:23:27.788Z"
+    completed_at: "2026-02-04T20:30:39.235Z"
+  R:
+    status: completed
+    started_at: "2026-02-04T20:30:39.238Z"
+    completed_at: "2026-02-04T20:30:49.498Z"
+  E:
+    status: filled
+    started_at: "2026-02-04T20:30:49.500Z"
+    completed_at: "2026-02-04T20:31:02.072Z"
+  V:
+    status: filled
+    started_at: "2026-02-04T20:31:02.073Z"
+    completed_at: "2026-02-04T20:31:38.282Z"
+  C:
+    status: completed
+    started_at: "2026-02-04T20:31:38.283Z"
+    completed_at: "2026-02-04T20:32:47.270Z"
+    outputs:
+      - path: "artifacts/workflow-unico-phase-v-evidence.md"
+        status: filled
+
+execution:
+  history:
+    - timestamp: "2026-02-04T20:32:47.270Z"
+      phase: C
+      action: completed
+  last_activity: "2026-02-04T20:32:47.270Z"
+  resume_context: "Fase C (Confirmação) concluída"
+
+settings:
+  autonomous_mode: false
+  require_plan: true
+  require_approval: false
+
+approval:
+  plan_created: true
+  plan_approved: false
+

@@ -1,0 +1,22 @@
+{
+  "active": [
+    {
+      "slug": "clone-inspiracao-paginas-nessos",
+      "path": "plans/clone-inspiracao-paginas-nessos.md",
+      "title": "Clone (resper1965/clone) como inspiração para construção e refatoração de páginas ness.OS",
+      "summary": "Usar o repositório **[resper1965/clone](https://github.com/resper1965/clone)** (Shadcn UI Kit — Next.js 15, React 19, Tailwind 4) como **referência de padrões de UI, blocos e estrutura de páginas** para construir e refatorar as páginas existentes do ness.OS, mantendo stack Next 14/React 18/Tailwind 3 e branding ness.",
+      "linkedAt": "2026-02-05T00:08:16.986Z",
+      "status": "active"
+    },
+    {
+      "slug": "refatoracao-ux-ui-todas-paginas",
+      "path": "plans/refatoracao-ux-ui-todas-paginas.md",
+      "title": "Refatoração UX/UI — Todas as Páginas por Tema",
+      "summary": "Plano detalhado passando por **todas as páginas existentes** do ness.OS: refatoração inspirada nas melhores referências do repositório (clone, ajuste-ux-ui, design-tokens), com **ligação temática** (financeiro, usuário, comercial, operação, jurídico, governança) e foco em **melhorar em muito o UX/UI** da aplicação.",
+      "linkedAt": "2026-02-05T00:16:01.516Z",
+      "status": "active"
+    }
+  ],
+  "completed": [],
+  "primary": "clone-inspiracao-paginas-nessos"
+}

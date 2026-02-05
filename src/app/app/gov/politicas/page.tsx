@@ -1,8 +1,10 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
+import { FileCheck } from 'lucide-react';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
 import { PageCard } from '@/components/shared/page-card';
+import { EmptyState } from '@/components/shared/empty-state';
 import { PrimaryButton } from '@/components/shared/primary-button';
 
 export default async function GovPoliticasPage() {
@@ -62,12 +64,12 @@ export default async function GovPoliticasPage() {
           </tbody>
         </table>
         {(!policies || policies.length === 0) && (
-          <div className="px-4 py-12 text-center">
-            <p className="text-slate-400">Nenhuma política cadastrada.</p>
-            <div className="mt-4">
-              <PrimaryButton href="/app/gov/politicas/novo">Nova política</PrimaryButton>
-            </div>
-          </div>
+          <EmptyState
+            icon={FileCheck}
+            title="Nenhuma política cadastrada"
+            message="Normas internas com versionamento e rastreabilidade de aceite."
+            action={<PrimaryButton href="/app/gov/politicas/novo">Nova política</PrimaryButton>}
+          />
         )}
         </div>
       </PageCard>
