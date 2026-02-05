@@ -1,13 +1,22 @@
 import { getFrameworks, getChecksByFramework } from '@/app/actions/jur';
-import { createClient } from '@/lib/supabase/server';
+import { getServerClient } from '@/lib/supabase/queries/base';
 import { ComplianceCheckForm } from '@/components/jur/compliance-check-form';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
 import { PageCard } from '@/components/shared/page-card';
+import { DataTable } from '@/components/shared/data-table';
+
+type CheckRow = {
+  id: string;
+  process_ref: string;
+  status: string;
+  notes: string | null;
+  created_at?: string;
+};
 
 export default async function JurConformidadePage() {
   const frameworks = await getFrameworks();
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: playbooks } = await supabase
     .from('playbooks')
     .select('id, title, slug')
@@ -34,45 +43,40 @@ export default async function JurConformidadePage() {
 }
 
 async function FrameworkChecks({ frameworkId, name }: { frameworkId: string; name: string }) {
-  const checks = await getChecksByFramework(frameworkId);
+  const checks = (await getChecksByFramework(frameworkId)) as CheckRow[];
 
   return (
     <PageCard title={name}>
-      <div className="overflow-x-auto">
-        <table className="w-full text-left text-sm">
-          <thead className="bg-slate-800/50 text-slate-300">
-            <tr className="h-[52px]">
-              <th className="px-4 py-2 font-medium">Processo</th>
-              <th className="px-4 py-2 font-medium">Status</th>
-              <th className="px-4 py-2 font-medium">Notas</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-700">
-            {checks.map((c) => (
-              <tr key={c.id} className="text-slate-300">
-                <td className="px-4 py-2">{c.process_ref}</td>
-                <td className="px-4 py-2">
-                  <span
-                    className={
-                      c.status === 'ok'
-                        ? 'text-green-400'
-                        : c.status === 'gap'
-                          ? 'text-amber-400'
-                          : 'text-slate-400'
-                    }
-                  >
-                    {c.status === 'ok' ? 'OK' : c.status === 'gap' ? 'Gap' : 'Pendente'}
-                  </span>
-                </td>
-                <td className="px-4 py-2 text-slate-400">{c.notes ?? '-'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {checks.length === 0 && (
-          <p className="px-4 py-6 text-slate-500 text-center">Nenhum check registrado.</p>
-        )}
-      </div>
+      <DataTable<CheckRow>
+        data={checks}
+        keyExtractor={(row) => row.id}
+        emptyMessage="Nenhum check registrado."
+        columns={[
+          { key: 'process_ref', header: 'Processo' },
+          {
+            key: 'status',
+            header: 'Status',
+            render: (row) => (
+              <span
+                className={
+                  row.status === 'ok'
+                    ? 'text-green-400'
+                    : row.status === 'gap'
+                      ? 'text-amber-400'
+                      : 'text-slate-400'
+                }
+              >
+                {row.status === 'ok' ? 'OK' : row.status === 'gap' ? 'Gap' : 'Pendente'}
+              </span>
+            ),
+          },
+          {
+            key: 'notes',
+            header: 'Notas',
+            render: (row) => <span className="text-slate-400">{row.notes ?? '-'}</span>,
+          },
+        ]}
+      />
     </PageCard>
   );
 }

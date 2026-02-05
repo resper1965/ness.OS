@@ -1,18 +1,28 @@
-import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
-import { FileText } from 'lucide-react';
+import { getServerClient } from '@/lib/supabase/queries/base';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
 import { PageCard } from '@/components/shared/page-card';
-import { EmptyState } from '@/components/shared/empty-state';
+import { DataTable } from '@/components/shared/data-table';
 import { PrimaryButton } from '@/components/shared/primary-button';
 
+type PostRow = {
+  id: string;
+  slug: string;
+  title: string;
+  is_published: boolean | null;
+  published_at: string | null;
+  created_at: string;
+};
+
 export default async function GrowthPostsPage() {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: posts } = await supabase
     .from('public_posts')
     .select('id, slug, title, is_published, published_at, created_at')
     .order('created_at', { ascending: false });
+
+  const rows = (posts ?? []) as PostRow[];
 
   return (
     <PageContent>
@@ -22,59 +32,52 @@ export default async function GrowthPostsPage() {
         actions={<PrimaryButton href="/app/growth/posts/novo">Novo post</PrimaryButton>}
       />
       <PageCard title="Posts do Blog">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
-          <thead className="bg-slate-800/50 text-slate-300">
-            <tr className="h-[52px]">
-              <th className="px-5 py-4 font-medium">Título</th>
-              <th className="px-5 py-4 font-medium">Slug</th>
-              <th className="px-5 py-4 font-medium">Status</th>
-              <th className="px-5 py-4 font-medium">Data</th>
-              <th className="px-5 py-4 font-medium"></th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-700">
-            {(posts ?? []).map((post) => (
-              <tr key={post.id} className="text-slate-300 hover:bg-slate-800/30">
-                <td className="px-5 py-4">{post.title}</td>
-                <td className="px-5 py-4 text-slate-400">{post.slug}</td>
-                <td className="px-5 py-4">
-                  <span
-                    className={
-                      post.is_published
-                        ? 'rounded-full bg-green-500/20 px-2 py-0.5 text-xs text-green-400'
-                        : 'rounded-full bg-slate-600/50 px-2 py-0.5 text-xs text-slate-400'
-                    }
-                  >
-                    {post.is_published ? 'Publicado' : 'Rascunho'}
-                  </span>
-                </td>
-                <td className="px-5 py-4 text-slate-400">
-                  {post.published_at
-                    ? new Date(post.published_at).toLocaleDateString('pt-BR')
-                    : new Date(post.created_at).toLocaleDateString('pt-BR')}
-                </td>
-                <td className="px-5 py-4">
-                  <Link
-                    href={`/app/growth/posts/${post.id}`}
-                    className="text-ness hover:underline"
-                  >
-                    Editar
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {(!posts || posts.length === 0) && (
-          <EmptyState
-            icon={FileText}
-            title="Nenhum post cadastrado"
-            message="Crie o primeiro para publicar no blog do site. Ative &quot;Publicar no Site&quot; para exibir em /blog."
-            action={<PrimaryButton href="/app/growth/posts/novo">Novo post</PrimaryButton>}
-          />
-        )}
-        </div>
+        <DataTable<PostRow>
+          data={rows}
+          keyExtractor={(row) => row.id}
+          emptyMessage="Nenhum post cadastrado"
+          emptyDescription="Crie o primeiro para publicar no blog do site. Ative &quot;Publicar no Site&quot; para exibir em /blog."
+          emptyAction={<PrimaryButton href="/app/growth/posts/novo">Novo post</PrimaryButton>}
+          columns={[
+            { key: 'title', header: 'Título' },
+            {
+              key: 'slug',
+              header: 'Slug',
+              render: (row) => <span className="text-slate-400">{row.slug}</span>,
+            },
+            {
+              key: 'status',
+              header: 'Status',
+              render: (row) => (
+                <span
+                  className={
+                    row.is_published
+                      ? 'rounded-full bg-green-500/20 px-2 py-0.5 text-xs text-green-400'
+                      : 'rounded-full bg-slate-600/50 px-2 py-0.5 text-xs text-slate-400'
+                  }
+                >
+                  {row.is_published ? 'Publicado' : 'Rascunho'}
+                </span>
+              ),
+            },
+            {
+              key: 'date',
+              header: 'Data',
+              render: (row) => (
+                <span className="text-slate-400">
+                  {row.published_at
+                    ? new Date(row.published_at).toLocaleDateString('pt-BR')
+                    : new Date(row.created_at).toLocaleDateString('pt-BR')}
+                </span>
+              ),
+            },
+          ]}
+          actions={(row) => (
+            <Link href={`/app/growth/posts/${row.id}`} className="text-ness hover:underline">
+              Editar
+            </Link>
+          )}
+        />
       </PageCard>
     </PageContent>
   );

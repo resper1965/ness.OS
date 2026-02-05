@@ -1,13 +1,29 @@
-import { GitBranch } from 'lucide-react';
-import { createClient } from '@/lib/supabase/server';
+import { getServerClient } from '@/lib/supabase/queries/base';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
 import { PageCard } from '@/components/shared/page-card';
-import { EmptyState } from '@/components/shared/empty-state';
+import { DataTable } from '@/components/shared/data-table';
 import { WorkflowApprovalActions } from '@/components/ops/workflow-approval-actions';
 
+type PendingRow = {
+  id: string;
+  workflow_run_id: string;
+  step_index: number;
+  status: string;
+  created_at: string;
+};
+
+type WorkflowRow = {
+  id: string;
+  name: string;
+  trigger_module: string;
+  trigger_event: string;
+  is_active: boolean;
+  updated_at: string;
+};
+
 export default async function WorkflowsPage() {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: workflows } = await supabase
     .from('workflows')
     .select('id, name, trigger_module, trigger_event, is_active, updated_at')
@@ -20,71 +36,84 @@ export default async function WorkflowsPage() {
     .order('created_at', { ascending: false })
     .limit(20);
 
+  const pendingRows = (pending ?? []) as PendingRow[];
+  const workflowRows = (workflows ?? []) as WorkflowRow[];
+
   return (
     <PageContent>
       <AppPageHeader
         title="Workflows"
         subtitle="Fluxos de automação e IA (ness.OPS). Steps: db_query, ai_agent, condition, delay, human_review (HITL)."
       />
-      {pending && pending.length > 0 && (
+      {pendingRows.length > 0 && (
         <PageCard title="Aprovações pendentes (HITL)" className="mb-6">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead className="bg-slate-800/50 text-slate-300">
-                <tr className="h-[52px]">
-                  <th className="px-5 py-4 font-medium">Run</th>
-                  <th className="px-5 py-4 font-medium">Step</th>
-                  <th className="px-5 py-4 font-medium">Criado</th>
-                  <th className="px-5 py-4 font-medium">Ações</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-700">
-                {pending.map((p) => (
-                  <tr key={p.id} className="text-slate-300 hover:bg-slate-800/30">
-                    <td className="px-5 py-4 font-mono text-slate-400">{String(p.workflow_run_id).slice(0, 8)}…</td>
-                    <td className="px-5 py-4 text-slate-400">{p.step_index}</td>
-                    <td className="px-5 py-4 text-slate-400">{new Date(p.created_at).toLocaleString('pt-BR')}</td>
-                    <td className="px-5 py-4">
-                      <WorkflowApprovalActions approvalId={p.id} />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <DataTable<PendingRow>
+            data={pendingRows}
+            keyExtractor={(row) => row.id}
+            columns={[
+              {
+                key: 'workflow_run_id',
+                header: 'Run',
+                render: (row) => (
+                  <span className="font-mono text-slate-400">
+                    {String(row.workflow_run_id).slice(0, 8)}…
+                  </span>
+                ),
+              },
+              {
+                key: 'step_index',
+                header: 'Step',
+                render: (row) => <span className="text-slate-400">{row.step_index}</span>,
+              },
+              {
+                key: 'created_at',
+                header: 'Criado',
+                render: (row) => (
+                  <span className="text-slate-400">
+                    {new Date(row.created_at).toLocaleString('pt-BR')}
+                  </span>
+                ),
+              },
+            ]}
+            actions={(row) => <WorkflowApprovalActions approvalId={row.id} />}
+          />
         </PageCard>
       )}
       <PageCard title="Workflows cadastrados">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-slate-800/50 text-slate-300">
-              <tr className="h-[52px]">
-                <th className="px-5 py-4 font-medium">Nome</th>
-                <th className="px-5 py-4 font-medium">Trigger (módulo / evento)</th>
-                <th className="px-5 py-4 font-medium">Ativo</th>
-                <th className="px-5 py-4 font-medium">Atualizado</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-700">
-              {(workflows ?? []).map((w) => (
-                <tr key={w.id} className="text-slate-300 hover:bg-slate-800/30">
-                  <td className="px-5 py-4">{w.name}</td>
-                  <td className="px-5 py-4 text-slate-400">{w.trigger_module} / {w.trigger_event}</td>
-                  <td className="px-5 py-4 text-slate-400">{w.is_active ? 'Sim' : 'Não'}</td>
-                  <td className="px-5 py-4 text-slate-400">{new Date(w.updated_at).toLocaleDateString('pt-BR')}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {(!workflows || workflows.length === 0) && (
-            <EmptyState
-              icon={GitBranch}
-              title="Nenhum workflow cadastrado"
-              message="Workflows são definidos via banco (tabela workflows) e reagem a eventos de module_events."
-              description="Steps: db_query, ai_agent, condition, delay, human_review (HITL)."
-            />
-          )}
-        </div>
+        <DataTable<WorkflowRow>
+          data={workflowRows}
+          keyExtractor={(row) => row.id}
+          emptyMessage="Nenhum workflow cadastrado"
+          emptyDescription="Workflows são definidos via banco (tabela workflows) e reagem a eventos de module_events. Steps: db_query, ai_agent, condition, delay, human_review (HITL)."
+          columns={[
+            { key: 'name', header: 'Nome' },
+            {
+              key: 'trigger',
+              header: 'Trigger (módulo / evento)',
+              render: (row) => (
+                <span className="text-slate-400">
+                  {row.trigger_module} / {row.trigger_event}
+                </span>
+              ),
+            },
+            {
+              key: 'is_active',
+              header: 'Ativo',
+              render: (row) => (
+                <span className="text-slate-400">{row.is_active ? 'Sim' : 'Não'}</span>
+              ),
+            },
+            {
+              key: 'updated_at',
+              header: 'Atualizado',
+              render: (row) => (
+                <span className="text-slate-400">
+                  {new Date(row.updated_at).toLocaleDateString('pt-BR')}
+                </span>
+              ),
+            },
+          ]}
+        />
       </PageCard>
     </PageContent>
   );
