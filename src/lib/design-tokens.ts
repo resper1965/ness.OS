@@ -2,6 +2,7 @@
  * Design Tokens — ness.OS
  * Baseado em 8pt grid para ritmo visual consistente.
  * Referência: ajuste-ux-ui-nessos, AVALIACAO-FRONTEND-ESPACAMENTO
+ * Uso: importar quando forms/páginas adotarem ritmo único (SPACING, FORM_WIDTH, SPACING_CLASSES).
  */
 
 /** Escala de espaçamento (8pt grid): 4, 8, 12, 16, 24, 32, 40, 48px */

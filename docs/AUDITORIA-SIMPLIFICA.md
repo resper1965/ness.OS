@@ -111,15 +111,17 @@ Vários outros exports aparecem como “used in module” (uso interno). Tipos d
 
 ## 5. Resumo e próximos passos
 
-| Área            | Situação                                           | Próxima fase |
+| Área            | Situação                                           | Status       |
 |-----------------|----------------------------------------------------|--------------|
-| Server Actions  | Padrão repetido; base `withSupabase` existe e não é usada | Fase 2       |
-| Componentes     | DataTable/EntityForm/StatusBadge em uso em 3 páginas; várias tabelas manuais | Fase 3       |
-| Schemas Zod     | 2 em schemas.ts; 1 em API route                    | Fase 4       |
-| Código morto    | withSupabase e poucos exports não usados           | Fase 4       |
+| Server Actions  | Base única `getServerClient`/`withSupabase` em todas as actions | ✅ Fase 2    |
+| Componentes     | DataTable em 15 páginas app; EntityForm/StatusBadge em uso      | ✅ Fase 3    |
+| Schemas Zod     | leadSchema, postSchema, riskSchema em schemas.ts   | ✅ Fase 4    |
+| Código morto    | ts-prune executado; design-tokens documentado; APIs públicas mantidas | ✅ Fase 4    |
+| Database        | Índices em 026_simplifica_indexes; views rentabilidade e time_entries | ✅ Fase 5    |
+| Validação       | Build, testes, tipos — OK                          | ✅ Fase 6    |
 
 **DoD Fase 1 (Auditoria):** Este documento.  
-**Próximo passo no workflow:** Concluir Fase C (Confirmation) e encerrar workflow; depois continuar plano (Fases 3–4).
+**Plano SIMPLIFICA:** Fases 1–6 executadas sistematicamente (ver seção 6).
 
 ---
 
@@ -144,14 +146,25 @@ Vários outros exports aparecem como “used in module” (uso interno). Tipos d
 
 - Build (`npm run build`), testes (`npm test`), tipos (`npx tsc --noEmit`) — OK.
 
-### 6.4 Fase 3 — Componentes (em andamento)
+### 6.4 Fase 3 — Componentes (concluída)
 
-- **Migradas para DataTable:** gov/aceites, fin/alertas, gov/politicas, ops/playbooks, jur/conformidade, ops/workflows, growth/posts, **growth/casos**, **growth/services**, **fin/rentabilidade**. Todas usam `getServerClient()` em vez de `createClient()`.
-- **Pendente:** growth/brand, ops/indicators, people/avaliacao, people/candidatos, growth/upsell.
+- **Migradas para DataTable (15 páginas):** gov/aceites, fin/alertas, gov/politicas, ops/playbooks, jur/conformidade, ops/workflows, growth/posts, growth/casos, growth/services, fin/rentabilidade, **growth/brand**, **ops/indicators**, **people/avaliacao**, **people/candidatos**, **growth/upsell**. Todas usam `getServerClient()` em vez de `createClient()`.
 
-### 6.5 Pendente (Fase 4 do plano)
+### 6.5 Fase 4 — Lib/Utils (concluída)
 
-- Centralizar mais schemas/prompts; rodar ts-prune e remover código morto.
+- **ts-prune:** Executado; exports não usados listados (getPolicies, getStaticPageSlugs, ingestIndicator, design-tokens SPACING/FORM_WIDTH/SPACING_CLASSES, tipos LeadInput/PostInput/RiskAnalysisResult).
+- **Decisão:** getPolicies, getStaticPageSlugs, ingestIndicator mantidos como API pública (uso em rotas/SSG futuro). design-tokens mantido com comentário de uso futuro. Tipos mantidos para forms.
+- **design-tokens.ts:** Comentário adicionado indicando uso quando forms/páginas adotarem ritmo único.
+
+### 6.6 Fase 5 — Database (auditoria concluída)
+
+- **Índices:** `026_simplifica_indexes.sql` — inbound_leads (status, created_at), public_posts (is_published, slug), public_jobs (is_open), contracts (renewal_date, client_id). Outros índices em 030, 033, 034, 035, 036, 037.
+- **Views:** contract_rentability (005, 017), v_time_entries_by_contract_month (031), services_primary_playbook (028).
+- **Decisão:** Sem nova migration nesta rodada; estrutura já cobre listagens e rentabilidade.
+
+### 6.7 Fase 6 — Validação
+
+- Build (`npm run build`), testes (`npm test`), tipos (`npx tsc --noEmit`) — OK ao longo das fases.
 
 ---
 

@@ -1,14 +1,29 @@
-import { Users } from 'lucide-react';
-import { createClient } from '@/lib/supabase/server';
+import { getServerClient } from '@/lib/supabase/queries/base';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
 import { PageCard } from '@/components/shared/page-card';
-import { EmptyState } from '@/components/shared/empty-state';
+import { DataTable } from '@/components/shared/data-table';
 import { Feedback360Form } from '@/components/people/feedback-360-form';
 import { getFeedback360ScoresBySubject } from '@/app/actions/people';
 
+type ScoreRow = {
+  subject_id: string;
+  full_name: string | null;
+  avg_score: number;
+  count: number;
+};
+
+type FeedbackRow = {
+  id: string;
+  subject_id: string;
+  rater_id: string;
+  criteria: string | null;
+  score: number | null;
+  created_at: string;
+};
+
 export default async function PeopleAvaliacaoPage() {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const [feedbacksRes, profilesRes, scoresBySubject] = await Promise.all([
     supabase
       .from('feedback_360')
@@ -19,10 +34,10 @@ export default async function PeopleAvaliacaoPage() {
     getFeedback360ScoresBySubject(),
   ]);
 
-  const feedbacks = feedbacksRes.data ?? [];
+  const feedbacks = (feedbacksRes.data ?? []) as FeedbackRow[];
   const profiles = profilesRes.data ?? [];
-
   const profileNames = new Map(profiles.map((p) => [p.id, p.full_name ?? p.id.slice(0, 8)]));
+  const scores = scoresBySubject as ScoreRow[];
 
   return (
     <PageContent>
@@ -35,69 +50,69 @@ export default async function PeopleAvaliacaoPage() {
       </PageCard>
 
       <PageCard title="Média por colaborador" className="mb-6">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-slate-800/50 text-slate-300">
-              <tr className="h-[52px]">
-                <th className="px-5 py-4 font-medium">Colaborador</th>
-                <th className="px-5 py-4 font-medium">Média</th>
-                <th className="px-5 py-4 font-medium">Qtd. avaliações</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-700">
-              {scoresBySubject.map((s) => (
-                <tr key={s.subject_id} className="text-slate-300">
-                  <td className="px-5 py-4">{s.full_name ?? s.subject_id.slice(0, 8)}</td>
-                  <td className="px-5 py-4">{s.avg_score.toFixed(2)}</td>
-                  <td className="px-5 py-4 text-slate-400">{s.count}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {scoresBySubject.length === 0 && (
-            <EmptyState
-              icon={Users}
-              title="Nenhum score agregado ainda"
-              message="Registre feedbacks no formulário acima. A média por colaborador aparecerá aqui."
-              description="Avaliação 360º: feedback contínuo e scores por colaborador."
-            />
-          )}
-        </div>
+        <DataTable<ScoreRow>
+          data={scores}
+          keyExtractor={(row) => row.subject_id}
+          emptyMessage="Nenhum score agregado ainda"
+          emptyDescription="Registre feedbacks no formulário acima. A média por colaborador aparecerá aqui. Avaliação 360º: feedback contínuo e scores por colaborador."
+          columns={[
+            {
+              key: 'full_name',
+              header: 'Colaborador',
+              render: (row) => row.full_name ?? row.subject_id.slice(0, 8),
+            },
+            {
+              key: 'avg_score',
+              header: 'Média',
+              render: (row) => row.avg_score.toFixed(2),
+            },
+            {
+              key: 'count',
+              header: 'Qtd. avaliações',
+              render: (row) => <span className="text-slate-400">{row.count}</span>,
+            },
+          ]}
+        />
       </PageCard>
 
       <PageCard title="Últimos feedbacks">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-slate-800/50 text-slate-300">
-              <tr className="h-[52px]">
-                <th className="px-5 py-4 font-medium">Avaliado</th>
-                <th className="px-5 py-4 font-medium">Avaliador</th>
-                <th className="px-5 py-4 font-medium">Critério</th>
-                <th className="px-5 py-4 font-medium">Score</th>
-                <th className="px-5 py-4 font-medium">Data</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-700">
-              {feedbacks.map((f) => (
-                <tr key={f.id} className="text-slate-300">
-                  <td className="px-5 py-4">{profileNames.get(f.subject_id) ?? f.subject_id?.slice(0, 8) ?? '-'}</td>
-                  <td className="px-5 py-4">{profileNames.get(f.rater_id) ?? f.rater_id?.slice(0, 8) ?? '-'}</td>
-                  <td className="px-5 py-4">{f.criteria ?? '-'}</td>
-                  <td className="px-5 py-4">{f.score ?? '-'}</td>
-                  <td className="px-5 py-4 text-slate-400">{new Date(f.created_at).toLocaleDateString('pt-BR')}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {feedbacks.length === 0 && (
-            <EmptyState
-              icon={Users}
-              title="Nenhum feedback registrado"
-              message="Use o formulário &quot;Novo feedback&quot; para registrar avaliações 360º."
-              description="Últimos feedbacks aparecerão nesta tabela."
-            />
-          )}
-        </div>
+        <DataTable<FeedbackRow>
+          data={feedbacks}
+          keyExtractor={(row) => row.id}
+          emptyMessage="Nenhum feedback registrado"
+          emptyDescription="Use o formulário &quot;Novo feedback&quot; para registrar avaliações 360º. Últimos feedbacks aparecerão nesta tabela."
+          columns={[
+            {
+              key: 'subject_id',
+              header: 'Avaliado',
+              render: (row) => profileNames.get(row.subject_id) ?? row.subject_id?.slice(0, 8) ?? '-',
+            },
+            {
+              key: 'rater_id',
+              header: 'Avaliador',
+              render: (row) => profileNames.get(row.rater_id) ?? row.rater_id?.slice(0, 8) ?? '-',
+            },
+            {
+              key: 'criteria',
+              header: 'Critério',
+              render: (row) => row.criteria ?? '-',
+            },
+            {
+              key: 'score',
+              header: 'Score',
+              render: (row) => row.score ?? '-',
+            },
+            {
+              key: 'created_at',
+              header: 'Data',
+              render: (row) => (
+                <span className="text-slate-400">
+                  {new Date(row.created_at).toLocaleDateString('pt-BR')}
+                </span>
+              ),
+            },
+          ]}
+        />
       </PageCard>
     </PageContent>
   );

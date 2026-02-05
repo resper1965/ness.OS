@@ -1,16 +1,32 @@
-import { UserPlus } from 'lucide-react';
-import { createClient } from '@/lib/supabase/server';
+import { getServerClient } from '@/lib/supabase/queries/base';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
 import { PageCard } from '@/components/shared/page-card';
-import { EmptyState } from '@/components/shared/empty-state';
+import { DataTable } from '@/components/shared/data-table';
+
+type JobAppRow = {
+  id: string;
+  candidate_name: string;
+  candidate_email: string;
+  created_at: string;
+  public_jobs: { title?: string } | { title?: string }[] | null;
+};
+
+function jobTitle(row: JobAppRow): string {
+  const j = row.public_jobs;
+  if (!j) return '-';
+  const t = Array.isArray(j) ? j[0] : j;
+  return (t as { title?: string })?.title ?? '-';
+}
 
 export default async function CandidatosPage() {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: apps } = await supabase
     .from('job_applications')
     .select('id, candidate_name, candidate_email, created_at, public_jobs(title)')
     .order('created_at', { ascending: false });
+
+  const rows = (apps ?? []) as JobAppRow[];
 
   return (
     <PageContent>
@@ -19,36 +35,34 @@ export default async function CandidatosPage() {
         subtitle="Candidaturas das vagas publicadas em /carreiras."
       />
       <PageCard title="Candidatos">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-          <thead className="bg-slate-800/50 text-slate-300">
-            <tr className="h-[52px]">
-              <th className="px-5 py-4 font-medium">Nome</th>
-              <th className="px-5 py-4 font-medium">E-mail</th>
-              <th className="px-5 py-4 font-medium">Vaga</th>
-              <th className="px-5 py-4 font-medium">Data</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-700 text-slate-400">
-            {(apps ?? []).map((a) => (
-              <tr key={a.id}>
-                <td className="px-5 py-4">{a.candidate_name}</td>
-                <td className="px-5 py-4">{a.candidate_email}</td>
-                <td className="px-5 py-4">{(a.public_jobs as { title?: string })?.title ?? "-"}</td>
-                <td className="px-5 py-4">{new Date(a.created_at).toLocaleDateString("pt-BR")}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {(!apps || apps.length === 0) && (
-          <EmptyState
-            icon={UserPlus}
-            title="Nenhuma candidatura"
-            message="Candidaturas aparecem aqui quando alguém se inscreve em uma vaga em /carreiras."
-            description="Publique vagas abertas em Vagas para receber candidatos."
-          />
-        )}
-        </div>
+        <DataTable<JobAppRow>
+          data={rows}
+          keyExtractor={(row) => row.id}
+          emptyMessage="Nenhuma candidatura"
+          emptyDescription="Candidaturas aparecem aqui quando alguém se inscreve em uma vaga em /carreiras. Publique vagas abertas em Vagas para receber candidatos."
+          columns={[
+            { key: 'candidate_name', header: 'Nome' },
+            {
+              key: 'candidate_email',
+              header: 'E-mail',
+              render: (row) => <span className="text-slate-400">{row.candidate_email}</span>,
+            },
+            {
+              key: 'vaga',
+              header: 'Vaga',
+              render: (row) => <span className="text-slate-400">{jobTitle(row)}</span>,
+            },
+            {
+              key: 'created_at',
+              header: 'Data',
+              render: (row) => (
+                <span className="text-slate-400">
+                  {new Date(row.created_at).toLocaleDateString('pt-BR')}
+                </span>
+              ),
+            },
+          ]}
+        />
       </PageCard>
     </PageContent>
   );
