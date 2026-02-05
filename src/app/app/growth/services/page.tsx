@@ -1,19 +1,35 @@
-import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
-import { Package } from 'lucide-react';
+import { getServerClient } from '@/lib/supabase/queries/base';
 import { ServiceForm } from '@/components/growth/service-form';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
 import { PageCard } from '@/components/shared/page-card';
-import { EmptyState } from '@/components/shared/empty-state';
+import { DataTable } from '@/components/shared/data-table';
+
+type ServicePlaybook = { playbooks?: { title?: string } };
+type ServiceRow = {
+  id: string;
+  name: string;
+  slug: string;
+  is_active: boolean;
+  services_playbooks: ServicePlaybook[] | null;
+};
+
+function playbookTitles(row: ServiceRow): string {
+  const sp = row.services_playbooks;
+  if (!Array.isArray(sp) || sp.length === 0) return '-';
+  return sp.map((s) => s.playbooks?.title).filter(Boolean).join(', ');
+}
 
 export default async function GrowthServicesPage() {
-  const supabase = await createClient();
+  const supabase = await getServerClient();
   const { data: services } = await supabase
     .from('services_catalog')
     .select('id, name, slug, is_active, services_playbooks(playbooks(title))')
     .order('name');
   const { data: playbooks } = await supabase.from('playbooks').select('id, title').order('title');
+
+  const rows = (services ?? []) as ServiceRow[];
 
   return (
     <PageContent>
@@ -23,50 +39,40 @@ export default async function GrowthServicesPage() {
       />
       <div id="service-form"><ServiceForm playbooks={playbooks ?? []} /></div>
       <PageCard title="Catálogo de Serviços">
-        {(!services || services.length === 0) ? (
-          <EmptyState
-            icon={Package}
-            title="Nenhum serviço cadastrado"
-            message="Serviços vendáveis. Use o formulário acima para criar. Só podem ficar ativos com playbook vinculado (Trava Growth×OPS)."
-            description="Catálogo de serviços para propostas e vendas."
-            action={
-              <Link href="#service-form" className="text-ness hover:underline font-medium">
-                Criar serviço →
-              </Link>
-            }
-          />
-        ) : (
-          <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-          <thead className="bg-slate-800/50 text-slate-300">
-            <tr className="h-[52px]">
-              <th className="px-5 py-4 font-medium">Nome</th>
-              <th className="px-5 py-4 font-medium">Slug</th>
-              <th className="px-5 py-4 font-medium">Playbook</th>
-              <th className="px-5 py-4 font-medium">Ativo</th>
-              <th className="px-5 py-4 font-medium"></th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-700 text-slate-400">
-            {services.map((s) => (
-              <tr key={s.id}>
-                <td className="px-5 py-4">{s.name}</td>
-                <td className="px-5 py-4">{s.slug}</td>
-                <td className="px-5 py-4">
-                  {Array.isArray(s.services_playbooks) && (s.services_playbooks as { playbooks?: { title?: string } }[]).length > 0
-                    ? (s.services_playbooks as { playbooks?: { title?: string } }[]).map((sp) => sp.playbooks?.title).filter(Boolean).join(', ')
-                    : '-'}
-                </td>
-                <td className="px-5 py-4">{s.is_active ? "Sim" : "Não"}</td>
-                <td className="px-5 py-4">
-                  <Link href={`/app/growth/services/${s.id}`} className="text-ness hover:underline">Editar</Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        </div>
-        )}
+        <DataTable<ServiceRow>
+          data={rows}
+          keyExtractor={(row) => row.id}
+          emptyMessage="Nenhum serviço cadastrado"
+          emptyDescription="Serviços vendáveis. Use o formulário acima para criar. Só podem ficar ativos com playbook vinculado (Trava Growth×OPS). Catálogo de serviços para propostas e vendas."
+          emptyAction={
+            <Link href="#service-form" className="text-ness hover:underline font-medium">
+              Criar serviço →
+            </Link>
+          }
+          columns={[
+            { key: 'name', header: 'Nome' },
+            {
+              key: 'slug',
+              header: 'Slug',
+              render: (row) => <span className="text-slate-400">{row.slug}</span>,
+            },
+            {
+              key: 'playbook',
+              header: 'Playbook',
+              render: (row) => <span className="text-slate-400">{playbookTitles(row)}</span>,
+            },
+            {
+              key: 'is_active',
+              header: 'Ativo',
+              render: (row) => <span className="text-slate-400">{row.is_active ? 'Sim' : 'Não'}</span>,
+            },
+          ]}
+          actions={(row) => (
+            <Link href={`/app/growth/services/${row.id}`} className="text-ness hover:underline">
+              Editar
+            </Link>
+          )}
+        />
       </PageCard>
     </PageContent>
   );
