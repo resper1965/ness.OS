@@ -23,7 +23,7 @@ export const navModules: NavModule[] = [
     id: 'growth',
     title: 'ness.GROWTH',
     areas: [
-      { id: 'comercial', title: 'Comercial', items: [{ href: '/app/growth/leads', label: 'Leads' }, { href: '/app/growth/propostas', label: 'Propostas' }, { href: '/app/growth/upsell', label: 'Upsell' }] },
+      { id: 'comercial', title: 'Comercial', items: [{ href: '/app/growth', label: 'Dashboard' }, { href: '/app/growth/leads', label: 'Leads' }, { href: '/app/growth/propostas', label: 'Propostas' }, { href: '/app/growth/upsell', label: 'Upsell' }] },
       { id: 'marketing', title: 'Marketing', items: [{ href: '/app/growth/posts', label: 'Posts' }, { href: '/app/growth/casos', label: 'Casos' }, { href: '/app/growth/brand', label: 'Brand' }] },
       { id: 'catalogo', title: 'Catálogo', items: [{ href: '/app/growth/services', label: 'Serviços' }] },
     ],
@@ -50,7 +50,7 @@ export const navModules: NavModule[] = [
     areas: [
       { id: 'visao-geral', title: 'Visão Geral', items: [{ href: '/app/fin', label: 'Visão Geral' }] },
       { id: 'contratos', title: 'Contratos', items: [{ href: '/app/fin/contratos', label: 'Contratos' }] },
-      { id: 'financeiro', title: 'Financeiro', items: [{ href: '/app/fin/rentabilidade', label: 'Rentabilidade' }, { href: '/app/fin/alertas', label: 'Alertas' }] },
+      { id: 'financeiro', title: 'Financeiro', items: [{ href: '/app/fin/rentabilidade', label: 'Rentabilidade' }, { href: '/app/fin/alertas', label: 'Alertas' }, { href: '/app/fin/relatorios', label: 'Relatórios' }] },
     ],
   },
   {

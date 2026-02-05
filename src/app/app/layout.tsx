@@ -47,7 +47,7 @@ export default async function AppLayout({
             <AppSidebar user={appUser} />
             <SidebarInset className="flex flex-col">
               <AppHeader user={appUser} />
-              <main id="main-content" className="min-w-0 flex-1 p-8" tabIndex={-1}>
+              <main id="main-content" className="min-w-0 flex-1 px-8 pt-4 pb-8" tabIndex={-1}>
                 {children}
               </main>
             </SidebarInset>

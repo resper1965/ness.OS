@@ -5,8 +5,158 @@ import { revalidatePath } from 'next/cache';
 import { leadSchema, postSchema } from '@/lib/validators/schemas';
 import { emitModuleEvent } from '@/lib/events/emit';
 import { processModuleEvent } from '@/lib/events/process';
+import { getOmieContasReceber } from '@/app/actions/data';
 
 const VALID_STATUSES = ['new', 'qualified', 'proposal', 'won', 'lost'] as const;
+
+// === DASHBOARD COMERCIAL (C-level) — índices baseados em Omie + growth ===
+
+export type GrowthPipelineStage = {
+  id: string;
+  name: string;
+  count: number;
+  value: number;
+  color: string;
+};
+
+export type LeadBySourceItem = { source: string; count: number };
+
+export type GrowthDashboardData = {
+  totalCustomers: number;
+  totalCustomersOmie: number;
+  totalDeals: number;
+  totalRevenue: number;
+  omieRevenueMonth: number | null;
+  leadsTotal: number;
+  leadsByStatus: Record<string, number>;
+  leadsBySource: LeadBySourceItem[];
+  pipelineStages: GrowthPipelineStage[];
+  recentLeads: Array<{
+    id: string;
+    name: string;
+    email: string;
+    company: string | null;
+    status: string;
+    origin_url: string | null;
+    created_at: string;
+  }>;
+};
+
+/** Normaliza origin_url para rótulo de origem (site, contato, solução, etc.). */
+function normalizeLeadSource(origin_url: string | null): string {
+  if (!origin_url || !origin_url.trim()) return 'Site';
+  const u = origin_url.toLowerCase();
+  if (u.includes('contato') || u.includes('contact')) return 'Contato';
+  if (u.includes('solucoes') || u.includes('solucao') || u.includes('/s')) return 'Soluções';
+  if (u.includes('blog') || u.includes('/blog')) return 'Blog';
+  if (u.includes('casos')) return 'Casos';
+  return 'Outros';
+}
+
+/**
+ * Dados do dashboard comercial/marketing (ness.GROWTH).
+ * Usa: clients (base Omie), contracts (MRR/deals), inbound_leads (funil e origem), faturamento Omie do mês.
+ */
+export async function getGrowthDashboardData(): Promise<GrowthDashboardData> {
+  const supabase = await getServerClient();
+
+  const [clientsRes, contractsRes, leadsRes] = await Promise.all([
+    supabase.from('clients').select('id, omie_codigo'),
+    supabase.from('contracts').select('id, client_id, mrr'),
+    supabase
+      .from('inbound_leads')
+      .select('id, name, email, company, status, origin_url, created_at')
+      .order('created_at', { ascending: false }),
+  ]);
+
+  const clients = clientsRes.data ?? [];
+  const contracts = contractsRes.data ?? [];
+  const leads = leadsRes.data ?? [];
+
+  const totalCustomers = clients.length;
+  const totalCustomersOmie = clients.filter((c) => c.omie_codigo).length;
+  const totalDeals = contracts.length;
+  const totalRevenue = contracts.reduce((s, c) => s + Number(c.mrr ?? 0), 0);
+
+  const byStatus: Record<string, number> = {
+    new: 0,
+    qualified: 0,
+    proposal: 0,
+    won: 0,
+    lost: 0,
+  };
+  const bySource: Record<string, number> = {};
+  for (const l of leads) {
+    const st = (l.status ?? 'new') in byStatus ? (l.status ?? 'new') : 'new';
+    byStatus[st]++;
+    const src = normalizeLeadSource(l.origin_url ?? null);
+    bySource[src] = (bySource[src] ?? 0) + 1;
+  }
+  const leadsBySource: LeadBySourceItem[] = Object.entries(bySource).map(([source, count]) => ({
+    source,
+    count,
+  }));
+
+  const pipelineColors = [
+    'bg-blue-500',
+    'bg-emerald-500',
+    'bg-amber-500',
+    'bg-rose-500',
+    'bg-slate-500',
+  ] as const;
+  const stageLabels: Record<string, string> = {
+    new: 'Novo',
+    qualified: 'Qualificado',
+    proposal: 'Proposta',
+    won: 'Ganho',
+    lost: 'Perdido',
+  };
+  const pipelineStages: GrowthPipelineStage[] = (['new', 'qualified', 'proposal', 'won', 'lost'] as const).map(
+    (id, i) => ({
+      id,
+      name: stageLabels[id],
+      count: byStatus[id],
+      value: id === 'won' ? totalRevenue : 0,
+      color: pipelineColors[i] ?? 'bg-slate-500',
+    })
+  );
+
+  let omieRevenueMonth: number | null = null;
+  try {
+    const now = new Date();
+    const first = new Date(now.getFullYear(), now.getMonth(), 1);
+    const last = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    const fmt = (d: Date) =>
+      `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+    const fat = await getOmieContasReceber({ dataInicio: fmt(first), dataFim: fmt(last) });
+    omieRevenueMonth = Object.values(fat).reduce((a, v) => a + v, 0);
+  } catch {
+    // Omie opcional
+  }
+
+  const recentLeads = leads.slice(0, 10).map((l) => ({
+    id: l.id,
+    name: l.name ?? '',
+    email: l.email ?? '',
+    company: l.company ?? null,
+    status: l.status ?? 'new',
+    origin_url: l.origin_url ?? null,
+    created_at: l.created_at ?? '',
+  }));
+
+  return {
+    totalCustomers,
+    totalCustomersOmie,
+    totalDeals,
+    totalRevenue,
+    omieRevenueMonth,
+    leadsTotal: leads.length,
+    leadsByStatus: byStatus,
+    leadsBySource,
+    pipelineStages,
+    recentLeads,
+  };
+}
 
 export type LeadFormState = { success?: boolean; error?: string };
 export type PostFormState = { success?: boolean; error?: string };

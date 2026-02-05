@@ -39,7 +39,7 @@ export function AppPageHeader({ title, subtitle, actions }: AppPageHeaderProps) 
       {/* Espaçador para não sobrepor o conteúdo ao header fixo */}
       <div
         className="shrink-0"
-        style={{ height: `${APP_HEADER_HEIGHT_PX}px`, marginBottom: 24 }}
+        style={{ height: `${APP_HEADER_HEIGHT_PX}px`, marginBottom: 8 }}
         aria-hidden
       />
     </>

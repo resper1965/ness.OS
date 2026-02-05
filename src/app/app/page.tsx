@@ -4,6 +4,8 @@ import { AppPageHeader } from '@/components/shared/app-page-header';
 import { NessBrand } from '@/components/shared/ness-brand';
 import { PageContent } from '@/components/shared/page-content';
 import { getWidgetsForRole } from '@/lib/dashboard-widgets';
+import { getCfoDashboardData, canViewCfoDashboard } from '@/app/actions/fin';
+import { CfoKpiCards, CfoDashboardHeader } from '@/components/fin/cfo-kpi-cards';
 
 export default async function AppDashboardPage() {
   const supabase = await createClient();
@@ -18,6 +20,8 @@ export default async function AppDashboardPage() {
 
   const role = (profile?.role as string) || 'employee';
   const widgets = getWidgetsForRole(role);
+  const showCfo = await canViewCfoDashboard(role);
+  const cfo = showCfo ? await getCfoDashboardData() : null;
 
   return (
     <PageContent>
@@ -33,6 +37,13 @@ export default async function AppDashboardPage() {
           </>
         }
       />
+
+      {showCfo && cfo && (
+        <section aria-labelledby="cfo-heading" className="space-y-4">
+          <CfoDashboardHeader />
+          <CfoKpiCards data={cfo} />
+        </section>
+      )}
 
       <div className="grid min-w-0 grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {widgets.map((w) => (

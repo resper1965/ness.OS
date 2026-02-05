@@ -128,17 +128,24 @@ function SidebarNavContent({ pathname, onNavigate }: { pathname: string; onNavig
     const path = pathname ?? '';
     const open = new Set<string>();
     for (const mod of navModules) {
-      if (getAllItems(mod).some((i) => isItemActive(path, i))) open.add(mod.title);
+      if (getAllItems(mod).some((i) => isItemActive(path, i))) {
+        open.add(mod.title);
+        return open; // acordeão: só o módulo da rota atual aberto
+      }
     }
-    if (open.size === 0) open.add('Início');
+    open.add('Início');
     return open;
   });
 
   const toggleGroup = (title: string) => {
     setOpenGroups((prev) => {
       const next = new Set(prev);
-      if (next.has(title)) next.delete(title);
-      else next.add(title);
+      if (next.has(title)) {
+        next.delete(title);
+      } else {
+        next.clear();
+        next.add(title); // acordeão: ao abrir um, fechar os outros
+      }
       return next;
     });
   };
