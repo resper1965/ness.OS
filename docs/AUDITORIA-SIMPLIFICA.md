@@ -146,8 +146,8 @@ Vários outros exports aparecem como “used in module” (uso interno). Tipos d
 
 ### 6.4 Fase 3 — Componentes (em andamento)
 
-- **Migradas para DataTable:** gov/aceites (rastreabilidade de aceite), fin/alertas (reconciliação, renovação, vencimento). fin/alertas passou a usar `getServerClient()` em vez de `createClient()`.
-- **Pendente:** demais páginas com `<table>` manual (growth/brand, jur/conformidade, gov/politicas, ops/playbooks, ops/workflows, ops/indicators, people/avaliacao, people/candidatos, growth/upsell, growth/services, growth/posts, growth/casos, fin/rentabilidade).
+- **Migradas para DataTable:** gov/aceites, fin/alertas, **gov/politicas**, **ops/playbooks**. fin/alertas, gov/politicas e ops/playbooks passaram a usar `getServerClient()` em vez de `createClient()`.
+- **Pendente:** growth/brand, jur/conformidade, ops/workflows, ops/indicators, people/avaliacao, people/candidatos, growth/upsell, growth/services, growth/posts, growth/casos, fin/rentabilidade.
 
 ### 6.5 Pendente (Fase 4 do plano)
 
