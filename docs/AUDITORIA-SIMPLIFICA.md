@@ -119,7 +119,35 @@ Vários outros exports aparecem como “used in module” (uso interno). Tipos d
 | Código morto    | withSupabase e poucos exports não usados           | Fase 4       |
 
 **DoD Fase 1 (Auditoria):** Este documento.  
-**Próximo passo no workflow:** Concluir Fase P e avançar para Review (R) ou direto para Execution (E) conforme regras do PREVC.
+**Próximo passo no workflow:** Concluir Fase C (Confirmation) e encerrar workflow; depois continuar plano (Fases 3–4).
+
+---
+
+## 6. O que foi feito (Fase E — Execution)
+
+**Data:** 2026-02-05
+
+### 6.1 Server Actions — base única
+
+- **`src/lib/supabase/queries/base.ts`**
+  - Exportado **`getServerClient()`** para actions que fazem várias operações ou usam `auth.getUser()`.
+  - **`withSupabase(fn)`** usado para leituras com tratamento de erro centralizado.
+- **Todas as 13 actions** passaram a usar **`getServerClient()`** ou **`withSupabase`** (nenhuma mais usa `createClient()` de `@/lib/supabase/server`).
+- **Funções migradas para `withSupabase`:** growth (getPosts, getPostBySlug, getActiveServices, getServiceBySlug), jur (getFrameworks, getChecksByFramework), static-pages (getStaticPageBySlug, getStaticPageSlugs).
+
+### 6.2 Schemas Zod centralizados
+
+- **`riskSchema`** e tipo **`RiskAnalysisResult`** movidos para **`src/lib/validators/schemas.ts`**.
+- **`src/app/api/jur/risk/analyze/route.ts`** importa `riskSchema` de `schemas` e usa `getServerClient()`.
+
+### 6.3 Validação
+
+- Build (`npm run build`), testes (`npm test`), tipos (`npx tsc --noEmit`) — OK.
+
+### 6.4 Pendente (Fases 3–4 do plano)
+
+- Migrar mais páginas com `<table>` manual para **DataTable** (Fase 3).
+- Centralizar mais schemas/prompts; rodar ts-prune e remover código morto (Fase 4).
 
 ---
 
