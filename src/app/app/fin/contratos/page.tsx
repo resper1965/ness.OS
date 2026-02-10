@@ -86,6 +86,18 @@ export default async function ContratosPage() {
               header: 'Fim',
               render: (c) => (c.end_date ? new Date(c.end_date).toLocaleDateString('pt-BR') : '-'),
             },
+            {
+              key: 'actions',
+              header: 'Ações',
+              render: (c) => (
+                <Link
+                  href={`/app/fin/contratos/${c.id}/jobs`}
+                  className="text-primary hover:underline text-sm font-medium"
+                >
+                  Ver Jobs →
+                </Link>
+              ),
+            },
           ]}
         />
         )}

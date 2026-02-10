@@ -52,9 +52,10 @@ Abre `lighthouse-report.html` no navegador para ver o relatório. Repetir para o
 
 ## 3. Navegação por teclado
 
-- **Tab:** ordem lógica: skip link → sidebar → header → main. O skip link deve aparecer ao focar (está fora da tela até receber foco).
+- **Tab:** ordem lógica: skip link → sidebar (ou trigger) → header (busca, notificações, tema, usuário) → main. O skip link deve aparecer ao focar (está fora da tela até receber foco).
 - **Enter:** ativa links e botões.
-- **Esc:** fecha modais (ex.: edição de registro no Timer).
+- **⌘K / Ctrl+K:** abre paleta de busca no header; Esc fecha; selecionar item navega.
+- **Esc:** fecha modais (ex.: edição de registro no Timer) e paleta de busca.
 - **Nenhum foco preso** em modais (conseguir sair com Esc ou Tab).
 
 ---

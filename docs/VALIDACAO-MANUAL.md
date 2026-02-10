@@ -32,6 +32,9 @@ Equivale a `npm run lint && npm run build`. Se falhar, corrigir antes dos testes
 | 6 | Zoom 200% | Ctrl/Cmd + + até 200%; layout utilizável, texto não cortado. |
 | 7 | Screen reader (opcional) | NVDA / VoiceOver: labels dos campos e mensagens de erro anunciados em formulário (ex.: Contratos). |
 | 8 | Tema (light/dark) | No header da app (/app): ícone Sol/Lua alterna tema; recarregar página mantém preferência (next-themes). Contraste WCAG em ambos os modos. |
+| 9 | Busca (⌘K / Ctrl+K) | No header: ícone lupa ou atalho abre paleta de comandos; itens por módulo (nav-config); selecionar navega para a página. |
+| 10 | Notificações | Ícone sino no header abre dropdown "Notificações"; lista vazia ou itens conforme data.ts. |
+| 11 | Sidebar responsiva | Em viewport &lt;768px: sidebar vira drawer (abre com trigger); fechar ao navegar ou clicar fora. |
 
 ---
 
@@ -82,6 +85,9 @@ Ver [VALIDACAO-MIGRACOES.md](./VALIDACAO-MIGRACOES.md) para checklist completo.
 | Manifest e ícones PWA (se aplicável) | [ ] |
 | Formulários com label + help (amostra) | [ ] |
 | Tema: alternar light/dark e recarregar (preferência mantida) | [ ] |
+| Busca ⌘K abre paleta e navega | [ ] |
+| Notificações (ícone sino) abre dropdown | [ ] |
+| Sidebar em mobile: drawer abre/fecha | [ ] |
 
 ---
 

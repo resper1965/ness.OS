@@ -2,7 +2,9 @@
 
 import { getServerClient } from '@/lib/supabase/queries/base';
 import { revalidatePath } from 'next/cache';
-import { getOmieContasReceber, getLastErpSync } from '@/app/actions/data';
+import { getOmieFaturamentoForPeriod, getLastErpSync } from '@/app/actions/data';
+import { emitModuleEvent } from '@/lib/events/emit';
+import { processModuleEvent } from '@/lib/events/process';
 
 // Sync Omie e consultas ERP: ness.DATA (app/actions/data.ts). FIN consome via DATA.
 export type ReconciliationAlert = {
@@ -31,7 +33,7 @@ export async function getReconciliationAlerts(): Promise<ReconciliationAlert[]> 
 
   let faturamentoPorOmie: Record<string, number>;
   try {
-    faturamentoPorOmie = await getOmieContasReceber({ dataInicio, dataFim });
+    faturamentoPorOmie = await getOmieFaturamentoForPeriod({ dataInicio, dataFim });
   } catch {
     return [];
   }
@@ -107,15 +109,23 @@ export async function createContract(
   if (!clientId) return { error: 'Cliente obrigatório.' };
 
   const supabase = await getServerClient();
-  const { error } = await supabase.from('contracts').insert({
-    client_id: clientId,
-    mrr,
-    start_date: startDate || null,
-    end_date: endDate || null,
-    renewal_date: renewalDate || null,
-    adjustment_index: adjustmentIndex || null,
-  });
+  const { data: inserted, error } = await supabase
+    .from('contracts')
+    .insert({
+      client_id: clientId,
+      mrr,
+      start_date: startDate || null,
+      end_date: endDate || null,
+      renewal_date: renewalDate || null,
+      adjustment_index: adjustmentIndex || null,
+    })
+    .select('id')
+    .single();
   if (error) return { error: error.message };
+  const contractId = inserted?.id ?? null;
+  const payload = { client_id: clientId, mrr, start_date: startDate, end_date: endDate };
+  await emitModuleEvent('fin', 'contract.created', contractId, payload);
+  await processModuleEvent('fin', 'contract.created', payload);
   revalidatePath('/app/fin/contratos');
   revalidatePath('/app/fin/rentabilidade');
   return { success: true };
@@ -141,6 +151,10 @@ export type CfoDashboardData = {
   deltaRevenuePct: number | null;
   adjustmentExposedCount: number;
   adjustmentExposedMrr: number;
+  // Novos campos para alinhamento da hierarquia
+  totalBudgetedCost: number;
+  totalActualCost: number;
+  budgetVariance: number;
 };
 
 const CFO_FIN_VIEW_ROLES = ['fin', 'cfo', 'admin', 'superadmin'];
@@ -178,12 +192,14 @@ export async function getCfoDashboardData(): Promise<CfoDashboardData> {
     reconciliationAlerts,
     lastSync,
     omieAgg,
+    budgetVsActualRes
   ] = await Promise.all([
     supabase.from('contracts').select('id, client_id, mrr, renewal_date, end_date, adjustment_index'),
     supabase.from('contract_rentability').select('revenue, rentability'),
     getReconciliationAlerts(),
     getLastErpSync(),
-    getOmieContasReceber({ dataInicio, dataFim }).catch(() => ({}) as Record<string, number>),
+    getOmieFaturamentoForPeriod({ dataInicio, dataFim }).catch(() => ({}) as Record<string, number>),
+    supabase.from('v_contract_budget_vs_actual').select('budgeted_cost, actual_cost'),
   ]);
 
   const contracts = contractsRes.data ?? [];
@@ -204,6 +220,11 @@ export async function getCfoDashboardData(): Promise<CfoDashboardData> {
   });
   const contractsNegativeMarginPct =
     rentability.length > 0 ? (contractsNegativeMarginCount / rentability.length) * 100 : 0;
+
+  const budgetVsActual = (budgetVsActualRes?.data ?? []) as { budgeted_cost: number; actual_cost: number }[];
+  const totalBudgetedCost = budgetVsActual.reduce((acc, v) => acc + Number(v.budgeted_cost), 0);
+  const totalActualCost = budgetVsActual.reduce((acc, v) => acc + Number(v.actual_cost), 0);
+  const budgetVariance = totalBudgetedCost - totalActualCost;
 
   const renewalPipeline30 = contracts
     .filter((c) => c.renewal_date && c.renewal_date >= today && c.renewal_date <= in30Str)
@@ -260,7 +281,48 @@ export async function getCfoDashboardData(): Promise<CfoDashboardData> {
     deltaRevenuePct,
     adjustmentExposedCount,
     adjustmentExposedMrr,
+    // Novos campos para alinhamento da hierarquia
+    totalBudgetedCost,
+    totalActualCost,
+    budgetVariance,
   };
+}
+
+// === CONTRACTS SERVICE ACTIONS (Alignment) ===
+
+export async function linkServiceActionToContract(
+  contractId: string,
+  serviceActionId: string,
+  quantity = 1,
+  unitPrice?: number
+): Promise<{ success?: boolean; error?: string }> {
+  const supabase = await getServerClient();
+  const { error } = await supabase.from('contracts_service_actions').insert({
+    contract_id: contractId,
+    service_action_id: serviceActionId,
+    quantity,
+    unit_price: unitPrice || null,
+  });
+
+  if (error) return { error: error.message };
+  revalidatePath('/app/fin/rentabilidade');
+  return { success: true };
+}
+
+export async function unlinkServiceActionFromContract(
+  contractId: string,
+  serviceActionId: string
+): Promise<{ success?: boolean; error?: string }> {
+  const supabase = await getServerClient();
+  const { error } = await supabase
+    .from('contracts_service_actions')
+    .delete()
+    .eq('contract_id', contractId)
+    .eq('service_action_id', serviceActionId);
+
+  if (error) return { error: error.message };
+  revalidatePath('/app/fin/rentabilidade');
+  return { success: true };
 }
 
 // === RELATÓRIOS (fin-rel) ===
@@ -411,12 +473,12 @@ export async function getLifecycleReport(options?: {
   return rows;
 }
 
-/** Faturamento Omie por período. Datas em DD/MM/YYYY. */
+/** Faturamento Omie por período. Datas em DD/MM/YYYY. Usa snapshot quando disponível (período de um mês). */
 export async function getOmieRevenueReport(options: {
   dataInicio: string;
   dataFim: string;
 }): Promise<OmieRevenueReportResult> {
-  const faturamentoPorOmie = await getOmieContasReceber(options);
+  const faturamentoPorOmie = await getOmieFaturamentoForPeriod(options);
   const supabase = await getServerClient();
   const { data: clients } = await supabase.from('clients').select('id, name, omie_codigo').not('omie_codigo', 'is', null);
   const byCodigo = new Map((clients ?? []).map((c) => [c.omie_codigo!, { name: c.name }]));
@@ -430,4 +492,20 @@ export async function getOmieRevenueReport(options: {
   }
   rows.sort((a, b) => b.valor - a.valor);
   return { rows, total };
+}
+
+export type BudgetVsActualReportRow = {
+  contract_id: string;
+  client_name: string;
+  revenue: number;
+  budgeted_cost: number;
+  actual_cost: number;
+  cost_variance: number;
+};
+
+/** Relatório comparativo Budget vs Real. */
+export async function getBudgetVsActualReport(): Promise<BudgetVsActualReportRow[]> {
+  const supabase = await getServerClient();
+  const { data } = await supabase.from('v_contract_budget_vs_actual').select('*');
+  return (data ?? []) as BudgetVsActualReportRow[];
 }

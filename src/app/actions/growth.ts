@@ -5,7 +5,8 @@ import { revalidatePath } from 'next/cache';
 import { leadSchema, postSchema } from '@/lib/validators/schemas';
 import { emitModuleEvent } from '@/lib/events/emit';
 import { processModuleEvent } from '@/lib/events/process';
-import { getOmieContasReceber } from '@/app/actions/data';
+import { getOmieFaturamentoForPeriod } from '@/app/actions/data';
+import { callGemini } from '@/lib/ai/gemini';
 
 const VALID_STATUSES = ['new', 'qualified', 'proposal', 'won', 'lost'] as const;
 
@@ -128,7 +129,7 @@ export async function getGrowthDashboardData(): Promise<GrowthDashboardData> {
     const last = new Date(now.getFullYear(), now.getMonth() + 1, 0);
     const fmt = (d: Date) =>
       `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
-    const fat = await getOmieContasReceber({ dataInicio: fmt(first), dataFim: fmt(last) });
+    const fat = await getOmieFaturamentoForPeriod({ dataInicio: fmt(first), dataFim: fmt(last) });
     omieRevenueMonth = Object.values(fat).reduce((a, v) => a + v, 0);
   } catch {
     // Omie opcional
@@ -377,12 +378,12 @@ export async function createService(
 ): Promise<{ success?: boolean; error?: string }> {
   const name = (formData.get('name') as string)?.trim();
   const slug = (formData.get('slug') as string)?.trim().toLowerCase().replace(/\s+/g, '-');
-  const playbookIds = (formData.getAll('playbook_ids') as string[]).filter(Boolean);
+  const serviceActionIds = (formData.getAll('service_action_ids') as string[]).filter(Boolean);
   const pitch = (formData.get('marketing_pitch') as string) || null;
   const marketingTitle = (formData.get('marketing_title') as string)?.trim() || null;
   const marketingBody = (formData.get('marketing_body') as string)?.trim() || null;
   if (!name || !slug) return { error: 'Nome e slug obrigatórios.' };
-  if (playbookIds.length === 0) return { error: 'Adicione pelo menos um playbook.' };
+  if (serviceActionIds.length === 0) return { error: 'Adicione pelo menos uma Service Action (Job).' };
 
   const supabase = await getServerClient();
   const { data: service, error: insertErr } = await supabase.from('services_catalog').insert({
@@ -391,9 +392,9 @@ export async function createService(
   }).select('id').single();
   if (insertErr || !service) return { error: insertErr?.message ?? 'Erro ao criar serviço.' };
 
-  const rows = playbookIds.map((pid, i) => ({ service_id: service.id, playbook_id: pid, sort_order: i }));
-  const { error: spErr } = await supabase.from('services_playbooks').insert(rows);
-  if (spErr) return { error: spErr.message };
+  const rows = serviceActionIds.map((said, i) => ({ service_id: service.id, service_action_id: said, sort_order: i }));
+  const { error: saErr } = await supabase.from('services_service_actions').insert(rows);
+  if (saErr) return { error: saErr.message };
   revalidatePath('/app/growth/services');
   revalidatePath('/solucoes');
   return { success: true };
@@ -416,7 +417,7 @@ export async function updateService(
 ): Promise<{ success?: boolean; error?: string }> {
   const name = (formData.get('name') as string)?.trim();
   const slug = (formData.get('slug') as string)?.trim().toLowerCase().replace(/\s+/g, '-');
-  const playbookIds = (formData.getAll('playbook_ids') as string[]).filter(Boolean);
+  const serviceActionIds = (formData.getAll('service_action_ids') as string[]).filter(Boolean);
   const deliveryTypeRaw = (formData.get('delivery_type') as string) || 'service';
   const deliveryType = ['service', 'product', 'vertical'].includes(deliveryTypeRaw) ? deliveryTypeRaw : 'service';
   const pitch = (formData.get('marketing_pitch') as string) || null;
@@ -424,7 +425,7 @@ export async function updateService(
   const marketingBody = (formData.get('marketing_body') as string)?.trim() || null;
   const isActive = formData.get('is_active') === 'on';
   if (!name || !slug) return { error: 'Nome e slug obrigatórios.' };
-  if (playbookIds.length === 0) return { error: 'Adicione pelo menos um playbook.' };
+  if (serviceActionIds.length === 0) return { error: 'Adicione pelo menos uma Service Action (Job).' };
 
   const supabase = await getServerClient();
   const { error } = await supabase.from('services_catalog').update({
@@ -434,10 +435,10 @@ export async function updateService(
   }).eq('id', id);
   if (error) return { error: error.message };
 
-  await supabase.from('services_playbooks').delete().eq('service_id', id);
-  const rows = playbookIds.map((pid, i) => ({ service_id: id, playbook_id: pid, sort_order: i }));
-  const { error: spErr } = await supabase.from('services_playbooks').insert(rows);
-  if (spErr) return { error: spErr.message };
+  await supabase.from('services_service_actions').delete().eq('service_id', id);
+  const rows = serviceActionIds.map((said, i) => ({ service_id: id, service_action_id: said, sort_order: i }));
+  const { error: saErr } = await supabase.from('services_service_actions').insert(rows);
+  if (saErr) return { error: saErr.message };
   revalidatePath('/app/growth/services');
   revalidatePath('/solucoes');
   return { success: true };
@@ -457,10 +458,17 @@ export async function createSuccessCase(
   if (!title || !slug) return { error: 'Título e slug obrigatórios.' };
 
   const supabase = await getServerClient();
-  const { error } = await supabase.from('success_cases').insert({
-    title, slug, raw_data: rawData, summary, is_published: isPublished,
-  });
+  const { data: inserted, error } = await supabase
+    .from('success_cases')
+    .insert({
+      title, slug, raw_data: rawData, summary, is_published: isPublished,
+    })
+    .select('id')
+    .single();
   if (error) return { error: error.message };
+  const caseId = inserted?.id ?? null;
+  await emitModuleEvent('growth', 'case.created', caseId, { title, slug });
+  await processModuleEvent('growth', 'case.created', { title, slug });
   revalidatePath('/app/growth/casos');
   revalidatePath('/casos');
   return { success: true };
@@ -495,6 +503,8 @@ export async function updateSuccessCase(
     .update({ title, slug, raw_data: rawData, summary, content_html: contentHtml, is_published: isPublished, updated_at: new Date().toISOString() })
     .eq('id', id);
   if (error) return { error: error.message };
+  await emitModuleEvent('growth', 'case.updated', id, { title, slug });
+  await processModuleEvent('growth', 'case.updated', { title, slug });
   revalidatePath('/app/growth/casos');
   revalidatePath(`/app/growth/casos/${id}`);
   revalidatePath('/casos');
@@ -520,4 +530,90 @@ export async function createBrandAssetFromForm(
   if (error) return { error: error.message };
   revalidatePath('/app/growth/brand');
   return { success: true };
+}
+
+/**
+ * Gera uma proposta técnica detalhada usando IA (Gemini).
+ * Baseia-se no Catálogo de Serviços -> Service Actions -> Playbooks -> Tasks.
+ */
+export async function generateProposalWithAI(serviceId: string): Promise<{ text?: string; error?: string }> {
+  const supabase = await getServerClient();
+
+  // 1. Buscar a estrutura completa do serviço
+  const { data: service, error: fetchErr } = await supabase
+    .from('services_catalog')
+    .select(`
+      id,
+      name,
+      marketing_pitch,
+      base_price,
+      services_service_actions (
+        sort_order,
+        service_actions (
+          title,
+          description,
+          complexity_factor,
+          service_action_playbooks (
+            sort_order,
+            playbooks (
+              title,
+              content_markdown,
+              tasks (
+                title,
+                description,
+                estimated_duration_minutes
+              )
+            )
+          )
+        )
+      )
+    `)
+    .eq('id', serviceId)
+    .single();
+
+  if (fetchErr || !service) return { error: fetchErr?.message ?? 'Serviço não encontrado.' };
+
+  // 2. Construir o contexto para a IA
+  const serviceActions = (service as any).services_service_actions ?? [];
+  let context = `Serviço: ${service.name}\nPitch: ${service.marketing_pitch}\nPreço Base: R$ ${service.base_price}\n\nEscopo Operacional:\n`;
+
+  serviceActions.forEach((ssa: any) => {
+    const sa = ssa.service_actions;
+    context += `- Job: ${sa.title}\n  Descrição: ${sa.description}\n`;
+    
+    sa.service_action_playbooks?.forEach((sap: any) => {
+      const pb = sap.playbooks;
+      context += `  * Playbook: ${pb.title}\n`;
+      pb.tasks?.forEach((tk: any) => {
+        context += `    - Task: ${tk.title} (${tk.estimated_duration_minutes} min): ${tk.description}\n`;
+      });
+    });
+  });
+
+  const prompt = `
+    Você é um Engenheiro de Vendas da nessOS, uma empresa de Cybersecurity de elite.
+    Gere uma PROPOSTA TÉCNICA profissional em Markdown para o serviço abaixo.
+    Use um tom executivo, confiante e focado em valor vs custo.
+
+    CONTEXTO DO SERVIÇO:
+    ${context}
+
+    ESTRUTURA DA PROPOSTA:
+    1. # Proposta Técnica: [Nome do Serviço]
+    2. ## Resumo Executivo (Foque no pitch e valor de negócio)
+    3. ## Escopo de Atendimento (Detalhe o que será feito com base nos Jobs e Playbooks)
+    4. ## Diferenciais Técnicos (Foque na padronização via nessOS Ops)
+    5. ## Investimento (Use o preço base R$ ${service.base_price})
+    6. ## Conclusão
+
+    IMPORTANTE: Retorne APENAS o Markdown da proposta. Não inclua comentários.
+  `;
+
+  // 3. Chamar a IA
+  const result = await callGemini(prompt, {
+    systemInstruction: 'Você é um consultor de vendas especializado em Cybersecurity e MSSP.',
+  });
+
+  if (result.error) return { error: result.error };
+  return { text: result.text ?? 'Não foi possível gerar a proposta.' };
 }

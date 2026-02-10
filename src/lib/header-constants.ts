@@ -1,5 +1,5 @@
-/** Altura fixa dos headers (sidebar + página) = 64px. Alinhamento visual global. */
-export const APP_HEADER_HEIGHT_PX = 64;
+/** Altura fixa dos headers (sidebar + página) = 52px. Alinhamento visual global. */
+export const APP_HEADER_HEIGHT_PX = 52;
 
 /** Largura da sidebar (w-56 = 14rem). Usado para sidebar fixa e marginLeft do main. */
 export const SIDEBAR_WIDTH_PX = 224;

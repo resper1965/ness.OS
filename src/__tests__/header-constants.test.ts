@@ -6,8 +6,8 @@ import {
 } from '@/lib/header-constants';
 
 describe('header-constants', () => {
-  it('APP_HEADER_HEIGHT_PX é 64', () => {
-    expect(APP_HEADER_HEIGHT_PX).toBe(64);
+  it('APP_HEADER_HEIGHT_PX é 52', () => {
+    expect(APP_HEADER_HEIGHT_PX).toBe(52);
   });
 
   it('SIDEBAR_WIDTH_PX é 224 (w-56)', () => {

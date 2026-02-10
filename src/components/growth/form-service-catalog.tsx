@@ -29,17 +29,17 @@ type FormServiceCatalogProps = {
     id?: string;
     name: string;
     slug: string;
-    playbook_ids?: string[];
+    service_action_ids?: string[];
     delivery_type?: string | null;
     marketing_pitch: string | null;
     marketing_title?: string | null;
     marketing_body?: string | null;
     is_active: boolean;
   };
-  playbooks: { id: string; title: string }[];
+  serviceActions: { id: string; title: string }[];
 };
 
-export function FormServiceCatalog({ mode, action, service, playbooks }: FormServiceCatalogProps) {
+export function FormServiceCatalog({ mode, action, service, serviceActions }: FormServiceCatalogProps) {
   const [state, formAction] = useFormState(action, {});
 
   const [name, setName] = useState(service?.name ?? '');
@@ -58,9 +58,9 @@ export function FormServiceCatalog({ mode, action, service, playbooks }: FormSer
 
   const handleGenerateWithAI = useCallback(async () => {
     const nameInput = (document.querySelector('[name="name"]') as HTMLInputElement)?.value?.trim();
-    const checked = Array.from(document.querySelectorAll<HTMLInputElement>('input[name="playbook_ids"]:checked'));
-    const playbookTitles = checked
-      .map((cb) => playbooks.find((p) => p.id === cb.value)?.title)
+    const checked = Array.from(document.querySelectorAll<HTMLInputElement>('input[name="service_action_ids"]:checked'));
+    const saTitles = checked
+      .map((cb) => serviceActions.find((sa) => sa.id === cb.value)?.title)
       .filter((t): t is string => !!t);
 
     if (!nameInput) {
@@ -70,7 +70,7 @@ export function FormServiceCatalog({ mode, action, service, playbooks }: FormSer
 
     setAiLoading(true);
     setAiError(null);
-    const result = await generateServiceCatalogWithAI(nameInput, playbookTitles);
+    const result = await generateServiceCatalogWithAI(nameInput, saTitles);
     setAiLoading(false);
 
     if (result.success) {
@@ -81,7 +81,7 @@ export function FormServiceCatalog({ mode, action, service, playbooks }: FormSer
     } else {
       setAiError(result.error);
     }
-  }, [playbooks]);
+  }, [serviceActions]);
 
   if (state?.success && mode === 'edit') {
     return (
@@ -144,22 +144,22 @@ export function FormServiceCatalog({ mode, action, service, playbooks }: FormSer
 
       <div className="grid gap-6 md:grid-cols-2">
         <div>
-          <label className={LABEL_CLASS}>Playbooks</label>
+          <label className={LABEL_CLASS}>Service Actions (Jobs)</label>
           <div className="space-y-2 max-h-48 overflow-y-auto rounded-md border border-slate-600 bg-slate-800 p-3">
-            {playbooks.map((p) => (
-              <label key={p.id} className="flex cursor-pointer items-center gap-2 hover:text-white">
+            {serviceActions.map((sa) => (
+              <label key={sa.id} className="flex cursor-pointer items-center gap-2 hover:text-white">
                 <input
                   type="checkbox"
-                  name="playbook_ids"
-                  value={p.id}
-                  defaultChecked={service?.playbook_ids?.includes(p.id)}
+                  name="service_action_ids"
+                  value={sa.id}
+                  defaultChecked={service?.service_action_ids?.includes(sa.id)}
                   className="rounded border-slate-600 bg-slate-700 text-ness"
                 />
-                <span className="text-sm">{p.title}</span>
+                <span className="text-sm">{sa.title}</span>
               </label>
             ))}
           </div>
-          <p className={HELP_CLASS}>Selecione um ou mais playbooks. Serviço ativo exige pelo menos um. Trava Growth×OPS.</p>
+          <p className={HELP_CLASS}>Selecione uma ou mais Service Actions. Serviço ativo exige pelo menos uma.</p>
         </div>
         <div>
           <label className={LABEL_CLASS}>Título (site)</label>

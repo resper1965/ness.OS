@@ -5,7 +5,7 @@ import { UserRoleBadge } from '@/components/app/user-role-badge';
 import { APP_HEADER_HEIGHT_PX, SIDEBAR_WIDTH_PX } from '@/lib/header-constants';
 
 export { APP_HEADER_HEIGHT_PX };
-export const APP_HEADER_HEIGHT = 'h-[64px]';
+export const APP_HEADER_HEIGHT = 'h-[52px]';
 
 type AppPageHeaderProps = {
   title: React.ReactNode;
@@ -39,7 +39,7 @@ export function AppPageHeader({ title, subtitle, actions }: AppPageHeaderProps) 
       {/* Espaçador para não sobrepor o conteúdo ao header fixo */}
       <div
         className="shrink-0"
-        style={{ height: `${APP_HEADER_HEIGHT_PX}px`, marginBottom: 8 }}
+        style={{ height: `${APP_HEADER_HEIGHT_PX}px`, marginBottom: 4 }}
         aria-hidden
       />
     </>

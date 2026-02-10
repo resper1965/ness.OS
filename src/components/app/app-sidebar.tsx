@@ -219,7 +219,7 @@ export function AppSidebar({ user }: { user: AppUser }) {
   if (!open) {
     return (
       <aside
-        className="fixed left-0 top-0 bottom-0 z-20 flex flex-col items-center border-r border-slate-700 bg-slate-800/30 pt-4"
+        className="fixed left-0 top-0 bottom-0 z-20 flex flex-col items-center border-r border-slate-700 bg-slate-800/30 pt-2"
         style={{ width: SIDEBAR_COLLAPSED_PX }}
         aria-label="Menu recolhido"
       >

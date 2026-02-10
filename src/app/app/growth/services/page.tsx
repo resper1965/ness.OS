@@ -1,33 +1,34 @@
 import Link from 'next/link';
 import { getServerClient } from '@/lib/supabase/queries/base';
 import { ServiceForm } from '@/components/growth/service-form';
+import { AIProposalButton } from '@/components/growth/ai-proposal-button';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
 import { PageCard } from '@/components/shared/page-card';
 import { DataTable } from '@/components/shared/data-table';
 
-type ServicePlaybook = { playbooks?: { title?: string } };
+type ServiceActionRef = { service_actions?: { title?: string } };
 type ServiceRow = {
   id: string;
   name: string;
   slug: string;
   is_active: boolean;
-  services_playbooks: ServicePlaybook[] | null;
+  services_service_actions: ServiceActionRef[] | null;
 };
 
-function playbookTitles(row: ServiceRow): string {
-  const sp = row.services_playbooks;
-  if (!Array.isArray(sp) || sp.length === 0) return '-';
-  return sp.map((s) => s.playbooks?.title).filter(Boolean).join(', ');
+function serviceActionTitles(row: ServiceRow): string {
+  const ssa = row.services_service_actions;
+  if (!Array.isArray(ssa) || ssa.length === 0) return '-';
+  return ssa.map((s) => s.service_actions?.title).filter(Boolean).join(', ');
 }
 
 export default async function GrowthServicesPage() {
   const supabase = await getServerClient();
   const { data: services } = await supabase
     .from('services_catalog')
-    .select('id, name, slug, is_active, services_playbooks(playbooks(title))')
+    .select('id, name, slug, is_active, services_service_actions(service_actions(title))')
     .order('name');
-  const { data: playbooks } = await supabase.from('playbooks').select('id, title').order('title');
+  const { data: serviceActions } = await supabase.from('service_actions').select('id, title').order('title');
 
   const rows = (services ?? []) as ServiceRow[];
 
@@ -37,7 +38,7 @@ export default async function GrowthServicesPage() {
         title="Catálogo de Serviços"
         subtitle="Serviços vendáveis. Só podem ficar ativos se tiverem playbook vinculado (Trava Growth×OPS)."
       />
-      <div id="service-form"><ServiceForm playbooks={playbooks ?? []} /></div>
+      <div id="service-form"><ServiceForm serviceActions={serviceActions ?? []} /></div>
       <PageCard title="Catálogo de Serviços">
         <DataTable<ServiceRow>
           data={rows}
@@ -57,9 +58,9 @@ export default async function GrowthServicesPage() {
               render: (row) => <span className="text-slate-400">{row.slug}</span>,
             },
             {
-              key: 'playbook',
-              header: 'Playbook',
-              render: (row) => <span className="text-slate-400">{playbookTitles(row)}</span>,
+              key: 'service_action',
+              header: 'Service Action',
+              render: (row) => <span className="text-slate-400">{serviceActionTitles(row)}</span>,
             },
             {
               key: 'is_active',
@@ -68,9 +69,12 @@ export default async function GrowthServicesPage() {
             },
           ]}
           actions={(row) => (
-            <Link href={`/app/growth/services/${row.id}`} className="text-ness hover:underline">
-              Editar
-            </Link>
+            <div className="flex items-center gap-3">
+              <AIProposalButton serviceId={row.id} serviceName={row.name} />
+              <Link href={`/app/growth/services/${row.id}`} className="text-ness hover:underline text-sm font-medium">
+                Editar
+              </Link>
+            </div>
           )}
         />
       </PageCard>

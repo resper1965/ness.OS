@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   getContractsByClient,
   getPlaybooksForTimer,
+  getServiceActionsByContract,
   startTimer,
   stopTimer,
   updateTimeEntry,
@@ -28,9 +29,18 @@ type Entry = {
   duration_minutes: number | null;
   notes: string | null;
   contracts?: { clients?: { name: string } | null } | null;
+  service_actions?: { title: string } | null;
   playbooks?: { title: string } | null;
 };
 type SummaryRow = { contract_id: string; client_name: string | null; month: string; total_minutes: number; total_hours: number };
+
+// Helper para formatar segundos em HH:MM:SS
+function formatElapsed(seconds: number) {
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = seconds % 60;
+  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
 
 export function TimerUI({
   clients,
@@ -48,9 +58,12 @@ export function TimerUI({
   const router = useRouter();
   const [clientId, setClientId] = useState('');
   const [contractId, setContractId] = useState('');
+  const [serviceActionId, setServiceActionId] = useState('');
   const [playbookId, setPlaybookId] = useState('');
   const [contracts, setContracts] = useState<Contract[]>([]);
+  const [serviceActions, setServiceActions] = useState<{ id: string; title: string }[]>([]);
   const [loadingContracts, setLoadingContracts] = useState(false);
+  const [loadingActions, setLoadingActions] = useState(false);
   const [starting, setStarting] = useState(false);
   const [stopping, setStopping] = useState(false);
   const [elapsed, setElapsed] = useState(0);
@@ -101,6 +114,19 @@ export function TimerUI({
   }, [clientId]);
 
   useEffect(() => {
+    if (!contractId) {
+      setServiceActions([]);
+      setServiceActionId('');
+      return;
+    }
+    setLoadingActions(true);
+    setServiceActionId('');
+    getServiceActionsByContract(contractId)
+      .then(setServiceActions)
+      .finally(() => setLoadingActions(false));
+  }, [contractId]);
+
+  useEffect(() => {
     if (!activeTimer?.started_at) return;
     const started = new Date(activeTimer.started_at).getTime();
     const tick = () => setElapsed(Math.floor((Date.now() - started) / 1000));
@@ -110,10 +136,10 @@ export function TimerUI({
   }, [activeTimer?.id, activeTimer?.started_at]);
 
   const handleStart = useCallback(async () => {
-    if (!contractId) return;
+    if (!contractId || !serviceActionId) return;
     setStarting(true);
     try {
-      const res = await startTimer(contractId, playbookId || null);
+      const res = await startTimer(contractId, serviceActionId, playbookId || null);
       if (res.error) {
         alert(res.error);
         return;
@@ -122,7 +148,7 @@ export function TimerUI({
     } finally {
       setStarting(false);
     }
-  }, [contractId, playbookId, router]);
+  }, [contractId, serviceActionId, playbookId, router]);
 
   const handleStop = useCallback(async () => {
     if (!activeTimer?.id) return;
@@ -165,14 +191,8 @@ export function TimerUI({
     }
   }, [editingEntry, editEndedAt, editNotes, closeEditModal, router]);
 
-  const formatElapsed = (s: number) => {
-    const h = Math.floor(s / 3600);
-    const m = Math.floor((s % 3600) / 60);
-    const sec = s % 60;
-    return [h, m, sec].map((n) => String(n).padStart(2, '0')).join(':');
-  };
-
   const clientName = activeTimer?.contracts?.clients?.name ?? '-';
+  const serviceActionTitle = (activeTimer as any)?.service_actions?.title;
   const playbookTitle = activeTimer?.playbooks?.title;
 
   return (
@@ -182,7 +202,8 @@ export function TimerUI({
           <p className="mb-2 text-sm text-slate-400">Em andamento</p>
           <p className="font-medium text-slate-200">
             {clientName}
-            {playbookTitle ? ` · ${playbookTitle}` : ''}
+            {serviceActionTitle ? ` · ${serviceActionTitle}` : ''}
+            {playbookTitle ? ` (${playbookTitle})` : ''}
           </p>
           <p className="mt-2 text-3xl font-mono tabular-nums text-green-400">{formatElapsed(elapsed)}</p>
           <button
@@ -224,9 +245,23 @@ export function TimerUI({
               ))}
             </select>
             <select
+              value={serviceActionId}
+              onChange={(e) => setServiceActionId(e.target.value)}
+              disabled={!contractId || loadingActions}
+              className="rounded-md border border-slate-600 bg-slate-800 px-3 py-2 text-slate-200 disabled:opacity-50"
+            >
+              <option value="">Job / Service Action</option>
+              {serviceActions.map((sa) => (
+                <option key={sa.id} value={sa.id}>
+                  {sa.title}
+                </option>
+              ))}
+            </select>
+            <select
               value={playbookId}
               onChange={(e) => setPlaybookId(e.target.value)}
-              className="rounded-md border border-slate-600 bg-slate-800 px-3 py-2 text-slate-200"
+              disabled={!serviceActionId}
+              className="rounded-md border border-slate-600 bg-slate-800 px-3 py-2 text-slate-200 disabled:opacity-50"
             >
               <option value="">Playbook (opcional)</option>
               {playbooks.map((p) => (
@@ -238,7 +273,7 @@ export function TimerUI({
             <button
               type="button"
               onClick={handleStart}
-              disabled={!contractId || starting}
+              disabled={!serviceActionId || starting}
               className="rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-500 disabled:opacity-50"
             >
               {starting ? 'Iniciando...' : 'Iniciar'}
@@ -292,7 +327,8 @@ export function TimerUI({
                 <tr key={e.id}>
                   <td className="px-4 py-3">
                     {e.contracts?.clients?.name ?? '-'}
-                    {e.playbooks?.title ? ` · ${e.playbooks.title}` : ''}
+                    {e.service_actions?.title ? ` · ${e.service_actions.title}` : ''}
+                    {e.playbooks?.title ? ` (${e.playbooks.title})` : ''}
                   </td>
                   <td className="px-4 py-3">{new Date(e.started_at).toLocaleTimeString('pt-BR')}</td>
                   <td className="px-4 py-3">{e.ended_at ? new Date(e.ended_at).toLocaleTimeString('pt-BR') : '-'}</td>

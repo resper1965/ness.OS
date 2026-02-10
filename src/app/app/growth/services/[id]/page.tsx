@@ -13,15 +13,15 @@ export default async function EditServicePage({ params }: Props) {
   const supabase = await createClient();
   const { data: service, error } = await supabase
     .from("services_catalog")
-    .select("*, services_playbooks(playbook_id)")
+    .select("*, services_service_actions(service_action_id)")
     .eq("id", id)
     .single();
-  const { data: playbooks } = await supabase.from("playbooks").select("id, title");
+  const { data: serviceActions } = await supabase.from("service_actions").select("id, title");
 
   if (error || !service) notFound();
 
-  const playbookIds = Array.isArray(service?.services_playbooks)
-    ? (service.services_playbooks as { playbook_id: string }[]).map((sp) => sp.playbook_id)
+  const serviceActionIds = Array.isArray(service?.services_service_actions)
+    ? (service.services_service_actions as { service_action_id: string }[]).map((ssa) => ssa.service_action_id)
     : [];
 
   return (
@@ -34,7 +34,7 @@ export default async function EditServicePage({ params }: Props) {
           </Link>
         }
       />
-      <ServiceEditForm action={updateServiceFromForm} service={{ ...service, id: service.id, playbook_ids: playbookIds }} playbooks={playbooks ?? []} />
+      <ServiceEditForm action={updateServiceFromForm} service={{ ...service, id: service.id, service_action_ids: serviceActionIds }} serviceActions={serviceActions ?? []} />
     </PageContent>
   );
 }

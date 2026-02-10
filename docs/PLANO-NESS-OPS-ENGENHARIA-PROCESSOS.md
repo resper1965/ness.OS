@@ -6,15 +6,15 @@
 
 ### Funcionalidades Críticas
 
-| # | Funcionalidade | Regra |
-|---|----------------|-------|
-| **1** | Playbooks | CRUD de manuais técnicos. Todo serviço vendido DEVE ter um Playbook vinculado (Trava Growth×OPS). |
+| #     | Funcionalidade    | Regra                                                                                                                                                     |
+| ----- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **1** | Playbooks         | CRUD de manuais técnicos. Todo serviço vendido DEVE ter um Playbook vinculado (Trava Growth×OPS).                                                         |
 | **2** | Input de Métricas | Sem integração nativa com ferramentas de mercado ainda. Formulários mensais para líderes imputarem: Horas Gastas, Custo Cloud, SLA Atingido por contrato. |
 
 ### Uso de IA
 
-| Recurso | Descrição |
-|---------|-----------|
+| Recurso                   | Descrição                                                                                                                                                  |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Agente de Busca (RAG)** | Chatbot interno onde técnicos perguntam (ex.: "Como configuro o backup X?") e a IA responde baseada **APENAS** nos Playbooks cadastrados — sem alucinação. |
 
 ---
@@ -25,70 +25,71 @@
 
 ### Pilares (por sigla)
 
-| Sigla | Nome completo | Descrição curta |
-|-------|---------------|-----------------|
-| **EP** | Engenharia de Processos (The Playbook) | Mapeamento e padronização dos rituais técnicos |
-| **HI** | Hub de Indicadores | Métricas agnósticas via API → dashboards unificados |
-| **MR** | Mapeamento de Recursos | Consumo granular por contrato (horas, licenças, cloud) |
+| Sigla  | Nome completo                     | Descrição curta                                                                |
+| ------ | --------------------------------- | ------------------------------------------------------------------------------ |
+| **EP** | Engenharia de Processos (The SOP) | Mapeamento e padronização dos rituais técnicos (Standard Operating Procedures) |
+| **HI** | Hub de Indicadores                | Métricas agnóstico via API → dashboards unificados                             |
+| **MR** | Mapeamento de Recursos            | Consumo granular por Service Action (horas, licenças, cloud)                   |
 
 ### Tabelas e entidades
 
-| Código | Tabela/entidade | Uso |
-|--------|-----------------|-----|
-| `playbooks` | Manuais de Procedimentos | EP — já existe, evoluir estrutura |
-| `indicator_sources` | Fontes de métricas (Infra, Sec, Data) | HI |
-| `indicator_metrics` | Métricas ingeridas via API | HI |
-| `contract_resources` | Consumo granular por contrato | MR |
-| `resource_types` | Tipos (horas_humanas, licenca, cloud) | MR |
+| Código               | Tabela/entidade                       | Uso                               |
+| -------------------- | ------------------------------------- | --------------------------------- |
+| `playbooks`          | Manuais de Procedimentos              | EP — já existe, evoluir estrutura |
+| `indicator_sources`  | Fontes de métricas (Infra, Sec, Data) | HI                                |
+| `indicator_metrics`  | Métricas ingeridas via API            | HI                                |
+| `contract_resources` | Consumo granular por contrato         | MR                                |
+| `resource_types`     | Tipos (horas_humanas, licenca, cloud) | MR                                |
 
 ### Rotas e APIs
 
-| Rota | Sigla | Função |
-|------|-------|--------|
-| `POST /api/data/indicators/ingest` (ness.DATA) | HI | Ingestão de métricas de ferramentas externas; OPS consome dados via DATA |
-| `GET /api/ops/indicators/dashboard` | HI | Dashboards unificados (dados vindos de DATA) |
+| Rota                                           | Sigla | Função                                                                   |
+| ---------------------------------------------- | ----- | ------------------------------------------------------------------------ |
+| `POST /api/data/indicators/ingest` (ness.DATA) | HI    | Ingestão de métricas de ferramentas externas; OPS consome dados via DATA |
+| `GET /api/ops/indicators/dashboard`            | HI    | Dashboards unificados (dados vindos de DATA)                             |
 
 ### Fases de implementação
 
-| Fase | Sigla | Pilares |
-|------|-------|---------|
-| F1 | OPE | Engenharia de Processos (evoluir Playbooks) |
-| F2 | OPI | Hub de Indicadores (API + dashboards) |
-| F3 | OPR | Mapeamento de Recursos (consumo granular) |
+| Fase | Sigla | Pilares                                     |
+| ---- | ----- | ------------------------------------------- |
+| F1   | OPE   | Engenharia de Processos (evoluir Playbooks) |
+| F2   | OPI   | Hub de Indicadores (API + dashboards)       |
+| F3   | OPR   | Mapeamento de Recursos (consumo granular)   |
 
 **Prefixo de commits:** `ops-ep:` (ex.: `ops-ep: add indicator_metrics migration`)
 
 ### Requisitos Core (pré-requisitos)
 
-| ID | Requisito |
-|----|-----------|
+| ID         | Requisito                                           |
+| ---------- | --------------------------------------------------- |
 | RF.CORE.01 | Auth Guard: /app exige sessão; redirect para /login |
-| RF.CORE.02 | Dashboard personalizado por Role |
+| RF.CORE.02 | Dashboard personalizado por Role                    |
 
 Ver [RF-CORE-REQUISITOS.md](RF-CORE-REQUISITOS.md)
 
 ### Requisitos OPS (ness.OPS — Verdade Técnica)
 
-| ID | Requisito | Detalhes |
-|----|-----------|----------|
-| **RF.OPS.01** | Gestão de Playbooks | CRUD de Manuais Técnicos (Editor Markdown). Metadados: Título, Tags, Data de Revisão, Autor. Integração: playbook_id exigido para criar serviço vendável (Trava Growth×OPS). |
-| **RF.OPS.02** | Input de Métricas (Mensal) | Interface para Líderes imputarem dados consolidados por Cliente/Contrato. Campos: Mês/Ano, Horas Humanas Gastas, Custo Cloud (R$), SLA Atingido (Boolean). |
-| **RF.OPS.03** | Agente de Busca (RAG) | Chatbot interno onde técnicos consultam manuais. IA responde **apenas** com base nos Playbooks cadastrados — sem alucinação. |
+| ID            | Requisito                  | Detalhes                                                                                                                                                                     |
+| ------------- | -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **RF.OPS.01** | Gestão de Playbooks        | CRUD de Manuais Técnicos (Editor Markdown). Metadados: Título, Tags, Data de Revisão, Autor. Integração: playbook_id exigido para criar serviço vendável (Trava Growth×OPS). |
+| **RF.OPS.02** | Input de Métricas (Mensal) | Interface para Líderes imputarem dados consolidados por Cliente/Contrato. Campos: Mês/Ano, Horas Humanas Gastas, Custo Cloud (R$), SLA Atingido (Boolean).                   |
+| **RF.OPS.03** | Agente de Busca (RAG)      | Chatbot interno onde técnicos consultam manuais. IA responde **apenas** com base nos Playbooks cadastrados — sem alucinação.                                                 |
 
 ---
 
 ## RF.OPS.01 — Gestão de Playbooks (detalhamento)
 
-| Item | Especificação |
-|------|---------------|
-| **CRUD** | Criar, ler, atualizar e excluir Manuais Técnicos |
-| **Editor** | Markdown (textarea ou editor rich TipTap/MDXEditor) |
-| **Metadados** | Título, Tags (array ou texto), Data de Revisão, Autor (created_by) |
+| Item           | Especificação                                                                                               |
+| -------------- | ----------------------------------------------------------------------------------------------------------- |
+| **CRUD**       | Criar, ler, atualizar e excluir Manuais Técnicos                                                            |
+| **Editor**     | Markdown (textarea ou editor rich TipTap/MDXEditor)                                                         |
+| **Metadados**  | Título, Tags (array ou texto), Data de Revisão, Autor (created_by)                                          |
 | **Integração** | `playbook_id` obrigatório em `services_catalog` para serviço ativo — Trava já implementada na migration 008 |
 
 **Gap atual:** `playbooks` tem title, slug, content_markdown, created_by. Faltam: **tags**, **review_date** (data de revisão). CRUD e Trava já existem.
 
 **Entregas RF.OPS.01:**
+
 - Migration: `playbooks` + colunas `tags` (text[] ou jsonb) e `last_reviewed_at` (ou `review_date`)
 - UI: formulário de playbook com campos Tags e Data de Revisão
 - Validação: manter Trava (serviço ativo exige playbook_id)
@@ -97,17 +98,18 @@ Ver [RF-CORE-REQUISITOS.md](RF-CORE-REQUISITOS.md)
 
 ## RF.OPS.02 — Input de Métricas (Mensal) (detalhamento)
 
-| Item | Especificação |
-|------|---------------|
-| **Público** | Líderes (role ops_lead, admin ou similar) |
-| **Granularidade** | Por Cliente/Contrato |
-| **Campos** | Mês/Ano, Horas Humanas Gastas, Custo Cloud (R$), SLA Atingido (Boolean) |
+| Item              | Especificação                                                           |
+| ----------------- | ----------------------------------------------------------------------- |
+| **Público**       | Líderes (role ops_lead, admin ou similar)                               |
+| **Granularidade** | Por Cliente/Contrato                                                    |
+| **Campos**        | Mês/Ano, Horas Humanas Gastas, Custo Cloud (R$), SLA Atingido (Boolean) |
 
 **Tabela:** `performance_metrics` — já existe com contract_id, month, hours_worked, cost_input, sla_achieved.
 
 **Estado atual:** Interface em `/app/ops/metricas` com MetricasForm. Campos mapeados: Contrato → contract_id, Mês → month, Horas trabalhadas → hours_worked, Custo (R$) → cost_input, SLA atingido → sla_achieved.
 
 **Entregas RF.OPS.02:**
+
 - Garantir RLS: apenas Líderes (ops_lead, admin, superadmin) podem inserir/editar métricas
 - UI: manter ou evoluir formulário em `/app/ops/metricas` com labels explícitos (Horas Humanas Gastas, Custo Cloud)
 - Validação: um registro por (contrato, mês); exibir histórico recente
@@ -117,10 +119,10 @@ Ver [RF-CORE-REQUISITOS.md](RF-CORE-REQUISITOS.md)
 
 ## RF.OPS.03 — Agente de Busca (RAG) (detalhamento)
 
-| Item | Especificação |
-|------|---------------|
-| **Uso** | Chatbot interno para técnicos |
-| **Fonte** | Respostas **apenas** com base nos Playbooks cadastrados — sem alucinação |
+| Item        | Especificação                                                            |
+| ----------- | ------------------------------------------------------------------------ |
+| **Uso**     | Chatbot interno para técnicos                                            |
+| **Fonte**   | Respostas **apenas** com base nos Playbooks cadastrados — sem alucinação |
 | **Exemplo** | "Como configuro o backup X?" → IA retorna trechos relevantes dos manuais |
 
 **Estado atual:** Knowledge Bot em `/app/ops/playbooks/chat`; API `/api/chat/playbooks`; RAG com `match_document_embeddings` e `document_embeddings` (playbooks). Implementado.
@@ -131,21 +133,21 @@ Ver [RF-CORE-REQUISITOS.md](RF-CORE-REQUISITOS.md)
 
 ## Resumo: O que existe hoje → O que virá
 
-| Pilares propostos | Hoje no ar | Transformação |
-|-------------------|------------|---------------|
-| **EP — Engenharia de Processos** | Playbooks com Markdown (manual) | Estrutura de Manuais de Procedimentos; rituais técnicos padronizados; qualidade independente do técnico |
-| **HI — Hub de Indicadores** | Métricas manuais (form por contrato/mês) | API agnóstica; ingestão de Infra, Sec, Data; dashboards unificados |
-| **MR — Mapeamento de Recursos** | `performance_metrics` (horas + custo genérico) | Consumo granular: horas humanas, licenças, cloud por contrato; alimenta custo real ao FIN |
+| Pilares propostos                | Hoje no ar                                     | Transformação                                                                                           |
+| -------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| **EP — Engenharia de Processos** | Playbooks com Markdown (manual)                | Estrutura de Manuais de Procedimentos; rituais técnicos padronizados; qualidade independente do técnico |
+| **HI — Hub de Indicadores**      | Métricas manuais (form por contrato/mês)       | API agnóstica; ingestão de Infra, Sec, Data; dashboards unificados                                      |
+| **MR — Mapeamento de Recursos**  | `performance_metrics` (horas + custo genérico) | Consumo granular: horas humanas, licenças, cloud por contrato; alimenta custo real ao FIN               |
 
 ---
 
 ## Visão proposta
 
-| Pilar | Descrição |
-|-------|-----------|
+| Pilar                            | Descrição                                                                                                                                                               |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **EP — Engenharia de Processos** | Mapeamento e padronização dos rituais técnicos. O sistema descreve o "como fazer" em Manuais de Procedimentos, garantindo que a qualidade independa do técnico alocado. |
-| **HI — Hub de Indicadores** | Centralizador agnóstico que recebe métricas de qualquer ferramenta técnica (Infra, Sec, Data) via API para gerar dashboards de performance unificados. |
-| **MR — Mapeamento de Recursos** | Medição granular do consumo por contrato (horas humanas, licenças, cloud) para alimentar o módulo financeiro com o custo real. |
+| **HI — Hub de Indicadores**      | Centralizador agnóstico que recebe métricas de qualquer ferramenta técnica (Infra, Sec, Data) via API para gerar dashboards de performance unificados.                  |
+| **MR — Mapeamento de Recursos**  | Medição granular do consumo por contrato (horas humanas, licenças, cloud) para alimentar o módulo financeiro com o custo real.                                          |
 
 ---
 
@@ -153,13 +155,14 @@ Ver [RF-CORE-REQUISITOS.md](RF-CORE-REQUISITOS.md)
 
 ### 1. Engenharia de Processos (The Playbook) — RF.OPS.01
 
-| Atual | Alvo | Transformação |
-|-------|------|---------------|
-| Playbooks: título, slug, Markdown livre | Manuais de Procedimentos estruturados | **Evoluir** estrutura: seções padrão (Pré-requisitos, Rituais, Critérios de Aceite, Auditoria). Template de "ritual técnico" reutilizável. |
-| Qualidade depende de quem escreve | Qualidade independente do técnico | **Definir** checklist de padronização por tipo de procedimento. Versionamento e aprovação de playbooks. |
-| Sem vínculo com rituais/auditoria | Mapeamento de rituais técnicos | **Criar** entidade `rituals` ou tags em playbooks (ex.: deploy, backup, incidente). Relacionar com auditoria. |
+| Atual                                   | Alvo                                         | Transformação                                                                                                                  |
+| --------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| Playbooks: título, slug, Markdown livre | Manuais de Procedimentos estruturados (SOPs) | **Evoluir** estrutura: seções padrão (Tasks, Procedimentos, Critérios de Aceite). Vínculo obrigatório com **Service Actions**. |
+| Qualidade depende de quem escreve       | Qualidade independente do técnico            | **Definir** checklist de padronização por tipo de procedimento. Versionamento e aprovação de SOPs.                             |
+| Sem vínculo com rituais/auditoria       | Mapeamento de rituais técnicos               | **Criar** entidade `service_actions` (Jobs) que orquestram os Playbooks.                                                       |
 
 **Entregas:**
+
 - **RF.OPS.01:** Migration `playbooks` + `tags`, `last_reviewed_at`; UI com Editor Markdown e metadados
 - Migration: evoluir `playbooks` com `structure_type` (manual | ritual | checklist)
 - Template de Manual de Procedimentos (seções obrigatórias)
@@ -169,33 +172,36 @@ Ver [RF-CORE-REQUISITOS.md](RF-CORE-REQUISITOS.md)
 
 ### 2. Input de Métricas (Mensal) — RF.OPS.02
 
-| Atual | Alvo | Transformação |
-|-------|------|---------------|
+| Atual                                            | Alvo                                      | Transformação                                                                           |
+| ------------------------------------------------ | ----------------------------------------- | --------------------------------------------------------------------------------------- |
 | Form em `/app/ops/metricas` (todos autenticados) | Interface para Líderes, labels explícitos | **Garantir** RLS por role; labels: Horas Humanas Gastas, Custo Cloud (R$), SLA Atingido |
 
 **Entregas:**
+
 - **RF.OPS.02:** RLS para performance_metrics (ops_lead, admin, superadmin); labels explícitos na UI
 
 ### 3. Agente de Busca (RAG) — RF.OPS.03
 
-| Atual | Alvo | Transformação |
-|-------|------|---------------|
+| Atual                                                         | Alvo                            | Transformação                                                                           |
+| ------------------------------------------------------------- | ------------------------------- | --------------------------------------------------------------------------------------- |
 | Knowledge Bot em /app/ops/playbooks/chat; RAG sobre playbooks | Idem; garantir "sem alucinação" | Validar prompt; documentar; reforçar instrução "responda apenas com base nos playbooks" |
 
 **Entregas:**
+
 - **RF.OPS.03:** Revisar system prompt; documentar Agente de Busca; link no sidebar como "Knowledge Bot" ou "Agente de Busca"
 
 **Especificação técnica:** Ver [ESPECIFICACAO-AGENTES-IA-EMBEDDINGS.md](ESPECIFICACAO-AGENTES-IA-EMBEDDINGS.md) — Internal Knowledge Bot, pgvector, document_embeddings.
 
 ### 4. Hub de Indicadores
 
-| Atual | Alvo | Transformação |
-|-------|------|---------------|
+| Atual                                                                    | Alvo                                    | Transformação                                                                                                                                                                                                                                                 |
+| ------------------------------------------------------------------------ | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `performance_metrics`: form manual, contrato + mês + horas + custo + SLA | Métricas de qualquer ferramenta via API | **ness.DATA** expõe API de ingestão (ex.: `POST /api/data/indicators/ingest` ou Server Action); OPS consome dados já persistidos para dashboards. Payload: `{ source, contract_id?, metric_type, value, metadata }`. Source = Infra \| Sec \| Data \| Custom. |
-| Sem dashboards unificados | Dashboards de performance unificados | **Construir** página de dashboards que agrega métricas por contrato, fonte, período. Gráficos (SLA, uptime, incidentes, etc.). |
-| Dados só via form | Dados de ferramentas externas | **ness.DATA** define contrato da API: auth por API key, schema flexível (JSON). OPS não chama ferramentas externas diretamente. |
+| Sem dashboards unificados                                                | Dashboards de performance unificados    | **Construir** página de dashboards que agrega métricas por contrato, fonte, período. Gráficos (SLA, uptime, incidentes, etc.).                                                                                                                                |
+| Dados só via form                                                        | Dados de ferramentas externas           | **ness.DATA** define contrato da API: auth por API key, schema flexível (JSON). OPS não chama ferramentas externas diretamente.                                                                                                                               |
 
 **Entregas:**
+
 - **ness.DATA:** API/action de ingestão de indicadores; tabela de indicadores (ou integração com performance_metrics conforme schema). Ver `.context/plans/ness-data-modulo-dados.md`.
 - **ness.OPS:** Migration se necessário; página `/app/ops/indicators` com dashboards (charts); consumo dos dados via DATA.
 - Doc da API para integradores (Infra, Sec, Data)
@@ -204,13 +210,14 @@ Ver [RF-CORE-REQUISITOS.md](RF-CORE-REQUISITOS.md)
 
 ### 5. Mapeamento de Recursos
 
-| Atual | Alvo | Transformação |
-|-------|------|---------------|
-| `performance_metrics`: horas_worked, cost_input (valor único) | Consumo granular: horas, licenças, cloud | **Construir** `contract_resources`: contract_id, resource_type (horas_humanas | licenca_X | cloud_Y), quantity, unit_cost, period. |
-| Custo agregado por mês | Custo real por tipo de recurso | **Evoluir** view `contract_rentability` para somar `contract_resources` por tipo. Separar custo de horas, licenças, cloud. |
-| Sem visibilidade de consumo por contrato | Medição granular por contrato | **Criar** página `/app/ops/recursos` listando consumo por contrato e por tipo. Export para FIN. |
+| Atual                                                         | Alvo                                     | Transformação                                                                                                              |
+| ------------------------------------------------------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | --------- | -------------------------------------- |
+| `performance_metrics`: horas_worked, cost_input (valor único) | Consumo granular: horas, licenças, cloud | **Construir** `contract_resources`: contract_id, resource_type (horas_humanas                                              | licenca_X | cloud_Y), quantity, unit_cost, period. |
+| Custo agregado por mês                                        | Custo real por tipo de recurso           | **Evoluir** view `contract_rentability` para somar `contract_resources` por tipo. Separar custo de horas, licenças, cloud. |
+| Sem visibilidade de consumo por contrato                      | Medição granular por contrato            | **Criar** página `/app/ops/recursos` listando consumo por contrato e por tipo. Export para FIN.                            |
 
 **Entregas:**
+
 - Migration: `resource_types` (id, name, unit), `contract_resources` (contract_id, resource_type_id, quantity, unit_cost, period)
 - Evoluir `performance_metrics` ou migrar para `contract_resources` (estratégia de migração)
 - Página de Mapeamento de Recursos
@@ -220,11 +227,11 @@ Ver [RF-CORE-REQUISITOS.md](RF-CORE-REQUISITOS.md)
 
 ## Ordem sugerida de implementação
 
-| Fase | Pilares | Motivo |
-|------|---------|--------|
-| F1 | EP — Engenharia de Processos | Base: Playbooks já existem; evoluir estrutura antes de integrar mais |
-| F2 | MR — Mapeamento de Recursos | Dados de consumo são pré-requisito para indicadores e FIN |
-| F3 | HI — Hub de Indicadores | API e dashboards dependem de modelo de métricas consolidado |
+| Fase | Pilares                      | Motivo                                                               |
+| ---- | ---------------------------- | -------------------------------------------------------------------- |
+| F1   | EP — Engenharia de Processos | Base: Playbooks já existem; evoluir estrutura antes de integrar mais |
+| F2   | MR — Mapeamento de Recursos  | Dados de consumo são pré-requisito para indicadores e FIN            |
+| F3   | HI — Hub de Indicadores      | API e dashboards dependem de modelo de métricas consolidado          |
 
 ---
 

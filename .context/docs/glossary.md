@@ -35,7 +35,9 @@ scaffoldVersion: "2.0.0"
 
 | Termo | Definição |
 |-------|-----------|
-| **Playbook** | Manual de procedimentos padronizados; travado ao catálogo de serviços (services_catalog.playbook_id). |
+| **Task** | Menor unidade de composição. Tarefa atômica dentro de um playbook. Deve ter ao menos uma **métrica de consumo**: temporal (estimated_duration_minutes) ou valor (estimated_value em R$). |
+| **Playbook** | Conjunto ordenado de tasks; manual de procedimentos. Vinculado a serviços via services_playbooks (N:N). Deve ter ao menos uma métrica de consumo (temporal ou valor). |
+| **Métrica de consumo** | Temporal (tempo estimado em minutos) ou valor (R$). Obrigatória em Task e Playbook para planejamento e precificação (OPS/FIN). |
 | **Base de Conhecimento de Sucesso** | Contratos e escopos históricos validados; usados para gerar propostas via IA. |
 | **RAG** | Retrieval-Augmented Generation — chatbot que consulta documentação real (playbooks, portfólio) sem alucinações. |
 | **Trava de Catálogo** | Serviço ativo exige playbook associado; GROWTH vende apenas o que OPS documentou. |

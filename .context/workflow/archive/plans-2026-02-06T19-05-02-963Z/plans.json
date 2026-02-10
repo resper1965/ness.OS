@@ -1,0 +1,22 @@
+{
+  "active": [
+    {
+      "slug": "refatoracao-ux-ui-todas-paginas",
+      "path": "plans/refatoracao-ux-ui-todas-paginas.md",
+      "title": "Refatoração UX/UI — Todas as Páginas por Tema",
+      "summary": "Plano detalhado passando por **todas as páginas existentes** do ness.OS: refatoração inspirada nas melhores referências do repositório (clone, ajuste-ux-ui, design-tokens), com **ligação temática** (financeiro, usuário, comercial, operação, jurídico, governança) e foco em **melhorar em muito o UX/UI** da aplicação.",
+      "linkedAt": "2026-02-05T08:19:26.882Z",
+      "status": "active"
+    },
+    {
+      "slug": "relatorios-modulo-fin",
+      "path": "plans/relatorios-modulo-fin.md",
+      "title": "Relatórios do módulo ness.FIN",
+      "summary": "Implementar geração de relatórios do módulo FIN a partir dos dados já disponíveis (contracts, clients, Omie, contract_rentability, alertas), com páginas dedicadas e opção de exportação.",
+      "linkedAt": "2026-02-05T17:24:24.916Z",
+      "status": "active"
+    }
+  ],
+  "completed": [],
+  "primary": "refatoracao-ux-ui-todas-paginas"
+}

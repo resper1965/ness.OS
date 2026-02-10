@@ -43,6 +43,21 @@ export async function getContractsByClient(clientId: string): Promise<{ id: stri
   });
 }
 
+/** Service Actions vinculadas a um contrato (via contracts_service_actions). */
+export async function getServiceActionsByContract(contractId: string): Promise<{ id: string; title: string }[]> {
+  const supabase = await getServerClient();
+  const { data } = await supabase
+    .from('contracts_service_actions')
+    .select('service_action_id, service_actions(title)')
+    .eq('contract_id', contractId);
+  
+  if (!data) return [];
+  return data.map((d: any) => ({
+    id: d.service_action_id,
+    title: d.service_actions?.title || 'Job sem título',
+  }));
+}
+
 /** Playbooks para dropdown (id, title). */
 export async function getPlaybooksForTimer(): Promise<{ id: string; title: string }[]> {
   const supabase = await getServerClient();
@@ -51,19 +66,29 @@ export async function getPlaybooksForTimer(): Promise<{ id: string; title: strin
 }
 
 /** Inicia o timer: cria time_entry com ended_at null. Retorna id e started_at. */
-export async function startTimer(contractId: string, playbookId?: string | null): Promise<{ id?: string; started_at?: string; error?: string }> {
+export async function startTimer(
+  contractId: string, 
+  serviceActionId: string, 
+  playbookId?: string | null
+): Promise<{ id?: string; started_at?: string; error?: string }> {
   const supabase = await getServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: 'Não autenticado.' };
+
+  // Buscar custo por hora do perfil (fallback 150)
+  const { data: profile } = await supabase.from('profiles').select('hourly_rate').eq('id', user.id).single();
+  const hourly_rate = (profile as any)?.hourly_rate ?? 150;
 
   const { data, error } = await supabase
     .from('time_entries')
     .insert({
       user_id: user.id,
       contract_id: contractId,
+      service_action_id: serviceActionId,
       playbook_id: playbookId || null,
       started_at: new Date().toISOString(),
       ended_at: null,
+      hourly_rate,
     })
     .select('id, started_at')
     .single();
@@ -120,9 +145,11 @@ export async function stopTimer(entryId: string): Promise<{ success?: boolean; d
 export async function getActiveTimer(): Promise<{
   id: string;
   contract_id: string;
+  service_action_id?: string | null;
   playbook_id: string | null;
   started_at: string;
   contracts?: { clients?: { name: string } | null } | null;
+  service_actions?: { title: string } | null;
   playbooks?: { title: string } | null;
 } | null> {
   const supabase = await getServerClient();
@@ -134,9 +161,11 @@ export async function getActiveTimer(): Promise<{
     .select(`
       id,
       contract_id,
+      service_action_id,
       playbook_id,
       started_at,
       contracts ( clients ( name ) ),
+      service_actions ( title ),
       playbooks ( title )
     `)
     .eq('user_id', user.id)
@@ -145,19 +174,11 @@ export async function getActiveTimer(): Promise<{
     .limit(1)
     .maybeSingle();
 
-  return data as typeof data & { contracts?: { clients?: { name: string } | null } | null; playbooks?: { title: string } | null } | null;
+  return data as any;
 }
 
 /** Entradas de tempo do usuário hoje (para listagem na tela do timer). */
-export async function getTimeEntriesToday(): Promise<{
-  id: string;
-  started_at: string;
-  ended_at: string | null;
-  duration_minutes: number | null;
-  notes: string | null;
-  contracts?: { clients?: { name: string } | null } | null;
-  playbooks?: { title: string } | null;
-}[]> {
+export async function getTimeEntriesToday(): Promise<any[]> {
   const supabase = await getServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return [];
@@ -171,21 +192,14 @@ export async function getTimeEntriesToday(): Promise<{
       duration_minutes,
       notes,
       contracts ( clients ( name ) ),
+      service_actions ( title ),
       playbooks ( title )
     `)
     .eq('user_id', user.id)
     .gte('started_at', `${today}T00:00:00.000Z`)
     .order('started_at', { ascending: false });
 
-  return (data ?? []) as unknown as {
-    id: string;
-    started_at: string;
-    ended_at: string | null;
-    duration_minutes: number | null;
-    notes: string | null;
-    contracts?: { clients?: { name: string } | null } | null;
-    playbooks?: { title: string } | null;
-  }[];
+  return data ?? [];
 }
 
 /** Resumo do mês: horas do timer por contrato (view agregada). RLS: usuário vê só seus totais. */

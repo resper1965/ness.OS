@@ -1,8 +1,9 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { updatePlaybookFromForm } from '@/app/actions/ops';
+import { updatePlaybookFromForm, getTasksByPlaybook } from '@/app/actions/ops';
 import { PlaybookEditorForm } from '@/components/ops/playbook-editor-form';
+import { PlaybookTasksSection } from '@/components/ops/playbook-tasks-section';
 import { AppPageHeader } from '@/components/shared/app-page-header';
 import { PageContent } from '@/components/shared/page-content';
 
@@ -19,6 +20,8 @@ export default async function EditarPlaybookPage({ params }: Props) {
 
   if (error || !playbook) notFound();
 
+  const tasks = await getTasksByPlaybook(id);
+
   return (
     <PageContent>
       <AppPageHeader
@@ -29,7 +32,18 @@ export default async function EditarPlaybookPage({ params }: Props) {
           </Link>
         }
       />
-      <PlaybookEditorForm action={updatePlaybookFromForm} initialValues={{ ...playbook, id: playbook.id }} />
+      <PlaybookEditorForm
+        action={updatePlaybookFromForm}
+        initialValues={{
+          ...playbook,
+          id: playbook.id,
+          estimated_duration_minutes: playbook.estimated_duration_minutes ?? undefined,
+          estimated_value: playbook.estimated_value ?? undefined,
+        }}
+      />
+      <div className="mt-8">
+        <PlaybookTasksSection playbookId={id} tasks={tasks} />
+      </div>
     </PageContent>
   );
 }

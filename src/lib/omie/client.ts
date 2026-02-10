@@ -156,3 +156,52 @@ export async function listarContasReceber(params: {
     param: [param],
   });
 }
+
+/**
+ * ListarServicos — lista cadastros de serviços.
+ * @see https://app.omie.com.br/api/v1/servicos/servico/
+ */
+export type OmieServico = {
+  int_serv_codigo?: number;
+  codigo?: string;
+  descricao?: string;
+  valor_unitario?: number;
+  [key: string]: unknown;
+};
+
+export type ListarServicosResponse = {
+  pagina?: number;
+  total_de_paginas?: number;
+  servicos_cadastro?: OmieServico[];
+};
+
+export async function listarServicos(params: {
+  pagina?: number;
+  registros_por_pagina?: number;
+}): Promise<ListarServicosResponse> {
+  const { pagina = 1, registros_por_pagina = 50 } = params;
+  return omiePost<{ call: string; param: unknown[] }, ListarServicosResponse>('servicos/servico/', {
+    call: 'ListarServicos',
+    param: [{ pagina, registros_por_pagina }],
+  });
+}
+
+/**
+ * ListarOrdensServico — lista ordens de serviço.
+ * @see https://app.omie.com.br/api/v1/servicos/os/
+ */
+export async function listarOrdensServico(params: {
+  pagina?: number;
+  registros_por_pagina?: number;
+  filtrar_por_data_de?: string;
+  filtrar_por_data_ate?: string;
+}): Promise<unknown> {
+  const { pagina = 1, registros_por_pagina = 50, filtrar_por_data_de, filtrar_por_data_ate } = params;
+  const param: Record<string, unknown> = { pagina, registros_por_pagina };
+  if (filtrar_por_data_de) param.data_de = filtrar_por_data_de;
+  if (filtrar_por_data_ate) param.data_ate = filtrar_por_data_ate;
+  return omiePost('servicos/os/', {
+    call: 'ListarOS',
+    param: [param],
+  });
+}

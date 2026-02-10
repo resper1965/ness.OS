@@ -2,6 +2,8 @@
 
 import { getServerClient } from '@/lib/supabase/queries/base';
 import { revalidatePath } from 'next/cache';
+import { emitModuleEvent } from '@/lib/events/emit';
+import { processModuleEvent } from '@/lib/events/process';
 
 // === JOBS ===
 
@@ -17,15 +19,17 @@ export async function createJob(
 
   const contractId = (formData.get('contract_id') as string)?.trim() || null;
   const supabase = await getServerClient();
-  const { error } = await supabase.from('public_jobs').insert({
+  const { data: inserted, error } = await supabase.from('public_jobs').insert({
     title,
     slug,
     department,
     description_html: description,
     is_open: true,
     contract_id: contractId || null,
-  });
+  }).select('id').single();
   if (error) return { error: error.message };
+  await emitModuleEvent('people', 'job.created', inserted?.id ?? null, { title, slug, department: department ?? undefined });
+  await processModuleEvent('people', 'job.created', { title, slug, department: department ?? undefined });
   revalidatePath('/app/people/vagas');
   revalidatePath('/carreiras');
   return { success: true };
@@ -87,14 +91,16 @@ export async function submitApplication(
   if (!jobId || !name || !email) return { error: 'Nome e e-mail obrigatórios.' };
 
   const supabase = await getServerClient();
-  const { error } = await supabase.from('job_applications').insert({
+  const { data: inserted, error } = await supabase.from('job_applications').insert({
     job_id: jobId,
     candidate_name: name,
     candidate_email: email,
     linkedin_url: linkedin,
     message,
-  });
+  }).select('id').single();
   if (error) return { error: error.message };
+  await emitModuleEvent('people', 'job_application.created', inserted?.id ?? null, { job_id: jobId, candidate_email: email });
+  await processModuleEvent('people', 'job_application.created', { job_id: jobId, candidate_email: email });
   revalidatePath('/carreiras');
   return { success: true };
 }

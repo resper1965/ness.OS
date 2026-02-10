@@ -1,8 +1,8 @@
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { Toaster } from 'sonner';
-import { AppSidebar } from '@/components/app/app-sidebar';
-import { AppHeader } from '@/components/app/app-header';
+import { LayoutAppSidebar } from '@/components/layout/sidebar/app-sidebar';
+import { SiteHeader } from '@/components/layout/header';
 import { RoleProvider } from '@/components/app/role-provider';
 import { SidebarProvider, SidebarInset } from '@/components/app/sidebar-context';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -44,10 +44,10 @@ export default async function AppLayout({
             Ir para o conteúdo
           </a>
           <div className="flex min-h-screen bg-slate-900">
-            <AppSidebar user={appUser} />
+            <LayoutAppSidebar user={appUser} />
             <SidebarInset className="flex flex-col">
-              <AppHeader user={appUser} />
-              <main id="main-content" className="min-w-0 flex-1 px-8 pt-4 pb-8" tabIndex={-1}>
+              <SiteHeader user={appUser} />
+              <main id="main-content" className="min-w-0 flex-1 px-8 pt-2 pb-8" tabIndex={-1}>
                 {children}
               </main>
             </SidebarInset>

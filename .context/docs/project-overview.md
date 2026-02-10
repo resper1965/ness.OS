@@ -22,7 +22,7 @@ Next.js 14 (App Router), Supabase, Tailwind, shadcn/ui, Vercel AI SDK, pgvector
 
 | Arquivo | Domínio | Funções |
 |---------|---------|---------|
-| data.ts | ness.DATA | sync Omie, consultas ERP (clientes, contas a receber) |
+| data.ts | ness.DATA | sync Omie, consultas ERP, snapshots (erp_revenue, bcb_rates), agregação de eventos (event_aggregates), getDataDashboardSummary |
 | growth.ts | ness.GROWTH | leads, posts, services, success-cases |
 | ops.ts | ness.OPS | playbooks, assets, metricas |
 | fin.ts | ness.FIN | clients, contracts (consome dados via DATA) |
@@ -37,16 +37,16 @@ Next.js 14 (App Router), Supabase, Tailwind, shadcn/ui, Vercel AI SDK, pgvector
 
 - DataTable, StatusBadge, AppPageHeader, PageContent em `components/shared/`
 - lib/validators/schemas.ts (leadSchema, postSchema)
-- lib/header-constants.ts (APP_HEADER_HEIGHT_PX = 64, SECTION_HEADER_HEIGHT_PX = 52)
+- lib/header-constants.ts (APP_HEADER_HEIGHT_PX = 52, SECTION_HEADER_HEIGHT_PX = 52)
 
 ## Layout do app (/app/*)
 
-- **Shell:** `SidebarProvider` → `AppSidebar` + `SidebarInset`. Layout inspirado no Bundui (sidebar colapsável, header global).
-- **Sidebar:** `AppSidebar` — colapsável (224px expandida, 48px recolhida; mobile = drawer). Header "ness.OS" 64px + `SidebarTrigger`; nav via `nav-config`.
-- **Header global:** `AppHeader` — `SidebarTrigger` + breadcrumb (Módulo / Página). 64px.
-- **Header da página:** `AppPageHeader` — fixo, 64px; títulos de seção dentro do conteúdo.
+- **Shell:** `SidebarProvider` → `LayoutAppSidebar` + `SidebarInset`. Layout inspirado no Bundui e no [clone](https://github.com/resper1965/clone/tree/main/components/layout) (sidebar colapsável, header global com Search, Notificações).
+- **Sidebar:** `LayoutAppSidebar` (`src/components/layout/sidebar/`) — logo (LayoutLogo), NavMain (nav-config), NavUser (tema + usuário). Colapsável (224px expandida, 48px recolhida); mobile = drawer. Altura header 52px.
+- **Header global:** `SiteHeader` (`src/components/layout/header/`) — SidebarTrigger, breadcrumb (Módulo / Página), Separator, Search (⌘K), Notificações, Tema, UserMenu. 52px.
+- **Header da página:** `AppPageHeader` — fixo, 52px; títulos de seção dentro do conteúdo.
 - **Docs:** [docs/LAYOUT-APP-HEADERS.md](../../docs/LAYOUT-APP-HEADERS.md), [docs/DESIGN-TOKENS.md](../../docs/DESIGN-TOKENS.md).
-- **Plano components/layout Bundui:** [bundui-layout-components-nessos](../plans/bundui-layout-components-nessos.md) — adoção de [components/layout](https://github.com/bundui/shadcn-ui-kit-dashboard/tree/main/components/layout) do Bundui (sidebar shell, header, breadcrumb, page shell) no ness.OS.
+- **Plano components/layout Bundui:** [bundui-layout-components-nessos](../plans/bundui-layout-components-nessos.md) — adoção de [components/layout](https://github.com/bundui/shadcn-ui-kit-dashboard/tree/main/components/layout) do Bundui (sidebar shell, header, breadcrumb, page shell) no ness.OS. **Implementado:** layout clone adaptado (SiteHeader, LayoutAppSidebar, Search, Notificações, NavMain, NavUser).
 - **Plano theme-customizer Bundui:** [bundui-theme-customizer-nessos](../plans/bundui-theme-customizer-nessos.md) — adequação do [theme-customizer](https://github.com/bundui/shadcn-ui-kit-dashboard/tree/main/components/theme-customizer) do Bundui ao ness.OS (light/dark, persistência, DESIGN-TOKENS).
 
 ## Página de explicação completa do ness.OS
@@ -56,6 +56,10 @@ Next.js 14 (App Router), Supabase, Tailwind, shadcn/ui, Vercel AI SDK, pgvector
 ## Plano Mestre
 
 **docs/PLANO-COMPLETO-NESSOS-SITE.md** — Roadmap completo em 4 sprints.
+
+## Massa de dados e acontecimentos (ness.DATA)
+
+**Plano ai-context:** [persistencia-massa-indices-acontecimentos](../plans/persistencia-massa-indices-acontecimentos.md) — persistência para gerar índices e acompanhar acontecimentos. Tabela `event_aggregates` (contagem de eventos por período/módulo/tipo); cron `POST /api/cron/aggregate-events`; página ness.DATA exibe últimos snapshots (faturamento Omie, BCB), total de eventos e acontecimentos agregados. Doc: docs/PLANO-PERSISTENCIA-MASSA-INDICES-ACONTECIMENTOS.md.
 
 ## SIMPLIFICA (concluído)
 

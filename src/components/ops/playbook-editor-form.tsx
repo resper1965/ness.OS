@@ -5,7 +5,16 @@ import Link from 'next/link';
 
 type Props = {
   action: (prev: unknown, fd: FormData) => Promise<{ success?: boolean; error?: string }>;
-  initialValues?: { id?: string; title?: string; slug?: string; content_markdown?: string; tags?: string[] | null; last_reviewed_at?: string | null };
+  initialValues?: {
+    id?: string;
+    title?: string;
+    slug?: string;
+    content_markdown?: string;
+    tags?: string[] | null;
+    last_reviewed_at?: string | null;
+    estimated_duration_minutes?: number | null;
+    estimated_value?: number | null;
+  };
 };
 
 export function PlaybookEditorForm({ action, initialValues }: Props) {
@@ -45,6 +54,18 @@ export function PlaybookEditorForm({ action, initialValues }: Props) {
         <label className="block text-sm font-medium text-slate-300 mb-3">Data de Revisão</label>
         <input name="last_reviewed_at" type="date" defaultValue={initialValues?.last_reviewed_at ?? ''} className={inputClass} />
         <p className={helpClass}>Última vez que o manual foi revisado.</p>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-slate-300 mb-3">Estimativa duração (min)</label>
+          <input name="estimated_duration_minutes" type="number" min="0" step="1" defaultValue={initialValues?.estimated_duration_minutes ?? ''} className={inputClass} placeholder="60" />
+          <p className={helpClass}>Métrica temporal: tempo estimado do playbook em minutos.</p>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-slate-300 mb-3">Estimativa valor (R$)</label>
+          <input name="estimated_value" type="number" min="0" step="0.01" defaultValue={initialValues?.estimated_value ?? ''} className={inputClass} placeholder="0.00" />
+          <p className={helpClass}>Métrica valor: estimativa em reais (custo ou preço de referência).</p>
+        </div>
       </div>
       <div>
         <label className="block text-sm font-medium text-slate-300 mb-3">Conteúdo (Markdown)</label>

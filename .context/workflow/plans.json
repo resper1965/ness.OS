@@ -1,14 +1,14 @@
 {
   "active": [
     {
-      "slug": "refatoracao-ux-ui-todas-paginas",
-      "path": "plans/refatoracao-ux-ui-todas-paginas.md",
-      "title": "Refatoração UX/UI — Todas as Páginas por Tema",
-      "summary": "Plano detalhado passando por **todas as páginas existentes** do ness.OS: refatoração inspirada nas melhores referências do repositório (clone, ajuste-ux-ui, design-tokens), com **ligação temática** (financeiro, usuário, comercial, operação, jurídico, governança) e foco em **melhorar em muito o UX/UI** da aplicação.",
-      "linkedAt": "2026-02-05T08:19:26.882Z",
+      "slug": "composicao-servicos-produtos-tasks-playbooks",
+      "path": "plans/composicao-servicos-produtos-tasks-playbooks.md",
+      "title": "Composição Serviços/Produtos — Task → Playbook → Service",
+      "summary": "Definir e implementar o modelo de composição: **Task** (menor unidade, com métrica de consumo temporal ou valor), **Playbook** (conjunto de tasks, com métrica de consumo), **Service** (conjunto de playbooks). As duas primeiras unidades (Task e Playbook) devem ter métrica de consumo — temporal ou valor.",
+      "linkedAt": "2026-02-06T19:05:27.370Z",
       "status": "active"
     }
   ],
   "completed": [],
-  "primary": "refatoracao-ux-ui-todas-paginas"
+  "primary": "composicao-servicos-produtos-tasks-playbooks"
 }

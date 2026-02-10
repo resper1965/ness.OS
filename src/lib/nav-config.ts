@@ -33,7 +33,7 @@ export const navModules: NavModule[] = [
     title: 'ness.OPS',
     areas: [
       { id: 'conhecimento', title: 'Conhecimento', items: [{ href: '/app/ops/playbooks', label: 'Playbooks' }, { href: '/app/ops/playbooks/chat', label: 'Knowledge Bot' }] },
-      { id: 'operacao', title: 'Operação', items: [{ href: '/app/ops/workflows', label: 'Workflows' }, { href: '/app/ops/metricas', label: 'Métricas' }, { href: '/app/ops/timer', label: 'Timer' }, { href: '/app/ops/indicators', label: 'Indicadores' }, { href: '/app/ops/assets', label: 'Assets' }] },
+      { id: 'operacao', title: 'Operação', items: [{ href: '/app/ops/service-actions', label: 'Service Actions' }, { href: '/app/ops/workflows', label: 'Workflows' }, { href: '/app/ops/metricas', label: 'Métricas' }, { href: '/app/ops/timer', label: 'Timer' }, { href: '/app/ops/indicators', label: 'Indicadores' }, { href: '/app/ops/assets', label: 'Assets' }] },
     ],
   },
   {

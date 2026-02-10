@@ -60,7 +60,8 @@ phases:
 ### Concluído nesta rodada
 | Item | Plano | Status |
 |------|--------|--------|
-| Adaptação layout Bundui | [adaptacao-layout-bundui-nessos](./adaptacao-layout-bundui-nessos.md) | **Fase C concluída:** docs LAYOUT-APP-HEADERS, DESIGN-TOKENS e project-overview atualizados; layout inspirado no Bundui documentado. |
+| Composição Serviços/Produtos (Task → Playbook → Service) | [composicao-servicos-produtos-tasks-playbooks](./composicao-servicos-produtos-tasks-playbooks.md) | **Implementado:** tabela `tasks`, métricas em playbooks (estimated_duration_minutes, estimated_value); CRUD tasks em ops.ts; UI tasks por playbook em /app/ops/playbooks/[id]; doc COMPOSICAO-SERVICOS-PRODUTOS.md; glossary atualizado. |
+| Adaptação layout Bundui / clone | [adaptacao-layout-bundui-nessos](./adaptacao-layout-bundui-nessos.md) | **Fase C concluída:** docs LAYOUT-APP-HEADERS, DESIGN-TOKENS e project-overview atualizados. **Layout clone:** header (SiteHeader) e sidebar (LayoutAppSidebar) com Search ⌘K, Notificações, NavMain, NavUser, LayoutLogo; componentes em `src/components/layout/`; dados de nav-config e auth. Doc LAYOUT-APP-HEADERS atualizado (52px, estrutura atual). |
 | ness.DATA — dólar (PTAX) | [ness-data-modulo-dados](./ness-data-modulo-dados.md) | **Implementado:** `getDollarRate(date?)` e `getIndices(options?)` em `actions/data.ts`; BCB PTAX; FIN/GROWTH usam para precificação. |
 | ness.DATA — IPCA/IGPM (reajuste) | [ness-data-modulo-dados](./ness-data-modulo-dados.md) | **Implementado:** `getIpcaRate(date?)`, `getIgpmRate(date?)` e `getIndices()` retornam `ipca`/`igpm` (BCB SGS 433/189, variação mensal %); FIN usa no Ciclo de Vida. |
 | ness.DATA — ingestão indicadores | [ness-data-modulo-dados](./ness-data-modulo-dados.md) | **Implementado:** tabela `indicators`, POST `/api/data/indicators/ingest` (API key), `getIndicators()`/`ingestIndicator()` em data.ts, página `/app/ops/indicators`. Doc: API-INGESTAO-INDICADORES.md. |

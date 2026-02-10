@@ -1,0 +1,24 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/aggregate-events",
+      "schedule": "0 3 * * *"
+    },
+    {
+      "path": "/api/cron/compute-data-indices",
+      "schedule": "0 4 1 * *"
+    },
+    {
+      "path": "/api/cron/sync-bcb-rates",
+      "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/cron/sync-omie-revenue",
+      "schedule": "0 2 1 * *"
+    },
+    {
+      "path": "/api/cron/sync-performance-metrics",
+      "schedule": "0 2 * * *"
+    }
+  ]
+}
